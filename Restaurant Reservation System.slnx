@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Restaurant Reservation System.API/Restaurant Reservation System.API.csproj" />
+  <Project Path="Restaurant Reservation System.Dal/Restaurant Reservation System.Dal.csproj" />
+  <Project Path="Restaurant Reservation System.Data/Restaurant Reservation System.Data.csproj" />
+  <Project Path="Restaurant Reservation System.Service/Restaurant Reservation System.Service.csproj" />
+</Solution>
