@@ -10,10 +10,10 @@ namespace Restaurant_Reservation_System.Data.Entities
         [Key]
         public int Id { get; set; }
         [Required]
-        [MaxLength(15)]
+        [MaxLength(25)]
         public string Name { get; set; } = null!;
         [Required]
-        [MaxLength(40)]
+        [MaxLength(50)]
         public string Location { get; set; } = null!;
         [Required]
         [MaxLength(254)] // 254 is officially max length for email address
