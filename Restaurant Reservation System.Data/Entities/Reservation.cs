@@ -18,6 +18,7 @@ namespace Restaurant_Reservation_System.Data.Entities
         [Required]
         public int StatusId { get; set; }
         [Required]
+        [Column("Date")]
         public DateTime Date { get; set; }
         [Required]
         public int TableNumber { get; set; }

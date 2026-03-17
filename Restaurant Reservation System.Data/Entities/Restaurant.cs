@@ -10,13 +10,14 @@ namespace Restaurant_Reservation_System.Data.Entities
         [Key]
         public int Id { get; set; }
         [Required]
-        public string RestaurantName { get; set; } = null!;
-        [Required]
+        [MaxLength(15)]
         public string Name { get; set; } = null!;
         [Required]
+        [MaxLength(40)]
         public string Location { get; set; } = null!;
         [Required]
-        // TODO: filter
+        [MaxLength(254)] // 254 is officially max length for email address
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; } = null!;
         [Required]
         public int TotalTables { get; set; }
