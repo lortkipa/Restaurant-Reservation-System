@@ -12,13 +12,14 @@ namespace Restaurant_Reservation_System.Data.Entities
         [Key]
         public int Id { get; set; }
         [Required]
+        public int UserId { get; set; }
+        [Required]
         public int CostumerId { get; set; }
         [Required]
         public int RestaurantId { get; set; }
         [Required]
         public int StatusId { get; set; }
         [Required]
-        [Column("Date")]
         public DateTime Date { get; set; }
         [Required]
         public int TableNumber { get; set; }
@@ -28,6 +29,6 @@ namespace Restaurant_Reservation_System.Data.Entities
         // Reservations => Restaurant
         public Restaurant? Restaurant { get; set; }
         // Reservations => User
-        // public User? User { get; set; }
+        public User? User { get; set; }
     }
 }

@@ -6,22 +6,16 @@ using System.Text;
 
 namespace Restaurant_Reservation_System.Data.Entities
 {
-    [Table("MenuItems")]
-    public class MenuItem
+    [Table("Roles")]
+    public class Role
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        public int MenuId { get; set; }
-        [Required]
-        [MaxLength(25)]
+        [MaxLength(20)]
         public string Name { get; set; } = null!;
-        [Required]
-        public decimal Price { get; set; }
-        [Required]
-        public bool IsAvaiable { get; set; }
 
-        // MenuItems => Menu
-        public Menu? Menu { get; set; }
+        // Role => RoleUsers
+        public ICollection<RoleUser> RoleUsers { get; set; } = new List<RoleUser>();
     }
 }

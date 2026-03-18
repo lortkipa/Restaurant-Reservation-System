@@ -14,11 +14,13 @@ namespace Restaurant_Reservation_System.Data.Entities
         [Key]
         public int Id { get; set; }
         [Required]
+        public int RestaurantId { get; set; }
+        [Required]
         [MaxLength(25)]
         public string Name { get; set; } = null!;
 
         // Menu => MenuItems
-        public ICollection<MenuItem> Dishes { get; set; } = new List<MenuItem>();
+        public ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
         // Menus => Restaurant
         public Restaurant? Restaurant { get; set; }
     }
