@@ -1,0 +1,64 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Restaurant_Reservation_System.Service;
+using Restaurant_Reservation_System.Service.DTOs;
+using Restaurant_Reservation_System.Service.DTOs.User;
+using Restaurant_Reservation_System.Service.Interfaces;
+
+namespace Restaurant_Reservation_System.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _service;
+
+        public UserController(IUserService service)
+        {
+            _service = service;
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll()
+        {
+            var users = await _service.GetAllAsync();
+            return Ok(users);
+        }
+        [HttpGet("GetById/{id:int}")]
+        public async Task<ActionResult<UserDTO>> GetById(int id)
+        {
+            UserDTO rating = await _service.GetByIdAsync(id);
+            if (rating == null) return BadRequest("invalid id");
+            return Ok(rating);
+        }
+        [HttpPost("Register")]
+        public async Task<ActionResult<AuthResponseDTO>> Register(RegisterUserDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                AuthResponseDTO res = await _service.RegisterAsync(model);
+                if (res.Status == false) return BadRequest(res);
+                return Ok(res);
+            }
+            return BadRequest();
+        }
+        [HttpPost("Login")]
+        public async Task<ActionResult<AuthResponseDTO>> Login(LoginUserDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                AuthResponseDTO res = await _service.LoginAsync(model);
+                if (res.Status == false) return BadRequest(res);
+                return Ok(res);
+            }
+            return BadRequest();
+        }
+        [HttpDelete("Delete/{id:int}")]
+        public async Task<ActionResult<bool>> Delete(int id)
+        {
+            var result = await _service.DeleteAsync(id);
+            if (result == false) return BadRequest();
+            return Ok();
+        }
+    }
+}

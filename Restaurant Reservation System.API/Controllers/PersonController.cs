@@ -32,7 +32,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             return Ok(person);
         }
         [HttpPost("Add")]
-        public async Task<ActionResult<PersonDTO>> AddPerson(CreatePersonDTO person)
+        public async Task<ActionResult<PersonDTO>> Add(CreatePersonDTO person)
         {
             if (ModelState.IsValid)
             {
@@ -44,7 +44,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             return BadRequest();
         }
         [HttpPut("Update/{id:int}")]
-        public async Task<ActionResult<bool>> UpdatePerson(int id, UpdatePersonDTO model)
+        public async Task<ActionResult<bool>> Update(int id, UpdatePersonDTO model)
         {
             if (ModelState.IsValid)
             {
@@ -59,13 +59,11 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return BadRequest();
         }
-
         [HttpDelete("Delete/{id:int}")]
-        public async Task<ActionResult<bool>> RemovePerson(int id)
+        public async Task<ActionResult<bool>> Delete(int id)
         {
             var result = await _service.DeleteAsync(id);
-            if (!result) return BadRequest();
-
+            if (result == false) return BadRequest();
             return Ok();
         }
     }
