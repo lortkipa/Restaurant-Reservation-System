@@ -11,4 +11,12 @@
     <ProjectReference Include="..\Restaurant Reservation System.Dal\Restaurant Reservation System.Dal.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Enums\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
+  </ItemGroup>
+
 </Project>

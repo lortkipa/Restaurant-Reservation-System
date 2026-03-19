@@ -1,6 +1,10 @@
 
 using Microsoft.EntityFrameworkCore;
+using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Data;
+using Restaurant_Reservation_System.Service;
+using Restaurant_Reservation_System.Service.Interfaces;
+using Restaurant_Reservation_System.Service.Mapping;
 
 namespace Restaurant_Reservation_System.API
 {
@@ -18,10 +22,14 @@ namespace Restaurant_Reservation_System.API
             builder.Services.AddScoped<DbContext, RestaurantContext>();
 
             builder.Services.AddControllers();
+            builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile).Assembly);
 
             // Add repositories to the container
+            builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+            builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
             // Add services to the container
+            builder.Services.AddScoped<IPersonService, PersonService>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

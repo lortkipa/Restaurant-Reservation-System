@@ -167,7 +167,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MenuId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
                     IsAvaiable = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
