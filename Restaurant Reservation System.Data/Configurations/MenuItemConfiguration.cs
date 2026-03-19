@@ -19,7 +19,8 @@ namespace Restaurant_Reservation_System.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(25);
             builder.Property(mi => mi.Price)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("decimal(6,2)");
 
             // MenuItems => Menu
             builder.HasOne(mi => mi.Menu)
