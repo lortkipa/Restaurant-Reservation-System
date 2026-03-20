@@ -44,15 +44,14 @@ namespace Restaurant_Reservation_System.Service
             if (person == null)
                 return false;
 
-            person = _mapper.Map<Person>(person);
+            person = _mapper.Map<Person>(model);
             await _repo.UpdateAsync(person);
             return true;
         }
         public async Task<bool> DeleteAsync(int id)
         {
             var person = await _repo.GetByIdAsync(id);
-            if (person == null)
-                return false;
+            if (person == null) return false;
 
             await _repo.DeleteAsync(id);
             return true;

@@ -18,19 +18,6 @@ namespace Restaurant_Reservation_System.API.Controllers
             _service = service;
         }
 
-        [HttpGet("GetAll")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll()
-        {
-            var users = await _service.GetAllAsync();
-            return Ok(users);
-        }
-        [HttpGet("GetById/{id:int}")]
-        public async Task<ActionResult<UserDTO>> GetById(int id)
-        {
-            UserDTO rating = await _service.GetByIdAsync(id);
-            if (rating == null) return BadRequest("invalid id");
-            return Ok(rating);
-        }
         [HttpPost("Register")]
         public async Task<ActionResult<AuthResponseDTO>> Register(RegisterUserDTO model)
         {
@@ -52,13 +39,6 @@ namespace Restaurant_Reservation_System.API.Controllers
                 return Ok(res);
             }
             return BadRequest();
-        }
-        [HttpDelete("Delete/{id:int}")]
-        public async Task<ActionResult<bool>> Delete(int id)
-        {
-            var result = await _service.DeleteAsync(id);
-            if (result == false) return BadRequest();
-            return Ok();
         }
     }
 }

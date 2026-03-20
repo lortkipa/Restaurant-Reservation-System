@@ -3,7 +3,9 @@ using Restaurant_Reservation_System.Data.Configurations;
 using Restaurant_Reservation_System.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Restaurant_Reservation_System.Data
@@ -54,11 +56,45 @@ namespace Restaurant_Reservation_System.Data
                 },
                 new Role
                 {
-                    Id = 2, Name = "Manager"
+                    Id = 2, Name = "Worker"
                 },
                 new Role 
                 {
                     Id = 3, Name = "Customer"
+                }
+            );
+            modelBuilder.Entity<Person>().HasData(
+                new Person
+                {
+                    Id = 1,
+                    FirstName = "Nikoloz",
+                    LastName = "Lortkipanidze",
+                    Phone = "577711705",
+                    Address = "Near Lisi Lake"
+                }
+            );
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes("Nikoloz123"));
+                string hashedPassword = Convert.ToBase64String(hashedBytes);
+                modelBuilder.Entity<User>().HasData(
+                    new User
+                    {
+                        Id = 1,
+                        PersonId = 1,
+                        Username = "NikolozLortki",
+                        PasswordHash = hashedPassword,
+                        Email = "nikusha191208@gmail.com",
+                        RegistrationDate = new DateTime(2026, 3, 20)
+                    }
+                );
+            }
+            modelBuilder.Entity<RoleUser>().HasData(
+                new RoleUser
+                {
+                    Id = 1,
+                    RoleId = 1,
+                    UserId = 1
                 }
             );
         }

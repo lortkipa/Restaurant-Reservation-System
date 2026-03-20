@@ -10,6 +10,7 @@ namespace Restaurant_Reservation_System.Dal.Repositories
 {
     public interface IUserRepository : IBaseRepository<User>
     {
+        Task<Role> GetRoleById(int id);
         Task<User> GetByEmailAsync(string email);
         Task<User> GetByUsernameAsync(string username);
     }
@@ -22,6 +23,13 @@ namespace Restaurant_Reservation_System.Dal.Repositories
             _context = context;
         }
 
+        public async Task<Role> GetRoleById(int id)
+        {
+            return await _context.Roles
+                .Include(r => r.RoleUsers)
+                .ThenInclude(ru => ru.User)
+                 .FirstOrDefaultAsync(r => r.Id == id);
+        }
         public async Task<User> GetByEmailAsync(string email)
         {
             return await _context.Users

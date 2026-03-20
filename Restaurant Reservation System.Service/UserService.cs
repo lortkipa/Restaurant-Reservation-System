@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Service.DTOs;
+using Restaurant_Reservation_System.Service.DTOs.Role;
 using Restaurant_Reservation_System.Service.DTOs.User;
 using Restaurant_Reservation_System.Service.Interfaces;
 using System;
@@ -15,13 +16,15 @@ namespace Restaurant_Reservation_System.Service
     {
         private readonly IUserRepository _userRepo;
         private readonly IPersonRepository _personRepo;
+        private readonly IRoleUserRepository _roleUserRepo;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepo, IPersonRepository personRepo, IPasswordHasher passwordHaser, IMapper mapper)
+        public UserService(IUserRepository userRepo, IPersonRepository personRepo, IRoleUserRepository roleUserRepo, IPasswordHasher passwordHaser, IMapper mapper)
         {
             _userRepo = userRepo;
             _personRepo = personRepo;
+            _roleUserRepo = roleUserRepo;
             _passwordHasher = passwordHaser;
             _mapper = mapper;
         }
@@ -34,9 +37,15 @@ namespace Restaurant_Reservation_System.Service
         public async Task<UserDTO> GetByIdAsync(int id)
         {
             var user = await _userRepo.GetByIdAsync(id);
-            if (user == null) throw new Exception("user not found");
+            if (user == null) return null;
 
             return _mapper.Map<UserDTO>(user);
+        }
+        public async Task<RoleDTO> GetRoleById(int id)
+        {
+            Role role = await _userRepo.GetRoleById(id);
+            if (role == null) throw new Exception("role not found");
+            return _mapper.Map<RoleDTO>(role);
         }
         public async Task<UserDTO> GetByEmailAsync(string email)
         {
@@ -67,8 +76,15 @@ namespace Restaurant_Reservation_System.Service
             User user = _mapper.Map<User>(model);
             user.PersonId = person.Id;
             user.PasswordHash = await _passwordHasher.HashPassword(model.Password);
-
             await _userRepo.AddAsync(user);
+
+            RoleUser roleUser = new RoleUser
+            {
+                UserId = user.Id,
+                RoleId = 3 // Costumer by default
+            };
+            await _roleUserRepo.AddAsync(roleUser);
+
             return new AuthResponseDTO { Status = true, Message = "Registration successful" };
         }
         public async Task<AuthResponseDTO> LoginAsync(LoginUserDTO model)

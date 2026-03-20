@@ -12,7 +12,7 @@ using Restaurant_Reservation_System.Data;
 namespace Restaurant_Reservation_System.Data.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20260319130641_v1")]
+    [Migration("20260320092404_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -111,6 +111,16 @@ namespace Restaurant_Reservation_System.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Persons", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Near Lisi Lake",
+                            FirstName = "Nikoloz",
+                            LastName = "Lortkipanidze",
+                            Phone = "577711705"
+                        });
                 });
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.Reservation", b =>
@@ -216,7 +226,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 2,
-                            Name = "Manager"
+                            Name = "Worker"
                         },
                         new
                         {
@@ -246,6 +256,14 @@ namespace Restaurant_Reservation_System.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RoleUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RoleId = 1,
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.User", b =>
@@ -282,6 +300,17 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "nikusha191208@gmail.com",
+                            PasswordHash = "DB6jdy9/yKY9HsyyDejZahTFEMLmN/FVlAbA+9RuHew=",
+                            PersonId = 1,
+                            RegistrationDate = new DateTime(2026, 3, 20, 13, 24, 3, 619, DateTimeKind.Local).AddTicks(9254),
+                            Username = "NikolozLortki"
+                        });
                 });
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.Menu", b =>

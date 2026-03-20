@@ -1,5 +1,7 @@
-﻿using Restaurant_Reservation_System.Service.DTOs;
+﻿using Restaurant_Reservation_System.Data.Entities;
+using Restaurant_Reservation_System.Service.DTOs;
 using Restaurant_Reservation_System.Service.DTOs.Person;
+using Restaurant_Reservation_System.Service.DTOs.Role;
 using Restaurant_Reservation_System.Service.DTOs.User;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ namespace Restaurant_Reservation_System.Service.Interfaces
     {
         Task<IEnumerable<UserDTO>> GetAllAsync();
         Task<UserDTO> GetByIdAsync(int id);
+        Task<RoleDTO> GetRoleById(int id);
         Task<UserDTO> GetByEmailAsync(string email);
         Task<UserDTO> GetByUsernameAsync(string username);
         Task<AuthResponseDTO> RegisterAsync(RegisterUserDTO model);

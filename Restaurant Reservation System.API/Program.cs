@@ -28,10 +28,12 @@ namespace Restaurant_Reservation_System.API
             builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
 
             // Add services to the container
             builder.Services.AddScoped<IPersonService, PersonService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IRoleUserService, RoleUserService>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

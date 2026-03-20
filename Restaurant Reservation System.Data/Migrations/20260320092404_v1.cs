@@ -182,14 +182,29 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Persons",
+                columns: new[] { "Id", "Address", "FirstName", "LastName", "Phone" },
+                values: new object[] { 1, "Near Lisi Lake", "Nikoloz", "Lortkipanidze", "577711705" });
+
+            migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
                     { 1, "Admin" },
-                    { 2, "Manager" },
+                    { 2, "Worker" },
                     { 3, "Customer" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Email", "PasswordHash", "PersonId", "RegistrationDate", "Username" },
+                values: new object[] { 1, "nikusha191208@gmail.com", "DB6jdy9/yKY9HsyyDejZahTFEMLmN/FVlAbA+9RuHew=", 1, new DateTime(2026, 3, 20, 13, 24, 3, 619, DateTimeKind.Local).AddTicks(9254), "NikolozLortki" });
+
+            migrationBuilder.InsertData(
+                table: "RoleUsers",
+                columns: new[] { "Id", "RoleId", "UserId" },
+                values: new object[] { 1, 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuItems_MenuId",
