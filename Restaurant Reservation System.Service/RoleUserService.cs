@@ -2,6 +2,7 @@
 using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Service.DTOs.Person;
+using Restaurant_Reservation_System.Service.DTOs.Role;
 using Restaurant_Reservation_System.Service.DTOs.RoleUser;
 using Restaurant_Reservation_System.Service.DTOs.User;
 using Restaurant_Reservation_System.Service.Interfaces;
@@ -28,6 +29,38 @@ namespace Restaurant_Reservation_System.Service
             if (roleUser == null) throw new Exception("user not found");
 
             return _mapper.Map<RoleUserDTO>(roleUser);
+        }
+        public async Task<IEnumerable<RoleDTO>> GetRolesByUserId(int userId)
+        {
+            var roles = await _repo.GetRolesByUserId(userId);
+
+            if (roles == null) new Exception("user has no roles");
+
+            return _mapper.Map<IEnumerable<RoleDTO>>(roles);
+        }
+        public async Task<bool> SetRoleByUserId(int userId, int roleId)
+        {
+            var existingRoles = await _repo.GetRolesByUserId(userId);
+            if (existingRoles.Any(r => r.Id == roleId)) return false; 
+
+            var roleUser = new RoleUser
+            {
+                UserId = userId,
+                RoleId = roleId
+            };
+
+            await _repo.AddAsync(roleUser);
+            return true;
+        }
+        public async Task<bool> RemoveRoleByUserId(int userId, int roleId)
+        {
+            var roles = await _repo.GetRolesByUserId(userId);
+            var roleToRemove = roles.FirstOrDefault(r => r.Id == roleId);
+
+            if (roleToRemove == null) return false; 
+
+            await _repo.DeleteByUserAndRoleId(userId, roleId);
+            return true;
         }
         public async Task<RoleUserDTO> CreateAsync(CreateRoleUserDTO model)
         {

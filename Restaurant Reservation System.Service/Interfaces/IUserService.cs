@@ -13,7 +13,7 @@ namespace Restaurant_Reservation_System.Service.Interfaces
     {
         Task<IEnumerable<UserDTO>> GetAllAsync();
         Task<UserDTO> GetByIdAsync(int id);
-        Task<RoleDTO> GetRoleById(int id);
+        Task<IEnumerable<RoleDTO>> GetRolesById(int id);
         Task<UserDTO> GetByEmailAsync(string email);
         Task<UserDTO> GetByUsernameAsync(string username);
         Task<AuthResponseDTO> RegisterAsync(RegisterUserDTO model);

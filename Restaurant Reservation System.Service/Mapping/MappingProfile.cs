@@ -31,8 +31,8 @@ namespace Restaurant_Reservation_System.Service.Mapping
 
             // RoleUser
             CreateMap<RoleUser, RoleUserDTO>().ReverseMap();
-            CreateMap<CreateRoleUserDTO, RoleUserDTO>();
-            CreateMap<UpdateRoleUserDTO, RoleUserDTO>();
+            CreateMap<CreateRoleUserDTO, RoleUser>();
+            CreateMap<UpdateRoleUserDTO, RoleUser>();
         }
     }
 }

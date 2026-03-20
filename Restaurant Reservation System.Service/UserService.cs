@@ -41,11 +41,11 @@ namespace Restaurant_Reservation_System.Service
 
             return _mapper.Map<UserDTO>(user);
         }
-        public async Task<RoleDTO> GetRoleById(int id)
+        public async Task<IEnumerable<RoleDTO>> GetRolesById(int id)
         {
-            Role role = await _userRepo.GetRoleById(id);
-            if (role == null) throw new Exception("role not found");
-            return _mapper.Map<RoleDTO>(role);
+            var roles = await _roleUserRepo.GetRolesByUserId(id);
+            if (!roles.Any()) throw new Exception("role not found");
+            return _mapper.Map<IEnumerable<RoleDTO>>(roles);
         }
         public async Task<UserDTO> GetByEmailAsync(string email)
         {

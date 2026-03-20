@@ -13,17 +13,24 @@ namespace Restaurant_Reservation_System.API.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IRoleUserService _roleUserService;
 
-        public AdminController(IUserService userService)
+        public AdminController(IUserService userService, IRoleUserService roleUserService)
         {
             _userService = userService;
+            _roleUserService = roleUserService;
+        }
+
+        private async Task<bool> IsAdmin(int adminId)
+        {
+            var roles = await _userService.GetRolesById(adminId);
+            return roles.Any(r => r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
         }
 
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers(int adminId)
         {
-            RoleDTO role = await _userService.GetRoleById(adminId);
-            if (role == null || role.Name != "Admin")
+            if (!await IsAdmin(adminId))
                 return Forbid("Logged in user is not Admin");
 
             var users = await _userService.GetAllAsync();
@@ -32,42 +39,60 @@ namespace Restaurant_Reservation_System.API.Controllers
         [HttpGet("GetUserById/{adminId:int}/{userId:int}")]
         public async Task<ActionResult<UserDTO>> GetUserById(int adminId, int userId)
         {
-            RoleDTO role = await _userService.GetRoleById(adminId);
-            if (role == null || role.Name != "Admin")
+            if (!await IsAdmin(adminId))
                 return Forbid("Logged in user is not Admin");
 
-            UserDTO rating = await _userService.GetByIdAsync(userId);
-            if (rating == null) return BadRequest("invalid id");
-            return Ok(rating);
+            var user = await _userService.GetByIdAsync(userId);
+            if (user == null)
+                return NotFound("User not found");
+
+            return Ok(user);
+        }
+        [HttpGet("GetUserRolesById/{adminId:int}/{userId:int}")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUserRolesById(int adminId, int userId)
+        {
+            if (!await IsAdmin(adminId))
+                return Forbid("Logged in user is not Admin");
+
+            var roles = await _userService.GetRolesById(userId);
+            if (roles == null)
+                return NotFound("User has no roles");
+
+            return Ok(roles);
         }
         [HttpPut("UpdateUser/{adminId:int}/{userId:int}")]
         public async Task<ActionResult<bool>> UpdateUser(int adminId, int userId, UpdateUserDTO model)
         {
-            RoleDTO role = await _userService.GetRoleById(adminId);
-            if (role == null || role.Name != "Admin")
+            if (!await IsAdmin(adminId))
                 return Forbid("Logged in user is not Admin");
 
-            if (ModelState.IsValid == false) return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            UserDTO user = await _userService.GetByIdAsync(userId);
-            if (user == null) return BadRequest("invalid id");
+            var user = await _userService.GetByIdAsync(userId);
+            if (user == null)
+                return NotFound("User not found");
 
-            bool res = await _userService.UpdateAsync(userId, model);
-            if (res == false) return BadRequest(res);
-            return Ok(res);
+            var result = await _userService.UpdateAsync(userId, model);
+            if (!result)
+                return BadRequest("Update failed");
+
+            return Ok(result);
         }
         [HttpDelete("DeleteUser/{adminId:int}/{userId:int}")]
-        public async Task<ActionResult<bool>> DeleteUser(int adminId, int userId)
+        public async Task<ActionResult> DeleteUser(int adminId, int userId)
         {
-            RoleDTO role = await _userService.GetRoleById(adminId);
-            if (role == null || role.Name != "Admin")
+            if (!await IsAdmin(adminId))
                 return Forbid("Logged in user is not Admin");
 
-            UserDTO user = await _userService.GetByIdAsync(userId);
-            if (user == null) return BadRequest("invalid id");
+            var user = await _userService.GetByIdAsync(userId);
+            if (user == null)
+                return NotFound("User not found");
 
             var result = await _userService.DeleteAsync(userId);
-            if (result == false) return BadRequest();
+            if (!result)
+                return BadRequest("Delete failed");
+
             return Ok();
         }
     }

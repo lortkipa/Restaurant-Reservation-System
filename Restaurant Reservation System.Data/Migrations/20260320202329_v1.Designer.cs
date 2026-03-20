@@ -12,7 +12,7 @@ using Restaurant_Reservation_System.Data;
 namespace Restaurant_Reservation_System.Data.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20260320092404_v1")]
+    [Migration("20260320202329_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -308,7 +308,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                             Email = "nikusha191208@gmail.com",
                             PasswordHash = "DB6jdy9/yKY9HsyyDejZahTFEMLmN/FVlAbA+9RuHew=",
                             PersonId = 1,
-                            RegistrationDate = new DateTime(2026, 3, 20, 13, 24, 3, 619, DateTimeKind.Local).AddTicks(9254),
+                            RegistrationDate = new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Username = "NikolozLortki"
                         });
                 });

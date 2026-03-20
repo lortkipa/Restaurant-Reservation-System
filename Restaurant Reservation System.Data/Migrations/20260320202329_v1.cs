@@ -199,7 +199,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "PasswordHash", "PersonId", "RegistrationDate", "Username" },
-                values: new object[] { 1, "nikusha191208@gmail.com", "DB6jdy9/yKY9HsyyDejZahTFEMLmN/FVlAbA+9RuHew=", 1, new DateTime(2026, 3, 20, 13, 24, 3, 619, DateTimeKind.Local).AddTicks(9254), "NikolozLortki" });
+                values: new object[] { 1, "nikusha191208@gmail.com", "DB6jdy9/yKY9HsyyDejZahTFEMLmN/FVlAbA+9RuHew=", 1, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "NikolozLortki" });
 
             migrationBuilder.InsertData(
                 table: "RoleUsers",
