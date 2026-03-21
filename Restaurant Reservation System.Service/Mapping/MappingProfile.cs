@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Service.DTOs.Person;
+using Restaurant_Reservation_System.Service.DTOs.Reservation;
 using Restaurant_Reservation_System.Service.DTOs.Role;
 using Restaurant_Reservation_System.Service.DTOs.RoleUser;
 using Restaurant_Reservation_System.Service.DTOs.User;
@@ -33,6 +34,24 @@ namespace Restaurant_Reservation_System.Service.Mapping
             CreateMap<RoleUser, RoleUserDTO>().ReverseMap();
             CreateMap<CreateRoleUserDTO, RoleUser>();
             CreateMap<UpdateRoleUserDTO, RoleUser>();
+
+            // Reservation
+            //CreateMap<Reservation, ReservationDTO>().ReverseMap();
+            //CreateMap<CreateReservationDTO, Reservation>();
+            //CreateMap<UpdateReservationDTO, Reservation>();
+            // Reservation → DTO
+            CreateMap<Reservation, ReservationDTO>();
+
+            // Create DTO → Entity
+            CreateMap<CreateReservationDTO, Reservation>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.StatusId, opt => opt.Ignore());
+
+            // Update DTO → Entity
+            CreateMap<UpdateReservationDTO, Reservation>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForAllMembers(opts =>
+                    opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

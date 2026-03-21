@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -18,6 +19,7 @@ namespace Restaurant_Reservation_System.Data
         public DbSet<Person> Persons { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<ReservationStatus> Status { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<RoleUser> RoleUsers { get; set; }
         public DbSet<User> Users { get; set; }
@@ -43,6 +45,7 @@ namespace Restaurant_Reservation_System.Data
             modelBuilder.ApplyConfiguration(new MenuItemConfiguration());
             modelBuilder.ApplyConfiguration(new PersonConfiguration());
             modelBuilder.ApplyConfiguration(new ReservationConfiguration());
+            modelBuilder.ApplyConfiguration(new ReservationStatusConfiguration());
             modelBuilder.ApplyConfiguration(new RestaurantConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new RoleUserConfiguration());
@@ -95,6 +98,34 @@ namespace Restaurant_Reservation_System.Data
                     Id = 1,
                     RoleId = 1,
                     UserId = 1
+                }
+            );
+            modelBuilder.Entity<ReservationStatus>().HasData(
+                new ReservationStatus
+                {
+                    Id = 1,
+                    Name = "Pending"
+                },
+                new ReservationStatus
+                {
+                    Id = 2,
+                    Name = "Confirmed"
+                },
+                new ReservationStatus
+                {
+                    Id = 3,
+                    Name = "Canceled"
+                }
+            );
+            modelBuilder.Entity<Restaurant>().HasData(
+                new Restaurant
+                {
+                    Id = 1,
+                    Name = "Macdonalds",
+                    Location = "Tbilisi, Georgia",
+                    Email = "mac@gmail.com",
+                    TotalTables = 20,
+                    SeatsPerTable = 4
                 }
             );
         }

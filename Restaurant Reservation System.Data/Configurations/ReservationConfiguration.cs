@@ -13,7 +13,7 @@ namespace Restaurant_Reservation_System.Data.Configurations
         {
             builder.ToTable("Reservations")
                 .HasKey(r => r.Id);
-            builder.Property(r => r.CostumerId)
+            builder.Property(r => r.CustomerId)
                 .IsRequired();
             builder.Property(r => r.RestaurantId)
                 .IsRequired();
@@ -35,7 +35,12 @@ namespace Restaurant_Reservation_System.Data.Configurations
             // Reservations => User
             builder.HasOne(r => r.User)
                 .WithMany(u => u.Reservations)
-                .HasForeignKey(r => r.UserId)
+                .HasForeignKey(r => r.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+            // Reservations => Status
+            builder.HasOne(r => r.Status)
+                .WithMany(u => u.Reservations)
+                .HasForeignKey(r => r.StatusId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

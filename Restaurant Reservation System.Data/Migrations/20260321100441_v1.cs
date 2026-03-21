@@ -60,6 +60,19 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Statuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Statuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -109,7 +122,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    CostumerId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
                     RestaurantId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "date", nullable: false),
@@ -125,6 +138,12 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         principalTable: "Restaurants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Statuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Statuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reservations_Users_UserId",
                         column: x => x.UserId,
@@ -187,6 +206,11 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 values: new object[] { 1, "Near Lisi Lake", "Nikoloz", "Lortkipanidze", "577711705" });
 
             migrationBuilder.InsertData(
+                table: "Restaurants",
+                columns: new[] { "Id", "Email", "Location", "Name", "SeatsPerTable", "TotalTables" },
+                values: new object[] { 1, "mac@gmail.com", "Tbilisi, Georgia", "Macdonalds", 4, 20 });
+
+            migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -194,6 +218,16 @@ namespace Restaurant_Reservation_System.Data.Migrations
                     { 1, "Admin" },
                     { 2, "Worker" },
                     { 3, "Customer" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Statuses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Pending" },
+                    { 2, "Confirmed" },
+                    { 3, "Canceled" }
                 });
 
             migrationBuilder.InsertData(
@@ -222,6 +256,11 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reservations_StatusId",
+                table: "Reservations",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reservations_UserId",
                 table: "Reservations",
                 column: "UserId");
@@ -241,6 +280,12 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 name: "IX_RoleUsers_UserId",
                 table: "RoleUsers",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Statuses_Name",
+                table: "Statuses",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_PersonId",
@@ -263,6 +308,9 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Menus");
+
+            migrationBuilder.DropTable(
+                name: "Statuses");
 
             migrationBuilder.DropTable(
                 name: "Roles");
