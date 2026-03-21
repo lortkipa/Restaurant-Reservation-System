@@ -76,7 +76,7 @@ namespace Restaurant_Reservation_System.Service
             RoleUser roleUser = await _repo.GetByIdAsync(id);
             if (roleUser == null) return false;
 
-            roleUser = _mapper.Map<RoleUser>(model);
+            _mapper.Map(model, roleUser);
             await _repo.UpdateAsync(roleUser);
             return true;
         }
