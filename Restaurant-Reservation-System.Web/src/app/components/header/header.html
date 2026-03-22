@@ -1,5 +1,5 @@
-<nav id="nav">
-  <a href="#" class="nav-logo">Fine <span>Reserve</span></a>
+<nav id="nav" [class.scrolled]="isScrolled">
+  <a href="#" class="nav-logo">{{whiteText}} <span>{{yellowText}}</span></a>
   <div class="nav-right">
     <!-- Shown when logged in -->
     <div class="user-chip" id="userChip">

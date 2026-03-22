@@ -1,4 +1,10 @@
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 :root {
   --bg: #0d0b09;
   --surface: #161310;
@@ -9,7 +15,14 @@
   --muted: #6b6055;
   --red: #c97070;
   --green: #70c992;
-  --border: rgba(200,169,106,0.18);
+  --border: rgba(200, 169, 106, 0.18);
 }
-html { scroll-behavior: smooth; }
-body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--cream); overflow-x: hidden; }
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: "Mulish", sans-serif;
+  background: var(--bg);
+  color: var(--cream);
+  overflow-x: hidden;
+}
