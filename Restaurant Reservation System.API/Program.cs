@@ -31,6 +31,7 @@ namespace Restaurant_Reservation_System.API
             builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
             builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+            builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 
             // Add services to the container
             builder.Services.AddScoped<IPersonService, PersonService>();
@@ -38,6 +39,7 @@ namespace Restaurant_Reservation_System.API
             builder.Services.AddScoped<IRoleUserService, RoleUserService>();
             builder.Services.AddScoped<IReservationService, ReservationService>();
             builder.Services.AddScoped<IMenuService, MenuService>();
+            builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
