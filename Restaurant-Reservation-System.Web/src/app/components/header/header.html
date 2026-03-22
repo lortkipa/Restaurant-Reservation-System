@@ -1,8 +1,14 @@
-<section>
-    <h1>{{blackText}}<span>{{orangeText}}</span></h1>
-    <div>
-        <input [placeholder]="inputText">
-        <img src="https://cdn-icons-png.flaticon.com/512/11746/11746380.png">
-        <img src="https://icones.pro/wp-content/uploads/2021/05/icone-de-panier-orange.png">
+<nav id="nav">
+  <a href="#" class="nav-logo">Fine <span>Reserve</span></a>
+  <div class="nav-right">
+    <!-- Shown when logged in -->
+    <div class="user-chip" id="userChip">
+      <div class="user-avatar" id="userAvatar"></div>
+      <span class="user-name" id="userNameDisplay"></span>
+      <button class="logout-btn" onclick="logout()">Log out</button>
     </div>
-</section>
+    <!-- Shown when logged out -->
+    <button class="nav-login-btn" id="navLoginBtn" onclick="openAuth('login')">Sign In</button>
+    <button class="btn-gold" id="navRegisterBtn" onclick="openAuth('register')" style="font-size:10px;padding:10px 22px;">Join Free</button>
+  </div>
+</nav>

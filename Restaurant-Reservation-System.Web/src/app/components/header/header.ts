@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
+import { Home } from '../home/home';
 
 @Component({
-  standalone: true,
   selector: 'app-header',
-  imports: [],
+  imports: [Home],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
-  blackText:string = "Step"
-  orangeText:string = "Academy"
 
-  inputText:string = "Search Anything Here"
 }
