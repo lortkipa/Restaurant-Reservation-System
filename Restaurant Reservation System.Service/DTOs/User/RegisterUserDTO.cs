@@ -1,6 +1,7 @@
 ﻿using Restaurant_Reservation_System.Service.DTOs.Person;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Restaurant_Reservation_System.Service.DTOs.User

@@ -12,6 +12,8 @@ namespace Restaurant_Reservation_System.Service.Interfaces
     public interface IUserService
     {
         Task<IEnumerable<UserDTO>> GetAllAsync();
+        Task<IEnumerable<CustomerDTO>> GetAllCostumersAsync();
+        //Task<CustomerDTO> GetCustomerById(int id);
         Task<UserDTO> GetByIdAsync(int id);
         Task<IEnumerable<RoleDTO>> GetRolesById(int id);
         Task<UserDTO> GetByEmailAsync(string email);

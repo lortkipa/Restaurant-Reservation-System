@@ -26,6 +26,7 @@ namespace Restaurant_Reservation_System.Service.Mapping
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
                 .ForMember(dest => dest.Person, opt => opt.Ignore());
             CreateMap<UpdateUserDTO, User>();
+            CreateMap<User, CustomerDTO>();
 
             // Role 
             CreateMap<Role, RoleDTO>();

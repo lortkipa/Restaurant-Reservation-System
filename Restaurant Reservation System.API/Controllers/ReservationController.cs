@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Service;
 using Restaurant_Reservation_System.Service.DTOs.Reservation;
+using Restaurant_Reservation_System.Service.Enums;
 using Restaurant_Reservation_System.Service.Interfaces;
 
 namespace Restaurant_Reservation_System.API.Controllers
@@ -24,24 +26,24 @@ namespace Restaurant_Reservation_System.API.Controllers
             return roles.Any(r => r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
         }
 
-        [HttpGet("GetAll/{adminId:int}")]
-        public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetAllReservations(int adminId)
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetAllReservations()
         {
-            if (!await IsAdmin(adminId))
-                return Forbid("Logged in user is not Admin");
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
 
             var reserv = await _reservationService.GetAllReservationAsync();
             return Ok(reserv);
 
         }
 
-        [HttpGet("GetById/{adminId:int}/{reservationId:int}")]
-        public async Task<IActionResult> GetReservationById(int adminId, int reservationId)
+        [HttpGet("GetById/{id:int}")]
+        public async Task<IActionResult> GetReservationById(int id)
         {
-            if (!await IsAdmin(adminId))
-                return Forbid("Logged in user is not Admin");
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
 
-            var reserv = await _reservationService.GetReservationByIdAsync(reservationId);
+            var reserv = await _reservationService.GetReservationByIdAsync(id);
             if (reserv == null) return BadRequest();
 
             return Ok(reserv);
@@ -83,18 +85,29 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return BadRequest();
         }
-        [HttpPut("Update/{adminId:int}/{reservationId:int}")]
-        public async Task<ActionResult<bool>> UpdateReservation(int adminId, int reservationId, UpdateReservationDTO model)
+        [HttpPut("UpdateStatus/{id:int}")]
+        public async Task<ActionResult<bool>> UpdateReservation(int id, ReservationStatuses statusId)
         {
-            if (!await IsAdmin(adminId))
-                return Forbid("Logged in user is not Admin");
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
 
             if (ModelState.IsValid)
             {
-                var reserv = await _reservationService.GetReservationByIdAsync(reservationId);
+                var reserv = await _reservationService.GetReservationByIdAsync(id);
                 if (reserv == null) return BadRequest();
 
-                var result = await _reservationService.UpdateReservationAsync(reservationId, model);
+                UpdateReservationDTO updateReservationDTO = new UpdateReservationDTO
+                {
+                    CustomerId = reserv.CustomerId,
+                    RestaurantId = reserv.RestaurantId,
+                    StatusId = (int) statusId,
+                    Date = reserv.Date,
+                    TableNumber = reserv.TableNumber,
+                    GuestCount = reserv.GuestCount,
+                };
+                reserv.StatusId = (int)statusId;
+
+                var result = await _reservationService.UpdateReservationAsync(id, updateReservationDTO);
                 if (!result) return BadRequest();
 
                 return Ok();
@@ -102,10 +115,10 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return BadRequest();
         }
-        [HttpPut("Cancel/{reservationId:int}")]
-        public async Task<IActionResult> CancelReservation(int reservationId)
+        [HttpPut("Cancel/{id:int}")]
+        public async Task<IActionResult> CancelReservation(int id)
         {
-            await _reservationService.CancelReservation(reservationId);
+            await _reservationService.CancelReservation(id);
             return Ok("Reservation canceled");
         }
         [HttpDelete("DeleteReservation/{id:int}")]

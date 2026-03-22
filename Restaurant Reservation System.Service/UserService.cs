@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Service.DTOs;
+using Restaurant_Reservation_System.Service.DTOs.Reservation;
 using Restaurant_Reservation_System.Service.DTOs.Role;
 using Restaurant_Reservation_System.Service.DTOs.User;
 using Restaurant_Reservation_System.Service.Interfaces;
@@ -16,15 +17,17 @@ namespace Restaurant_Reservation_System.Service
     {
         private readonly IUserRepository _userRepo;
         private readonly IPersonRepository _personRepo;
+        private readonly IReservationRepository _reservationRepo;
         private readonly IRoleUserRepository _roleUserRepo;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepo, IPersonRepository personRepo, IRoleUserRepository roleUserRepo, IPasswordHasher passwordHaser, IMapper mapper)
+        public UserService(IUserRepository userRepo, IPersonRepository personRepo, IReservationRepository reservationRepo, IRoleUserRepository roleUserRepo, IPasswordHasher passwordHaser, IMapper mapper)
         {
             _userRepo = userRepo;
             _personRepo = personRepo;
             _roleUserRepo = roleUserRepo;
+            _reservationRepo = reservationRepo;
             _passwordHasher = passwordHaser;
             _mapper = mapper;
         }
@@ -33,6 +36,21 @@ namespace Restaurant_Reservation_System.Service
         {
             var users = await _userRepo.GetAllAsync();
             return _mapper.Map<IEnumerable<UserDTO>>(users);
+        }
+        public async Task<IEnumerable<CustomerDTO>> GetAllCostumersAsync()
+        {
+            var userCustomers = await _userRepo.GetAllCostumersAsync();
+
+            var customers = _mapper.Map<IEnumerable<CustomerDTO>>(userCustomers);
+
+            foreach (var customer in customers)
+            {
+                var reservations = await _reservationRepo.GetByCustomerIdAsync(customer.Id);
+
+                customer.Reservations = _mapper.Map<List<ReservationDTO>>(reservations);
+            }
+
+            return customers;
         }
         public async Task<UserDTO> GetByIdAsync(int id)
         {

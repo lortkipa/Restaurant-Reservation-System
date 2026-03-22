@@ -28,68 +28,77 @@ namespace Restaurant_Reservation_System.API.Controllers
         }
 
         [HttpGet("GetAllUsers")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers(int adminId)
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
-            if (!await IsAdmin(adminId))
-                return Forbid("Logged in user is not Admin");
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
 
             var users = await _userService.GetAllAsync();
             return Ok(users);
         }
-        [HttpGet("GetUserById/{adminId:int}/{userId:int}")]
-        public async Task<ActionResult<UserDTO>> GetUserById(int adminId, int userId)
+        [HttpGet("GetAllCustomers")]
+        public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAllCustomers()
         {
-            if (!await IsAdmin(adminId))
-                return Forbid("Logged in user is not Admin");
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
 
-            var user = await _userService.GetByIdAsync(userId);
+            var users = await _userService.GetAllCostumersAsync();
+            return Ok(users);
+        }
+        [HttpGet("GetUserById/{id:int}")]
+        public async Task<ActionResult<UserDTO>> GetUserById(int id)
+        {
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
+
+            var user = await _userService.GetByIdAsync(id);
             if (user == null)
                 return NotFound("User not found");
 
             return Ok(user);
         }
-        [HttpGet("GetUserRolesById/{adminId:int}/{userId:int}")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUserRolesById(int adminId, int userId)
+        [HttpGet("GetUserRolesById/{id:int}")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUserRolesById(int id)
         {
-            if (!await IsAdmin(adminId))
-                return Forbid("Logged in user is not Admin");
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
 
-            var roles = await _userService.GetRolesById(userId);
+            var roles = await _userService.GetRolesById(id);
             if (roles == null)
                 return NotFound("User has no roles");
 
             return Ok(roles);
         }
-        [HttpPut("UpdateUser/{adminId:int}/{userId:int}")]
-        public async Task<ActionResult<bool>> UpdateUser(int adminId, int userId, UpdateUserDTO model)
+        [HttpPut("UpdateUserProfile/{id:int}")]
+        public async Task<ActionResult<bool>> UpdateUserProfile(int id, UpdateUserDTO model)
         {
-            if (!await IsAdmin(adminId))
-                return Forbid("Logged in user is not Admin");
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = await _userService.GetByIdAsync(userId);
+            var user = await _userService.GetByIdAsync(id);
             if (user == null)
                 return NotFound("User not found");
 
-            var result = await _userService.UpdateAsync(userId, model);
+            var result = await _userService.UpdateAsync(id, model);
             if (!result)
                 return BadRequest("Update failed");
 
             return Ok(result);
         }
-        [HttpDelete("DeleteUser/{adminId:int}/{userId:int}")]
-        public async Task<ActionResult> DeleteUser(int adminId, int userId)
+        [HttpDelete("DeleteUserProfile/{id:int}")]
+        public async Task<ActionResult> DeleteUserProfile(int id)
         {
-            if (!await IsAdmin(adminId))
-                return Forbid("Logged in user is not Admin");
+            //if (!await IsAdmin(id))
+            //    return Forbid("Logged in user is not Admin");
 
-            var user = await _userService.GetByIdAsync(userId);
+            var user = await _userService.GetByIdAsync(id);
             if (user == null)
                 return NotFound("User not found");
 
-            var result = await _userService.DeleteAsync(userId);
+            var result = await _userService.DeleteAsync(id);
             if (!result)
                 return BadRequest("Delete failed");
 

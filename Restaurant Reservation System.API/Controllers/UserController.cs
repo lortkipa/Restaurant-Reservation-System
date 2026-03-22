@@ -18,6 +18,11 @@ namespace Restaurant_Reservation_System.API.Controllers
             _service = service;
         }
 
+        [HttpGet("GetProfile/{id:int}")]
+        public async Task<UserDTO> GetProfile(int id)
+        {
+            return await _service.GetByIdAsync(id);
+        }
         [HttpPost("Register")]
         public async Task<ActionResult<AuthResponseDTO>> Register(RegisterUserDTO model)
         {
@@ -39,6 +44,66 @@ namespace Restaurant_Reservation_System.API.Controllers
                 return Ok(res);
             }
             return BadRequest();
+        }
+        [HttpPost("Logout")]
+        public async Task<ActionResult<AuthResponseDTO>> Logout(int id)
+        {
+            UserDTO user = await _service.GetByIdAsync(id);
+                if (user == null) return NotFound("User doesn't exist");
+
+            return new AuthResponseDTO
+            {
+                Status = true,
+                Message = "Logged out successfully"
+            };
+        }
+        [HttpPut("UpdateProfile/{id:int}")]
+        public async Task<ActionResult<AuthResponseDTO>> Update(int id, UpdateUserDTO model)
+        {
+            UserDTO user = await _service.GetByIdAsync(id);
+            if (user == null) return
+                    BadRequest(new AuthResponseDTO
+                    {
+                        Status = false,
+                        Message = "user doesn't exist"
+                    });
+
+            bool res = await _service.UpdateAsync(id, model);
+            if (res == false) return BadRequest(new AuthResponseDTO
+            {
+                Status = false,
+                Message = "update failed"
+            });
+
+            return Ok(new AuthResponseDTO
+            {
+                Status = true,
+                Message = "updated successfully"
+            });
+        }
+        [HttpDelete("DeleteProfile/{id:int}")]
+        public async Task<ActionResult<AuthResponseDTO>> Delete(int id)
+        {
+            UserDTO user = await _service.GetByIdAsync(id);
+            if (user == null) return
+                    BadRequest( new AuthResponseDTO
+                    {
+                        Status = false,
+                        Message = "user doesn't exist"
+                    });
+
+            bool res = await _service.DeleteAsync(id);
+            if (res == false) return BadRequest(new AuthResponseDTO
+                   {
+                       Status = false,
+                       Message = "delete failed"
+                   });
+
+            return Ok(new AuthResponseDTO
+            {
+                Status = true,
+                Message = "deleted successfully"
+            });
         }
     }
 }
