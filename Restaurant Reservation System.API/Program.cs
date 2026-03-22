@@ -30,12 +30,14 @@ namespace Restaurant_Reservation_System.API
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+            builder.Services.AddScoped<IMenuRepository, MenuRepository>();
 
             // Add services to the container
             builder.Services.AddScoped<IPersonService, PersonService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IRoleUserService, RoleUserService>();
             builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IMenuService, MenuService>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

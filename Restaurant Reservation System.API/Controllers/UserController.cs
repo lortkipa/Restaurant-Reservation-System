@@ -35,15 +35,20 @@ namespace Restaurant_Reservation_System.API.Controllers
             return BadRequest();
         }
         [HttpPost("Login")]
-        public async Task<ActionResult<AuthResponseDTO>> Login(LoginUserDTO model)
+        public async Task<ActionResult<int>> Login(LoginUserDTO model)
         {
-            if (ModelState.IsValid)
-            {
-                AuthResponseDTO res = await _service.LoginAsync(model);
-                if (res.Status == false) return BadRequest(res);
-                return Ok(res);
-            }
-            return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            AuthResponseDTO res = await _service.LoginAsync(model);
+
+            if (!res.Status)
+                return BadRequest(res);
+
+            // Get user by username and await the result
+            var user = await _service.GetByUsernameAsync(model.Username);
+
+            return Ok(user.Id);
         }
         [HttpPost("Logout")]
         public async Task<ActionResult<AuthResponseDTO>> Logout(int id)

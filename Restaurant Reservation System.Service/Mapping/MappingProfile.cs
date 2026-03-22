@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Restaurant_Reservation_System.Data.Entities;
+using Restaurant_Reservation_System.Service.DTOs.Menu;
 using Restaurant_Reservation_System.Service.DTOs.Person;
 using Restaurant_Reservation_System.Service.DTOs.Reservation;
 using Restaurant_Reservation_System.Service.DTOs.Role;
@@ -53,6 +54,11 @@ namespace Restaurant_Reservation_System.Service.Mapping
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForAllMembers(opts =>
                     opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            // Menu
+            CreateMap<Menu, MenuDTO>();
+            CreateMap<CreateMenuDTO, Menu>();
+            CreateMap<UpdateMenuDTO, Menu>();
         }
     }
 }
