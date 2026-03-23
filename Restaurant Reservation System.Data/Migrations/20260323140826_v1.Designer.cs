@@ -12,7 +12,7 @@ using Restaurant_Reservation_System.Data;
 namespace Restaurant_Reservation_System.Data.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20260322065131_v1")]
+    [Migration("20260323140826_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -206,6 +206,12 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(254)
@@ -231,17 +237,71 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Restaurants", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Email = "mac@gmail.com",
-                            Location = "Tbilisi, Georgia",
-                            Name = "Macdonalds",
+                            Description = "Modern Georgian cuisine with creative twists and a cozy, artsy atmosphere.",
+                            Email = "shavilomi@example.com",
+                            Location = "Tbilisi, 30 Zurab Kvlividze St",
+                            Name = "Shavi Lomi",
                             SeatsPerTable = 4,
-                            TotalTables = 20
+                            TotalTables = 15
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Historic recipes from a 19th-century cookbook served in an elegant setting.",
+                            Email = "barbarestan@example.com",
+                            Location = "Tbilisi, 132 Davit Aghmashenebeli Ave",
+                            Name = "Barbarestan",
+                            SeatsPerTable = 4,
+                            TotalTables = 12
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Charming garden restaurant known for traditional dishes and romantic vibes.",
+                            Email = "ketoandkote@example.com",
+                            Location = "Tbilisi, 3 Mikheil Zandukeli St",
+                            Name = "Keto and Kote",
+                            SeatsPerTable = 4,
+                            TotalTables = 10
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Famous for authentic lobio and rustic Georgian comfort food.",
+                            Email = "salobie@example.com",
+                            Location = "Mtskheta, 1 Samtavro St",
+                            Name = "Salobie Bia",
+                            SeatsPerTable = 4,
+                            TotalTables = 8
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Casual spot popular for Adjarian khachapuri and local favorites.",
+                            Email = "machakhela@example.com",
+                            Location = "Batumi, 26 May 6 St",
+                            Name = "Machakhela",
+                            SeatsPerTable = 4,
+                            TotalTables = 14
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Cozy restaurant offering classic Georgian meals in a warm setting.",
+                            Email = "heartofbatumi@example.com",
+                            Location = "Batumi, 11 Gen. Mazniashvili St",
+                            Name = "Heart of Batumi",
+                            SeatsPerTable = 4,
+                            TotalTables = 12
                         });
                 });
 

@@ -14,6 +14,14 @@ namespace Restaurant_Reservation_System.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngular", policy =>
+                policy.WithOrigins("http://localhost:4200")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod());
+            });
+
             // DB connection
             builder.Services.AddDbContext<RestaurantContext>(options => {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("RestaurantDBConnection"));
@@ -45,6 +53,10 @@ namespace Restaurant_Reservation_System.API
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.UseCors("AllowAngular");
+
+            app.UseHttpsRedirection();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

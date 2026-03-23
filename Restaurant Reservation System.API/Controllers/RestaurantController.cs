@@ -20,7 +20,7 @@ namespace Restaurant_Reservation_System.API.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<ActionResult<IEnumerable<RestaurantDTO>>> GetAllUsers()
+        public async Task<ActionResult<IEnumerable<RestaurantDTO>>> GetAll()
         {
             var restaurants = await _service.GetAllAsync();
             return Ok(restaurants);

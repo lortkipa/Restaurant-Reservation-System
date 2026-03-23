@@ -37,6 +37,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     Location = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: false),
                     TotalTables = table.Column<int>(type: "int", nullable: false),
                     SeatsPerTable = table.Column<int>(type: "int", nullable: false)
@@ -206,8 +207,16 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Restaurants",
-                columns: new[] { "Id", "Email", "Location", "Name", "SeatsPerTable", "TotalTables" },
-                values: new object[] { 1, "mac@gmail.com", "Tbilisi, Georgia", "Macdonalds", 4, 20 });
+                columns: new[] { "Id", "Description", "Email", "Location", "Name", "SeatsPerTable", "TotalTables" },
+                values: new object[,]
+                {
+                    { 1, "Modern Georgian cuisine with creative twists and a cozy, artsy atmosphere.", "shavilomi@example.com", "Tbilisi, 30 Zurab Kvlividze St", "Shavi Lomi", 4, 15 },
+                    { 2, "Historic recipes from a 19th-century cookbook served in an elegant setting.", "barbarestan@example.com", "Tbilisi, 132 Davit Aghmashenebeli Ave", "Barbarestan", 4, 12 },
+                    { 3, "Charming garden restaurant known for traditional dishes and romantic vibes.", "ketoandkote@example.com", "Tbilisi, 3 Mikheil Zandukeli St", "Keto and Kote", 4, 10 },
+                    { 4, "Famous for authentic lobio and rustic Georgian comfort food.", "salobie@example.com", "Mtskheta, 1 Samtavro St", "Salobie Bia", 4, 8 },
+                    { 5, "Casual spot popular for Adjarian khachapuri and local favorites.", "machakhela@example.com", "Batumi, 26 May 6 St", "Machakhela", 4, 14 },
+                    { 6, "Cozy restaurant offering classic Georgian meals in a warm setting.", "heartofbatumi@example.com", "Batumi, 11 Gen. Mazniashvili St", "Heart of Batumi", 4, 12 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Roles",
@@ -263,6 +272,12 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 name: "IX_Reservations_StatusId",
                 table: "Reservations",
                 column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Restaurants_Name",
+                table: "Restaurants",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_Name",

@@ -8,10 +8,11 @@
 // }
 
 export interface RestaurantModel {
-    Id : number;
-    Name : string;
-    Location : string;
-    Email : string;
-    TotalTables : string;
-    SeatsPerTable : string;
+    id : number;
+    name : string;
+    location : string;
+    description : string;
+    email : string;
+    totalTables : string;
+    seatsPerTable : string;
 }

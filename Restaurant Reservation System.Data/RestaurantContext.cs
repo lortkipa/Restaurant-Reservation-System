@@ -121,10 +121,61 @@ namespace Restaurant_Reservation_System.Data
                 new Restaurant
                 {
                     Id = 1,
-                    Name = "Macdonalds",
-                    Location = "Tbilisi, Georgia",
-                    Email = "mac@gmail.com",
-                    TotalTables = 20,
+                    Name = "Shavi Lomi",
+                    Location = "Tbilisi, 30 Zurab Kvlividze St",
+                    Description = "Modern Georgian cuisine with creative twists and a cozy, artsy atmosphere.",
+                    Email = "shavilomi@example.com",
+                    TotalTables = 15,
+                    SeatsPerTable = 4
+                },
+                new Restaurant
+                {
+                    Id = 2,
+                    Name = "Barbarestan",
+                    Location = "Tbilisi, 132 Davit Aghmashenebeli Ave",
+                    Description = "Historic recipes from a 19th-century cookbook served in an elegant setting.",
+                    Email = "barbarestan@example.com",
+                    TotalTables = 12,
+                    SeatsPerTable = 4
+                },
+                new Restaurant
+                {
+                    Id = 3,
+                    Name = "Keto and Kote",
+                    Location = "Tbilisi, 3 Mikheil Zandukeli St",
+                    Description = "Charming garden restaurant known for traditional dishes and romantic vibes.",
+                    Email = "ketoandkote@example.com",
+                    TotalTables = 10,
+                    SeatsPerTable = 4
+                },
+                new Restaurant
+                {
+                    Id = 4,
+                    Name = "Salobie Bia",
+                    Location = "Mtskheta, 1 Samtavro St",
+                    Description = "Famous for authentic lobio and rustic Georgian comfort food.",
+                    Email = "salobie@example.com",
+                    TotalTables = 8,
+                    SeatsPerTable = 4
+                },
+                new Restaurant
+                {
+                    Id = 5,
+                    Name = "Machakhela",
+                    Location = "Batumi, 26 May 6 St",
+                    Description = "Casual spot popular for Adjarian khachapuri and local favorites.",
+                    Email = "machakhela@example.com",
+                    TotalTables = 14,
+                    SeatsPerTable = 4
+                },
+                new Restaurant
+                {
+                    Id = 6,
+                    Name = "Heart of Batumi",
+                    Location = "Batumi, 11 Gen. Mazniashvili St",
+                    Description = "Cozy restaurant offering classic Georgian meals in a warm setting.",
+                    Email = "heartofbatumi@example.com",
+                    TotalTables = 12,
                     SeatsPerTable = 4
                 }
             );

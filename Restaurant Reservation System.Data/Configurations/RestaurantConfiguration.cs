@@ -17,6 +17,11 @@ namespace Restaurant_Reservation_System.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(25)
                 .IsUnicode(true);
+            builder.HasIndex(r => r.Name)
+                .IsUnique();
+            builder.Property(r => r.Description)
+                .HasMaxLength(100)
+                .IsUnicode(true);
             builder.Property(r => r.Location)
                 .IsRequired()
                 .HasMaxLength(50)

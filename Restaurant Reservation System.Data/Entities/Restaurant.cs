@@ -16,6 +16,9 @@ namespace Restaurant_Reservation_System.Data.Entities
         [MaxLength(50)]
         public string Location { get; set; } = null!;
         [Required]
+        [MaxLength(100)]
+        public string Description { get; set; } = null!;
+        [Required]
         [MaxLength(254)] // 254 is officially max length for email address
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; } = null!;
