@@ -1,6 +1,6 @@
 .restaurant-card {
   background: var(--surface);
-  padding: 40px 32px 32px;
+  padding: clamp(20px, 4vw, 40px) clamp(16px, 3vw, 32px);
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -8,6 +8,7 @@
   border: 2px solid transparent;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .restaurant-card::before {
