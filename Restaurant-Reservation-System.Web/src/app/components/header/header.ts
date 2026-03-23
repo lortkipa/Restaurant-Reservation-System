@@ -1,10 +1,11 @@
 import { Component, HostListener } from '@angular/core';
 import { Home } from '../home/home';
+import { RouterLink } from "@angular/router";
 
 @Component({
   standalone: true,
   selector: 'app-header',
-  imports: [Home],
+  imports: [Home, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

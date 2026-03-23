@@ -1,14 +1,14 @@
 <nav id="nav" [class.scrolled]="isScrolled">
-  <a href="#" class="nav-logo">{{whiteText}} <span>{{yellowText}}</span></a>
+  <a routerLink="/" class="nav-logo">{{whiteText}} <span>{{yellowText}}</span></a>
   <div class="nav-right">
     <!-- Shown when logged in -->
     <div class="user-chip" id="userChip">
       <div class="user-avatar" id="userAvatar"></div>
       <span class="user-name" id="userNameDisplay"></span>
-      <button class="logout-btn" onclick="logout()">Log out</button>
+      <button class="logout-btn">Log out</button>
     </div>
     <!-- Shown when logged out -->
-    <button class="nav-login-btn" id="navLoginBtn" onclick="openAuth('login')">Sign In</button>
-    <button class="btn-gold" id="navRegisterBtn" onclick="openAuth('register')" style="font-size:10px;padding:10px 22px;">Join Free</button>
+    <button class="nav-login-btn" id="navLoginBtn">Sign In</button>
+    <button class="btn-gold" id="navRegisterBtn" style="font-size:10px;padding:10px 22px;">Join Free</button>
   </div>
 </nav>
