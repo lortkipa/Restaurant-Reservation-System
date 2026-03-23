@@ -1,10 +1,23 @@
 import { Component } from '@angular/core';
 import { Restaurant } from "../restaurant/restaurant";
+import { RestaurantService } from '../../services/restaurant-service';
+import { RestaurantModel } from '../../models/restaurant-model';
 
 @Component({
+  standalone: true,
   selector: 'app-restaurants',
   imports: [Restaurant],
   templateUrl: './restaurants.html',
   styleUrl: './restaurants.scss',
 })
-export class Restaurants {}
+export class Restaurants {
+  constructor(private restaurantService : RestaurantService) {}
+
+  restaurants:RestaurantModel[] = [];
+
+  ngOnInit() {
+    this.restaurantService.getAll().subscribe(data => {
+      this.restaurants = data;
+    });
+  }
+}
