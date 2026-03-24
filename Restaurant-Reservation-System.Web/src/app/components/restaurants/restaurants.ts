@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Restaurant } from "../restaurant/restaurant";
 import { RestaurantService } from '../../services/restaurant-service';
 import { RestaurantModel } from '../../models/restaurant-model';

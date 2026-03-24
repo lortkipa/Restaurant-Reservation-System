@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output, output } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -9,4 +9,10 @@ import { Component } from '@angular/core';
 })
 export class Hero {
   description:string = "Exceptional restaurants, one seamless reservation. Create a free account and secure your perfect evening."
+
+  
+  scrollToRestaurants() {
+    const el = document.getElementById('choose');
+    el?.scrollIntoView({ behavior: 'smooth' });
+  }
 }

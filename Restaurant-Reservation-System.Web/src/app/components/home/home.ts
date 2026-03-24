@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Hero } from "../hero/hero";
 import { Restaurants } from "../restaurants/restaurants";
 
@@ -9,4 +9,6 @@ import { Restaurants } from "../restaurants/restaurants";
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home {}
+export class Home {
+
+}
