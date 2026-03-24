@@ -1,0 +1,404 @@
+.reservation-section {
+    padding: 100px 60px;
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 80px;
+    align-items: start;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 60px 30px;
+    }
+}
+
+.res-info {
+    position: sticky;
+    top: 100px;
+
+    @media (max-width: 900px) {
+        position: static;
+    }
+}
+.res-selected-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+}
+.res-selected-box::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+}
+.res-selected-box.lit::after {
+    transform: scaleX(1);
+}
+.sel-label {
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+.sel-name {
+    font-family: "Cormorant", serif;
+    font-size: 34px;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 6px;
+    min-height: 42px;
+}
+.sel-name em {
+    font-style: italic;
+}
+.sel-sub {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    min-height: 18px;
+}
+.info-rows {
+    display: flex;
+    flex-direction: column;
+}
+.info-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(200, 169, 106, 0.1);
+}
+.info-row:last-child {
+    border-bottom: none;
+}
+.info-icon {
+    color: var(--gold);
+    font-size: 14px;
+    width: 18px;
+    text-align: center;
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+.info-lbl {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245, 239, 228, 0.3);
+    margin-bottom: 4px;
+}
+.info-val {
+    font-size: 13px;
+    color: var(--cream);
+    font-weight: 300;
+    line-height: 1.6;
+}
+.info-val.empty {
+    color: rgba(245, 239, 228, 0.2);
+}
+
+/* Form panel */
+.res-form-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ── Auth gate (shown when not logged in) ── */
+.auth-gate {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 48px;
+    min-height: 400px;
+}
+.auth-gate.show {
+    display: flex;
+}
+.gate-icon {
+    font-family: "Cormorant", serif;
+    font-size: 56px;
+    color: var(--gold);
+    opacity: 0.5;
+    line-height: 1;
+    margin-bottom: 20px;
+}
+.gate-title {
+    font-family: "Cormorant", serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 10px;
+}
+.gate-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 32px;
+    max-width: 300px;
+}
+.gate-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.gate-btn-primary {
+    padding: 13px 30px;
+    background: var(--gold);
+    border: none;
+    color: var(--bg);
+    font-family: "Mulish", sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.gate-btn-primary:hover {
+    background: var(--gold2);
+}
+.gate-btn-ghost {
+    padding: 13px 30px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--cream);
+    font-family: "Mulish", sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.gate-btn-ghost:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+/* ── Actual reservation form (shown when logged in) ── */
+.form-content {
+    display: none;
+}
+.form-content.show {
+    display: block;
+}
+
+.form-header {
+    padding: 28px 36px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.form-header-title {
+    font-family: "Cormorant", serif;
+    font-size: 24px;
+    font-weight: 300;
+}
+.form-badge {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.3s;
+}
+.form-badge.lit {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.form-body {
+    padding: 32px 36px 36px;
+}
+
+/* Picker */
+.picker-lbl {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245, 239, 228, 0.35);
+    display: block;
+    margin-bottom: 10px;
+}
+.picker-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+}
+.pick {
+    padding: 11px 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 169, 106, 0.12);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.pick:hover {
+    border-color: rgba(200, 169, 106, 0.4);
+}
+.pick.active {
+    border-color: var(--gold);
+    background: rgba(200, 169, 106, 0.07);
+}
+.pick-name {
+    font-family: "Cormorant", serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 2px;
+}
+.pick.active .pick-name {
+    color: var(--gold);
+}
+.pick-type {
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.frow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.fgroup {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+.flabel {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245, 239, 228, 0.35);
+}
+.finput,
+.fselect {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(200, 169, 106, 0.15);
+    color: var(--cream);
+    padding: 12px 14px;
+    font-family: "Mulish", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    border-radius: 0;
+    appearance: none;
+}
+.finput::placeholder {
+    color: rgba(245, 239, 228, 0.2);
+}
+.finput:focus,
+.fselect:focus {
+    border-color: var(--gold);
+}
+.fselect option {
+    background: #1c1710;
+}
+.sel-wrap {
+    position: relative;
+}
+.sel-wrap::after {
+    content: "↓";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 11px;
+    pointer-events: none;
+}
+
+/* Prefilled user fields */
+.prefilled-note {
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.prefilled-note::before {
+    content: "✓";
+    font-size: 11px;
+}
+
+.submit-btn {
+    margin-top: 24px;
+    width: 100%;
+    padding: 15px;
+    background: var(--gold);
+    border: none;
+    color: var(--bg);
+    font-family: "Mulish", sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.submit-btn:hover {
+    background: var(--gold2);
+}
+
+/* Success */
+.success-panel {
+    display: none;
+    padding: 56px 40px;
+    text-align: center;
+}
+.success-panel.show {
+    display: block;
+}
+.success-glyph {
+    font-family: "Cormorant", serif;
+    font-size: 60px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 18px;
+}
+.success-ttl {
+    font-family: "Cormorant", serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 12px;
+}
+.success-txt {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 24px;
+}
+.success-detail {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+}

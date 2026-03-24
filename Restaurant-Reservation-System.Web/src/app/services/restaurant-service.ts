@@ -13,6 +13,5 @@ export class RestaurantService {
 
   getAll() : Observable<RestaurantModel[]> {
     return this.http.get<RestaurantModel[]>(`${this.apiUrl}/GetAll`)
-    
   }
 }
