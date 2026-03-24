@@ -1,10 +1,19 @@
 <nav id="nav" [class.scrolled]="isScrolled">
   <a routerLink="/" class="nav-logo">{{whiteText}} <span>{{yellowText}}</span></a>
   <div class="nav-right">
+    <button class="btn-home-distinct" 
+            *ngIf="pageName != 'home'" 
+            routerLink="/">
+      HOME
+    </button>
+
     <!-- Shown when logged in -->
-        <button class="nav-login-btn" id="navLoginBtn" *ngIf="isLoggedIn">Sign out</button>
+    <button class="nav-login-btn" id="navLoginBtn" *ngIf="isLoggedIn">Sign out</button>
+
     <!-- Shown when logged out -->
-    <button class="nav-login-btn" id="navLoginBtn" *ngIf="!isLoggedIn">Sign In</button>
-    <button class="btn-gold" id="navRegisterBtn" style="font-size:10px;padding:10px 22px;" *ngIf="!isLoggedIn">Join Free</button>
+    <button class="nav-login-btn" id="navLoginBtn" *ngIf="!isLoggedIn && pageName != 'login'" routerLink="/login">Sign
+      In</button>
+    <button class="btn-gold" id="navRegisterBtn" style="font-size:10px;padding:10px 22px;"
+      *ngIf="!isLoggedIn  && pageName != 'register'" routerLink="/register">Join Free</button>
   </div>
 </nav>

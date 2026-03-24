@@ -115,3 +115,22 @@ nav.scrolled {
 .nav-login-btn.hidden {
   display: none;
 }
+
+.btn-home-distinct {
+  font-size: 10px;
+  padding: 10px 24px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background-color: transparent;    /* transparent to stand out */
+  color: var(--gold);               /* gold text */
+  border: 1px solid var(--gold);    /* thicker border than Sign In */
+  // border-radius: 50px;              /* rounded pill shape */
+  cursor: pointer;
+  font-family: "Mulish", sans-serif;
+  transition: all 0.3s;
+}
+
+.btn-home-distinct:hover {
+  background-color: var(--gold);    /* gold fill on hover */
+  color: var(--bg);                 /* text changes to dark */
+}

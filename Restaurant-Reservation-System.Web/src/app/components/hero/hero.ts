@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Output, output } from '@angular/core';
+import { RouterLink } from "@angular/router";
 
 @Component({
   standalone: true,
   selector: 'app-hero',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './hero.html',
   styleUrl: './hero.scss',
 })

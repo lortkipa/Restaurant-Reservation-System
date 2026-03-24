@@ -1,0 +1,112 @@
+/* Overlay */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,11,9,0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Box */
+.auth-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Top */
+.auth-top {
+  padding: 36px 40px 28px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.auth-logo {
+  font-family: 'Cormorant', serif;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.auth-title {
+  font-family: 'Cormorant', serif;
+  font-size: 32px;
+  color: var(--cream);
+}
+
+.auth-title em {
+  color: var(--gold);
+}
+
+.auth-sub {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Form */
+.auth-form-wrap {
+  padding: 32px 40px;
+}
+
+.afield {
+  margin-bottom: 16px;
+}
+
+.afield label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(245,239,228,0.35);
+}
+
+.afield input {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(200,169,106,0.15);
+  color: var(--cream);
+  padding: 13px 16px;
+  font-size: 14px;
+  outline: none;
+}
+
+.afield input:focus {
+  border-color: var(--gold);
+}
+
+/* Button */
+.auth-btn {
+  width: 100%;
+  padding: 15px;
+  background: var(--gold);
+  border: none;
+  color: var(--bg);
+  font-size: 11px;
+  letter-spacing: 3px;
+  cursor: pointer;
+}
+
+.auth-btn:hover {
+  background: var(--gold2);
+}
+
+/* Switch */
+.auth-switch {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.auth-switch a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.afield-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}

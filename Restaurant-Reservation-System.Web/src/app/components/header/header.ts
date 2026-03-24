@@ -1,22 +1,35 @@
-import { Component, HostListener } from '@angular/core';
-import { Home } from '../home/home';
-import { RouterLink } from "@angular/router";
+import { Component, HostListener, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd, RouterLink } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { CommonModule, NgIf } from '@angular/common';
-
+import { Home } from '../home/home';
 
 @Component({
   standalone: true,
   selector: 'app-header',
   imports: [Home, RouterLink, NgIf, CommonModule],
   templateUrl: './header.html',
-  styleUrl: './header.scss',
+  styleUrls: ['./header.scss'],
 })
-export class Header {
-  whiteText: string = "STEP"
-  yellowText: string = "ACADEMY"
+export class Header implements OnInit {
+  whiteText: string = "STEP";
+  yellowText: string = "ACADEMY";
 
-  isScrolled:boolean = false;
-  isLoggedIn:boolean = false;
+  pageName: string = '';
+  isScrolled: boolean = false;
+  isLoggedIn: boolean = false;
+
+  constructor(private router: Router) { }
+
+  ngOnInit() {
+    // Listen for route changes
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        const url = event.urlAfterRedirects;
+        this.pageName = url.split('/').filter(s => s).pop() || '';
+      });
+  }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
