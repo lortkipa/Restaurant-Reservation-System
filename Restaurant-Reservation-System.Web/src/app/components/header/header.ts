@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, NavigationEnd, RouterLink } from '@angular/rout
 import { filter } from 'rxjs/operators';
 import { CommonModule, NgIf } from '@angular/common';
 import { Home } from '../home/home';
+import { Globals } from '../../services/globals';
 
 @Component({
   standalone: true,
@@ -19,7 +20,7 @@ export class Header implements OnInit {
   isScrolled: boolean = false;
   isLoggedIn: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(public globals : Globals, private router: Router) { }
 
   ngOnInit() {
     // Listen for route changes

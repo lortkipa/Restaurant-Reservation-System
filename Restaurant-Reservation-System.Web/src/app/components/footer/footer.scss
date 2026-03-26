@@ -1,0 +1,32 @@
+footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 26px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-copy {
+  font-size: 11px;
+  color: rgba(245, 239, 228, 0.2);
+  letter-spacing: 1px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+
+  a {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245, 239, 228, 0.25);
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--gold);
+    }
+  }
+}
