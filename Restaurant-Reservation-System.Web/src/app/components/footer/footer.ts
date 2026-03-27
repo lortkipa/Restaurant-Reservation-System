@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Globals } from '../../services/globals';
 
 @Component({
   standalone: true,
@@ -8,6 +9,7 @@ import { Component } from '@angular/core';
   styleUrl: './footer.scss',
 })
 export class Footer {
-    readonly year = new Date().getFullYear();
+  constructor(public globals: Globals) { }
 
+  readonly year = new Date().getFullYear();
 }

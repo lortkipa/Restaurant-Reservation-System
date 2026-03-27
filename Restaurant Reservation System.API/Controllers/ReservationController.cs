@@ -50,14 +50,14 @@ namespace Restaurant_Reservation_System.API.Controllers
 
         }
 
-        //[HttpGet("GetReservationsByDate/{date:DateTime}")]
-        //public async Task<IActionResult> GetReservationsByDate(DateTime date)
-        //{
-        //    var reserv = await _reservationService.GetReservationsByDate(date);
-        //    if (reserv == null) return BadRequest();
+        [HttpGet("GetReservationsByDate/{date:DateTime}")]
+        public async Task<IActionResult> GetReservationsByDate(DateTime date)
+        {
+            var reserv = await _reservationService.GetReservationsByDate(date);
+            if (reserv == null) return BadRequest();
 
-        //    return Ok(reserv);
-        //}
+            return Ok(reserv);
+        }
 
         //[HttpGet("GetByCostumerId/{adminId:int}/{customerId:int}")]
         [HttpGet("GetByCostumerId/{customerId:int}")]

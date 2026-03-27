@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Data;
@@ -21,6 +22,11 @@ namespace Restaurant_Reservation_System.API
                       .AllowAnyHeader()
                       .AllowAnyMethod());
             });
+
+            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //    })
 
             // DB connection
             builder.Services.AddDbContext<RestaurantContext>(options => {

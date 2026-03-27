@@ -6,46 +6,134 @@
       <p class="auth-sub">Join free to reserve at any of our restaurants.</p>
     </div>
 
-    <div class="auth-form-wrap">
-
+    <form #form="ngForm" class="auth-form-wrap" (ngSubmit)="onSubmit(form)">
       <div class="auth-panel active">
+
         <div class="auth-error" id="registerError"></div>
 
+        <!-- PERSON -->
         <div class="afield">
           <div class="afield-row">
             <div>
-              <label>First Name</label>
-              <input type="text" placeholder="Jean">
+              <label>First Name <span class="required-star">*</span></label>
+              <input
+                type="text"
+                [(ngModel)]="registerModel.person.firstName"
+                required
+                name="firstName"
+                #firstName="ngModel"
+                placeholder="Jean"
+                [class.input-error]="firstName.invalid && (firstName.touched || submitted)"
+              >
+              <span class="field-error" *ngIf="firstName.invalid && (firstName.touched || submitted)">Required</span>
             </div>
             <div>
-              <label>Last Name</label>
-              <input type="text" placeholder="Dupont">
+              <label>Last Name <span class="required-star">*</span></label>
+              <input
+                type="text"
+                [(ngModel)]="registerModel.person.lastName"
+                required
+                name="lastName"
+                #lastName="ngModel"
+                placeholder="Dupont"
+                [class.input-error]="lastName.invalid && (lastName.touched || submitted)"
+              >
+              <span class="field-error" *ngIf="lastName.invalid && (lastName.touched || submitted)">Required</span>
             </div>
           </div>
         </div>
 
         <div class="afield">
-          <label>Email Address</label>
-          <input type="email" placeholder="you@example.com">
+          <label>Username <span class="required-star">*</span></label>
+          <input
+            type="text"
+            [(ngModel)]="registerModel.username"
+            required
+            name="username"
+            #username="ngModel"
+            placeholder="yourusername"
+            [class.input-error]="username.invalid && (username.touched || submitted)"
+          >
+          <span class="field-error" *ngIf="username.invalid && (username.touched || submitted)">Required</span>
         </div>
 
         <div class="afield">
-          <label>Password</label>
-          <input type="password" placeholder="At least 6 characters">
+          <label>Phone <span class="required-star">*</span></label>
+          <input
+            type="text"
+            [(ngModel)]="registerModel.person.phone"
+            required
+            name="phone"
+            #phone="ngModel"
+            placeholder="+123456789"
+            [class.input-error]="phone.invalid && (phone.touched || submitted)"
+          >
+          <span class="field-error" *ngIf="phone.invalid && (phone.touched || submitted)">Required</span>
         </div>
 
         <div class="afield">
-          <label>Confirm Password</label>
-          <input type="password" placeholder="••••••••">
+          <label>Address</label>
+          <input type="text" 
+            [(ngModel)]="registerModel.person.address"
+            required name="address"
+            [class.input-error]="email.invalid && (phone.touched || submitted)"
+            placeholder="Street, City">
         </div>
 
-        <button class="auth-btn">Create Account</button>
+        <div class="afield">
+          <label>Email Address <span class="required-star">*</span></label>
+          <input
+            type="email"
+            [(ngModel)]="registerModel.email"
+            required
+            email
+            name="email"
+            #email="ngModel"
+            placeholder="you@example.com"
+            [class.input-error]="email.invalid && (email.touched || submitted)"
+          >
+          <span class="field-error" *ngIf="email.errors?.['required'] && (email.touched || submitted)">Required</span>
+          <span class="field-error" *ngIf="email.errors?.['email'] && (email.touched || submitted)">Enter a valid email</span>
+        </div>
+
+        <div class="afield">
+          <label>Password <span class="required-star">*</span></label>
+          <input
+            type="password"
+            [(ngModel)]="registerModel.password"
+            required
+            minlength="6"
+            name="password"
+            #password="ngModel"
+            placeholder="At least 6 characters"
+            [class.input-error]="password.invalid && (password.touched || submitted)"
+          >
+          <span class="field-error" *ngIf="password.errors?.['required'] && (password.touched || submitted)">Required</span>
+          <span class="field-error" *ngIf="password.errors?.['minlength'] && (password.touched || submitted)">At least 6 characters</span>
+        </div>
+
+        <div class="afield">
+          <label>Confirm Password <span class="required-star">*</span></label>
+          <input
+            type="password"
+            [(ngModel)]="confirmPassword"
+            required
+            name="confirmPassword"
+            #confirmPasswordField="ngModel"
+            placeholder="••••••••"
+            [class.input-error]="(confirmPasswordField.invalid || passwordMismatch) && (confirmPasswordField.touched || submitted)"
+          >
+          <span class="field-error" *ngIf="confirmPasswordField.errors?.['required'] && (confirmPasswordField.touched || submitted)">Required</span>
+          <span class="field-error" *ngIf="passwordMismatch && !confirmPasswordField.errors?.['required'] && (confirmPasswordField.touched || submitted)">Passwords do not match</span>
+        </div>
+
+        <button class="auth-btn" type="submit">Create Account</button>
 
         <div class="auth-switch">
           Already have an account? <a routerLink="/login">Sign in</a>
         </div>
-      </div>
 
-    </div>
+      </div>
+    </form>
   </div>
 </div>

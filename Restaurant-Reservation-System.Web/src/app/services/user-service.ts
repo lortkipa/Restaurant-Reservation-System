@@ -3,6 +3,8 @@ import { Globals } from './globals';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthResponseModel } from '../models/auth-response-model';
+import { GoldLine } from '../components/gold-line/gold-line';
+import { RegisterModel } from '../models/user-model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +12,7 @@ import { AuthResponseModel } from '../models/auth-response-model';
 export class UserService {
   constructor(private globals: Globals, private http: HttpClient) { }
 
-  // Register() : Observable<AuthResponseModel> {
-  //     return this.http.get<RestaurantModel[]>(`${this.globals.apiUrl}/GetAll`)
-  // }
+  Register(data : RegisterModel) : Observable<AuthResponseModel> {
+      return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}/User/Register`, data);
+  }
 }

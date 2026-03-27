@@ -1,15 +1,15 @@
-/* Overlay */
+/* Overlay stays the same */
 .auth-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(13,11,9,0.96);
+  background: rgba(13, 11, 9, 0.96);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-/* Box */
+/* Box width unchanged */
 .auth-box {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -17,96 +17,99 @@
   max-width: 440px;
 }
 
-/* Top */
+/* Top - less vertical padding */
 .auth-top {
-  padding: 36px 40px 28px;
+  padding: 20px 40px 16px;
   border-bottom: 1px solid var(--border);
   text-align: center;
 }
 
-.auth-logo {
-  font-family: 'Cormorant', serif;
-  font-size: 13px;
-  letter-spacing: 6px;
-  color: var(--gold);
-  margin-bottom: 20px;
-}
-
 .auth-title {
-  font-family: 'Cormorant', serif;
-  font-size: 32px;
+  font: 28px "Cormorant", serif;
   color: var(--cream);
 }
-
 .auth-title em {
   color: var(--gold);
 }
-
 .auth-sub {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--muted);
 }
 
 /* Form */
 .auth-form-wrap {
-  padding: 32px 40px;
+  padding: 16px 40px;
 }
-
 .afield {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
-
 .afield label {
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: rgba(245,239,228,0.35);
+  font-size: 8px;
+  color: rgba(245, 239, 228, 0.35);
+  display: block;
 }
-
 .afield input {
   width: 100%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(200,169,106,0.15);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(200, 169, 106, 0.15);
   color: var(--cream);
-  padding: 13px 16px;
-  font-size: 14px;
+  padding: 8px 16px;
+  font-size: 13px;
   outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
 }
-
 .afield input:focus {
   border-color: var(--gold);
 }
 
-/* Button */
-.auth-btn {
-  width: 100%;
-  padding: 15px;
-  background: var(--gold);
-  border: none;
-  color: var(--bg);
-  font-size: 11px;
-  letter-spacing: 3px;
-  cursor: pointer;
+/* ── Validation styles ── */
+.afield input.input-error {
+  border-color: #c0392b;
+  background: rgba(192, 57, 43, 0.06);
 }
 
-.auth-btn:hover {
-  background: var(--gold2);
+.field-error {
+  display: block;
+  font-size: 9px;
+  color: #e05a4e;
+  margin-top: 3px;
+  letter-spacing: 0.5px;
 }
 
-/* Switch */
-.auth-switch {
-  text-align: center;
-  margin-top: 18px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.auth-switch a {
-  color: var(--gold);
-  text-decoration: none;
+.required-star {
+  color: #e05a4e;
+  margin-left: 2px;
 }
 
 .afield-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 8px;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 10px 0;
+  background: var(--gold);
+  border: none;
+  color: var(--bg);
+  font-size: 11px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+.auth-btn:hover {
+  background: var(--gold2);
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.auth-switch a {
+  color: var(--gold);
+  text-decoration: none;
 }
