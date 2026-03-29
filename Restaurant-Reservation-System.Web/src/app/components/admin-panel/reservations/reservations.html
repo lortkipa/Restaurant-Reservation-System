@@ -1,0 +1,36 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Reservations</h1>
+    <span class="page-sub">All bookings</span>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Customer</th>
+        <th>Restaurant</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Table</th>
+        <th>Guests</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of reservations">
+        <td>{{r?.customerId}}</td>
+        <td>{{r?.restaurantId}}</td>
+        <td>{{r?.statusId}}</td>
+        <td>{{r.date | date:'mediumDate'}}</td>
+        <td>{{r?.tableNumber}}</td>
+        <td>{{r?.guestCount}}</td>
+        <td>
+          <button class="btn-cancel" (click)="cancel(r.id)">CANCEL</button>
+          <button class="btn-delete" (click)="delete(r.id)">DELETE</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

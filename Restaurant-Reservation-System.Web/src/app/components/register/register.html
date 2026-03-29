@@ -2,138 +2,102 @@
   <div class="auth-box">
 
     <div class="auth-top">
-      <h2 class="auth-title">Create an <em>account</em></h2>
-      <p class="auth-sub">Join free to reserve at any of our restaurants.</p>
+      <h2 class="auth-title">Welcome <em>back</em></h2>
+      <p class="auth-sub">Sign in to manage your reservations.</p>
     </div>
 
-    <form #form="ngForm" class="auth-form-wrap" (ngSubmit)="onSubmit(form)">
-      <div class="auth-panel active">
+    <form class="auth-form-wrap" #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
 
-        <div class="auth-error" id="registerError"></div>
+      <div class="afield">
+        <div class="afield-row">
+          <div>
+            <label>First Name</label>
+            <input 
+              placeholder="John" 
+              [(ngModel)]="registerModel.person.firstName" 
+              name="firstName"
+              required
 
-        <!-- PERSON -->
-        <div class="afield">
-          <div class="afield-row">
-            <div>
-              <label>First Name <span class="required-star">*</span></label>
-              <input
-                type="text"
-                [(ngModel)]="registerModel.person.firstName"
-                required
-                name="firstName"
-                #firstName="ngModel"
-                placeholder="Jean"
-                [class.input-error]="firstName.invalid && (firstName.touched || submitted)"
+            >
+          </div>
+          <div>
+            <label>Last Name</label>
+            <input 
+              placeholder="Smith"
+              [(ngModel)]="registerModel.person.lastName"
+              name="lastName"
+              required
               >
-              <span class="field-error" *ngIf="firstName.invalid && (firstName.touched || submitted)">Required</span>
-            </div>
-            <div>
-              <label>Last Name <span class="required-star">*</span></label>
-              <input
-                type="text"
-                [(ngModel)]="registerModel.person.lastName"
-                required
-                name="lastName"
-                #lastName="ngModel"
-                placeholder="Dupont"
-                [class.input-error]="lastName.invalid && (lastName.touched || submitted)"
-              >
-              <span class="field-error" *ngIf="lastName.invalid && (lastName.touched || submitted)">Required</span>
-            </div>
           </div>
         </div>
+      </div>
 
-        <div class="afield">
-          <label>Username <span class="required-star">*</span></label>
-          <input
-            type="text"
-            [(ngModel)]="registerModel.username"
-            required
-            name="username"
-            #username="ngModel"
-            placeholder="yourusername"
-            [class.input-error]="username.invalid && (username.touched || submitted)"
-          >
-          <span class="field-error" *ngIf="username.invalid && (username.touched || submitted)">Required</span>
+      <div class="afield">
+        <div class="afield-row">
+          <div>
+            <label>Phone</label>
+            <input 
+              placeholder="+995 577 123 456"
+              type="tel"[(ngModel)]="registerModel.person.phone"  
+              name="phone"
+              required
+            >
+          </div>
+          <div>
+            <label>Email</label>
+            <input 
+              placeholder="you@example.com" 
+              type="email" type="tel"[(ngModel)]="registerModel.email"  
+              name="email"
+              required
+            >
+          </div>
         </div>
+      </div>
 
-        <div class="afield">
-          <label>Phone <span class="required-star">*</span></label>
-          <input
-            type="text"
-            [(ngModel)]="registerModel.person.phone"
-            required
-            name="phone"
-            #phone="ngModel"
-            placeholder="+123456789"
-            [class.input-error]="phone.invalid && (phone.touched || submitted)"
-          >
-          <span class="field-error" *ngIf="phone.invalid && (phone.touched || submitted)">Required</span>
-        </div>
+      <div class="auth-panel active">
+        <div class="auth-error" id="loginError"></div>
 
         <div class="afield">
           <label>Address</label>
-          <input type="text" 
-            [(ngModel)]="registerModel.person.address"
-            required name="address"
-            [class.input-error]="email.invalid && (phone.touched || submitted)"
-            placeholder="Street, City">
-        </div>
-
-        <div class="afield">
-          <label>Email Address <span class="required-star">*</span></label>
-          <input
-            type="email"
-            [(ngModel)]="registerModel.email"
+          <input 
+            type="password" 
+            placeholder="15 Rustaveli Street, Tbilisi, Georgia" type="tel"[(ngModel)]="registerModel.person.address" 
+            name="address"
             required
-            email
-            name="email"
-            #email="ngModel"
-            placeholder="you@example.com"
-            [class.input-error]="email.invalid && (email.touched || submitted)"
           >
-          <span class="field-error" *ngIf="email.errors?.['required'] && (email.touched || submitted)">Required</span>
-          <span class="field-error" *ngIf="email.errors?.['email'] && (email.touched || submitted)">Enter a valid email</span>
         </div>
 
         <div class="afield">
-          <label>Password <span class="required-star">*</span></label>
-          <input
-            type="password"
-            [(ngModel)]="registerModel.password"
+          <label>Username</label>
+          <input 
+            type="email" 
+            placeholder="john123b" 
+            type="tel"[(ngModel)]="registerModel.username"  
+            name="username"
             required
-            minlength="6"
+          >
+        </div>
+
+        <div class="afield">
+          <label>Password</label>
+          <input 
+            ype="password" 
+            placeholder="••••••••" 
+            placeholder="john123b" 
+            type="tel"[(ngModel)]="registerModel.password" 
             name="password"
-            #password="ngModel"
-            placeholder="At least 6 characters"
-            [class.input-error]="password.invalid && (password.touched || submitted)"
-          >
-          <span class="field-error" *ngIf="password.errors?.['required'] && (password.touched || submitted)">Required</span>
-          <span class="field-error" *ngIf="password.errors?.['minlength'] && (password.touched || submitted)">At least 6 characters</span>
-        </div>
-
-        <div class="afield">
-          <label>Confirm Password <span class="required-star">*</span></label>
-          <input
-            type="password"
-            [(ngModel)]="confirmPassword"
             required
-            name="confirmPassword"
-            #confirmPasswordField="ngModel"
-            placeholder="••••••••"
-            [class.input-error]="(confirmPasswordField.invalid || passwordMismatch) && (confirmPasswordField.touched || submitted)"
           >
-          <span class="field-error" *ngIf="confirmPasswordField.errors?.['required'] && (confirmPasswordField.touched || submitted)">Required</span>
-          <span class="field-error" *ngIf="passwordMismatch && !confirmPasswordField.errors?.['required'] && (confirmPasswordField.touched || submitted)">Passwords do not match</span>
         </div>
 
-        <button class="auth-btn" type="submit">Create Account</button>
+        <button class="auth-btn" type="submit">Sign In</button>
 
         <div class="auth-switch">
-          Already have an account? <a routerLink="/login">Sign in</a>
+          Don't have an account? <a routerLink="/register">Create one</a>
         </div>
-
       </div>
+
     </form>
   </div>
 </div>

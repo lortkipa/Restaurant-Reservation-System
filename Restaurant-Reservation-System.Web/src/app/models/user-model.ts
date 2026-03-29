@@ -12,3 +12,8 @@ export interface RegisterModel {
     password: string;
     registrationDate: Date;
 }
+
+export interface LoginModel {
+    username: string;
+    password: string;
+}

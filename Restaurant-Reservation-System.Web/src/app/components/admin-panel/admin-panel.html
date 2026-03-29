@@ -1,1 +1,36 @@
-<p>admin-panel works!</p>
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-name">FINE RESERVE</span>
+      <span class="brand-sub">ADMIN CONSOLE</span>
+    </div>
+    <nav class="sidebar-nav">
+      <!-- <div class="nav-section-label">OVERVIEW</div>
+      <a routerLink="dashboard" routerLinkActive="active" class="nav-item">
+        ◎ Dashboard
+      </a> -->
+      <div class="nav-section-label">PEOPLE</div>
+      <a routerLink="users" routerLinkActive="active" class="nav-item">
+        ○ Users
+      </a>
+      <div class="nav-section-label">DINING</div>
+      <a routerLink="restaurants" routerLinkActive="active" class="nav-item">
+        ◈ Restaurants
+      </a>
+      <div class="nav-section-label">BOOKINGS</div>
+      <a routerLink="reservations" routerLinkActive="active" class="nav-item">
+        ◷ Reservations
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="admin-avatar">A</div>
+      <div>
+        <div class="admin-name">Administrator</div>
+        <div class="admin-role">Super Admin</div>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <app-reservations *ngIf="show == 'reservations'"></app-reservations>
+  </main>
+</div>

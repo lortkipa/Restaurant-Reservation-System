@@ -1,0 +1,86 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+
+  .page-title {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: #f5efe4;
+    text-transform: uppercase;
+  }
+
+  .page-sub {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(245, 239, 228, 0.3);
+    margin-left: 12px;
+  }
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: rgba(245, 239, 228, 0.3);
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(200, 169, 106, 0.15);
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 16px;
+    font-size: 13px;
+    color: #f5efe4;
+    border-bottom: 1px solid rgba(200, 169, 106, 0.06);
+  }
+
+  tr:hover td {
+    background: rgba(200, 169, 106, 0.04);
+  }
+}
+
+.status-badge {
+  font-size: 9px;
+  letter-spacing: 2px;
+  padding: 4px 10px;
+  border: 1px solid rgba(200, 169, 106, 0.3);
+  color: #c8a96a;
+}
+
+.btn-cancel {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid rgba(200, 169, 106, 0.3);
+  color: #c8a96a;
+  font-size: 8px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: all 0.2s;
+
+  &:hover { background: rgba(200, 169, 106, 0.1); }
+}
+
+.btn-delete {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid rgba(200, 100, 100, 0.3);
+  color: rgba(200, 100, 100, 0.7);
+  font-size: 8px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover { background: rgba(200, 100, 100, 0.1); }
+}

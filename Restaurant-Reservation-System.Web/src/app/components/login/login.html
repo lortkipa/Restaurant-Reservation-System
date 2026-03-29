@@ -1,4 +1,4 @@
-<div class="auth-overlay open">
+<form class="auth-overlay open" #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
   <div class="auth-box">
 
     <div class="auth-top">
@@ -12,8 +12,8 @@
         <div class="auth-error" id="loginError"></div>
 
         <div class="afield">
-          <label>Email Address</label>
-          <input type="email" placeholder="you@example.com">
+          <label>Username</label>
+          <input type="text" placeholder="nikoloz123b">
         </div>
 
         <div class="afield">
@@ -21,7 +21,7 @@
           <input type="password" placeholder="••••••••">
         </div>
 
-        <button class="auth-btn">Sign In</button>
+        <button class="auth-btn" type="submit">Sign In</button>
 
         <div class="auth-switch">
           Don't have an account? <a routerLink="/register">Create one</a>
@@ -30,4 +30,4 @@
 
     </div>
   </div>
-</div>
+</form>
