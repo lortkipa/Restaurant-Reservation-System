@@ -6,21 +6,33 @@ import Swal from 'sweetalert2';
 })
 export class AlertService {
   
-  success(text: string) {
-    Swal.fire({
-      title: 'Success!',
+  success(title: string, text: string) {
+    return Swal.fire({
+      title: title,
       text: text,
       icon: 'success',
       confirmButtonText: 'OK'
     });
   }
 
-  error(text: string) {
-    Swal.fire({
-      title: 'Error!',
+  error(title: string, text: string) {
+    return Swal.fire({
+      title: title,
       text: text,
       icon: "error",
       confirmButtonText: 'cool'
+    })
+  }
+
+  confirm(question: string) {
+    return Swal.fire({
+      title: question,
+      text: '',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'yes',
+      cancelButtonText: 'no',
+      reverseButtons: true
     })
   }
 

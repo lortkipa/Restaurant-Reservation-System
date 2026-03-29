@@ -4,6 +4,7 @@ import { filter } from 'rxjs/operators';
 import { CommonModule, NgIf } from '@angular/common';
 import { Home } from '../home/home';
 import { Globals } from '../../services/globals';
+import { LocalStorageService } from '../../services/local-storage-service';
 
 @Component({
   standalone: true,
@@ -20,9 +21,11 @@ export class Header implements OnInit {
   isScrolled: boolean = false;
   isLoggedIn: boolean = false;
 
-  constructor(public globals : Globals, private router: Router) { }
+  constructor(public globals: Globals, private router: Router, private localStorage : LocalStorageService) { }
 
   ngOnInit() {
+    this.isLoggedIn = this.localStorage.getItem("token") != '';
+
     // Listen for route changes
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -30,6 +33,11 @@ export class Header implements OnInit {
         const url = event.urlAfterRedirects;
         this.pageName = url.split('/').filter(s => s).pop() || '';
       });
+  }
+
+  ngOnChange() {
+        this.isLoggedIn = this.localStorage.getItem("token") != '';
+        console.log(this.isLoggedIn)
   }
 
   @HostListener('window:scroll', [])

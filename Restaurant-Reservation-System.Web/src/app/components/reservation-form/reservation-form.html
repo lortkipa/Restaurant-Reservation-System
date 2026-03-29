@@ -10,19 +10,31 @@
     <div class="info-rows">
       <div class="info-row">
         <div class="info-icon">◷</div>
-        <div><div class="info-lbl">Hours</div><div class="info-val empty" id="iHours">Select a restaurant above</div></div>
+        <div>
+          <div class="info-lbl">Hours</div>
+          <div class="info-val empty" id="iHours">Select a restaurant above</div>
+        </div>
       </div>
       <div class="info-row">
         <div class="info-icon">◎</div>
-        <div><div class="info-lbl">Address</div><div class="info-val empty" id="iAddr">—</div></div>
+        <div>
+          <div class="info-lbl">Address</div>
+          <div class="info-val empty" id="iAddr">—</div>
+        </div>
       </div>
       <div class="info-row">
         <div class="info-icon">☏</div>
-        <div><div class="info-lbl">Phone</div><div class="info-val empty" id="iPhone">—</div></div>
+        <div>
+          <div class="info-lbl">Phone</div>
+          <div class="info-val empty" id="iPhone">—</div>
+        </div>
       </div>
       <div class="info-row">
         <div class="info-icon">◈</div>
-        <div><div class="info-lbl">Dress Code</div><div class="info-val empty" id="iDress">—</div></div>
+        <div>
+          <div class="info-lbl">Dress Code</div>
+          <div class="info-val empty" id="iDress">—</div>
+        </div>
       </div>
     </div>
   </div>
@@ -31,7 +43,7 @@
   <div class="res-form-panel reveal d1" id="formPanel">
 
     <!-- ── Gate: shown when not logged in ── -->
-    <div class="auth-gate show" id="authGate">
+    <div class="auth-gate show" *ngIf="!IsLoggedIn">
       <div class="gate-icon">⌖</div>
       <div class="gate-title">Members Only</div>
       <p class="gate-text">Please sign in or create a free account to make a reservation at any of our restaurants.</p>
@@ -42,65 +54,84 @@
     </div>
 
     <!-- ── Form: shown when logged in ── -->
-    <div class="form-content" id="formContent">
+    <div class="form-content" *ngIf="IsLoggedIn">
       <div id="formInner">
         <div class="form-header">
           <div class="form-header-title">Make a Reservation</div>
           <div class="form-badge" id="formBadge">Select restaurant</div>
         </div>
         <div class="form-body">
-          <div class="prefilled-note" id="prefilledNote"></div>
+          <!-- <div class="prefilled-note" id="prefilledNote"></div> -->
 
           <span class="picker-lbl">Restaurant</span>
-          <div class="picker-grid" id="pickerGrid">
-            <div class="pick" data-pid="0"><div class="pick-name">Maison Dorée</div><div class="pick-type">French</div></div>
-            <div class="pick" data-pid="1"><div class="pick-name">Osteria Luce</div><div class="pick-type">Italian</div></div>
-            <div class="pick" data-pid="2"><div class="pick-name">Shiro Nami</div><div class="pick-type">Japanese</div></div>
-            <div class="pick" data-pid="3"><div class="pick-name">The Harvest</div><div class="pick-type">American</div></div>
-            <div class="pick" data-pid="4"><div class="pick-name">Casa Roja</div><div class="pick-type">Spanish</div></div>
-            <div class="pick" data-pid="5"><div class="pick-name">Azur & Sea</div><div class="pick-type">Mediterranean</div></div>
-          </div>
-
-          <div class="frow">
-            <div class="fgroup"><label class="flabel">Date</label><input class="finput" id="fDate" type="date"></div>
-            <div class="fgroup"><label class="flabel">Time</label>
-              <div class="sel-wrap"><select class="fselect" id="fTime">
-                <option value="">Select time</option>
-                <option>6:00 PM</option><option>6:30 PM</option><option>7:00 PM</option>
-                <option>7:30 PM</option><option>8:00 PM</option><option>8:30 PM</option>
-                <option>9:00 PM</option><option>9:30 PM</option>
-              </select></div>
+          <div class="picker-grid">
+            <div class="pick" *ngFor="let r of restaurants; let i = index"
+              [class.active]="selectedRestaurantIndex === i" (click)="selectRestaurant(i)">
+              <div class="pick-name">{{ r.name }}</div>
+              <div class="pick-type">{{ r.location }}</div>
             </div>
           </div>
-          <div class="frow">
-            <div class="fgroup"><label class="flabel">Guests</label>
-              <div class="sel-wrap"><select class="fselect" id="fGuests">
-                <option>1 Guest</option><option selected>2 Guests</option><option>3 Guests</option>
-                <option>4 Guests</option><option>5 Guests</option><option>6+ Guests</option>
-              </select></div>
-            </div>
-            <div class="fgroup"><label class="flabel">Occasion</label>
-              <div class="sel-wrap"><select class="fselect" id="fOccasion">
-                <option>— None —</option><option>Anniversary</option><option>Birthday</option>
-                <option>Business Dinner</option><option>Proposal</option><option>Other</option>
-              </select></div>
-            </div>
-          </div>
-          <div class="fgroup" style="margin-bottom:0">
-            <label class="flabel">Special Requests</label>
-            <input class="finput" id="fNote" placeholder="Dietary needs, seating preferences, allergies…">
-          </div>
-          <button class="submit-btn" onclick="submitReservation()">Confirm Reservation</button>
         </div>
-      </div>
-      <!-- success -->
-      <div class="success-panel" id="successPanel">
-        <div class="success-glyph">✦</div>
-        <div class="success-ttl">Reservation Confirmed</div>
-        <p class="success-txt">Thank you, <span id="successUser" style="color:var(--cream)"></span>! Your table at <span id="successRest" style="color:var(--gold)"></span> {{Request}}</p>
-        <div class="success-detail">Confirmation sent</div>
+
+        <div class="frow">
+          <div class="fgroup"><label class="flabel">Date</label>
+            <input class="finput" id="fDate" type="date">
+          </div>
+          <div class="fgroup"><label class="flabel">Time</label>
+            <div class="sel-wrap"><select class="fselect" id="fTime">
+                <option value="">Select time</option>
+                <option>6:00 PM</option>
+                <option>6:30 PM</option>
+                <option>7:00 PM</option>
+                <option>7:30 PM</option>
+                <option>8:00 PM</option>
+                <option>8:30 PM</option>
+                <option>9:00 PM</option>
+                <option>9:30 PM</option>
+              </select></div>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgroup"><label class="flabel">Guests</label>
+            <div class="sel-wrap"><select class="fselect" id="fGuests">
+                <option>1 Guest</option>
+                <option selected>2 Guests</option>
+                <option>3 Guests</option>
+                <option>4 Guests</option>
+                <option>5 Guests</option>
+                <option>6+ Guests</option>
+              </select></div>
+          </div>
+          <div class="fgroup"><label class="flabel">Table</label>
+            <div class="sel-wrap"><select class="fselect" id="fOccasion">
+                <option>1 Table</option>
+                <option>2 Table</option>
+                <option>3 Table</option>
+                <option>4 Table</option>
+                <option>5 Table</option>
+                <option>6 Table</option>
+                <option>7 Table</option>
+                <option>8 Table</option>
+                <option>9 Table</option>
+                <option>10 Table</option>
+                <option>11 Table</option>
+                <option>12 Table</option>
+                <option>13 Table</option>
+                <option>14 Table</option>
+                <option>15 Table</option>
+              </select></div>
+          </div>
+        </div>
+        <button class="submit-btn" onclick="submitReservation()">Confirm Reservation</button>
       </div>
     </div>
-
+    <!-- success -->
+    <div class="success-panel" id="successPanel">
+      <div class="success-glyph">✦</div>
+      <div class="success-ttl">Reservation Confirmed</div>
+      <p class="success-txt">Thank you, <span id="successUser" style="color:var(--cream)"></span>! Your table at <span
+          id="successRest" style="color:var(--gold)"></span> {{Request}}</p>
+      <div class="success-detail">Confirmation sent</div>
+    </div>
   </div>
 </section>

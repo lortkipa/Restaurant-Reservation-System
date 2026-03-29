@@ -30,6 +30,10 @@ namespace Restaurant_Reservation_System.Service.Mapping
             CreateMap<UpdateUserDTO, User>();
             CreateMap<User, CustomerDTO>();
 
+            // UserPerson
+            CreateMap<User, UserDTO>();
+            CreateMap<Person, PersonDTO>();
+
             // Role 
             CreateMap<Role, RoleDTO>();
 

@@ -1,0 +1,236 @@
+<!-- ══ PAGE ══ -->
+<div class="page">
+
+  <!-- ── Page header ── -->
+  <div class="page-header reveal">
+    <div class="header-left">
+      <div class="avatar" id="avatar">
+        <span id="avatar-initials">{{userPerson.user.username[0]}}{{userPerson.user.username[1]}}</span>
+        <div class="avatar-dot"></div>
+      </div>
+      <div class="header-info">
+        <div class="header-name" id="header-name">{{userPerson.user.username}}</div>
+        <div class="header-meta">
+          <!-- <span class="header-username" id="header-username">@jeandupont</span> -->
+          <!-- <span class="header-role" id="header-role">Member</span> -->
+          <span class="header-since" id="header-since">Member since Jan {{ userPerson.user.registrationDate |
+            date:'mediumDate' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <!-- Admin panel link — hidden if not admin -->
+      <a href="/admin" class="btn-admin" id="admin-btn">
+        <span class="btn-admin-icon">◈</span>
+        Admin Panel
+      </a>
+      <button class="btn-logout" (click)="logout()">
+        ⏻ Sign Out
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ BODY GRID ══ -->
+  <div class="body-grid">
+
+    <!-- ── Personal info ── -->
+    <div class="panel reveal d1">
+      <div class="panel-head">
+        <span class="panel-title">Personal Information</span>
+        <button class="panel-edit-btn" id="personal-edit-btn" onclick="toggleEdit('personal')">Edit</button>
+      </div>
+
+      <!-- Read-only view -->
+      <div class="panel-body" id="personal-view">
+        <div class="info-row">
+          <span class="info-label">First Name</span>
+          <span class="info-value" id="view-firstName">{{this.userPerson.person.firstName}}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Last Name</span>
+          <span class="info-value" id="view-lastName">{{this.userPerson.person.lastName}}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Phone</span>
+          <span class="info-value" id="view-phone">{{this.userPerson.person.phone}}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Address</span>
+          <span class="info-value" id="view-address">{{this.userPerson.person.address}}</span>
+        </div>
+      </div>
+
+      <!-- Edit form (hidden by default) -->
+      <div class="panel-body" id="personal-form" style="display:none">
+        <div class="form-grid">
+          <div class="field">
+            <label>First Name</label>
+            <input type="text" id="firstName" placeholder="Jean">
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input type="text" id="lastName" placeholder="Dupont">
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input type="tel" id="phone" placeholder="+1 (212) 555-0000">
+          </div>
+          <div class="field">
+            <label>Address</label>
+            <input type="text" id="address" placeholder="Street, City">
+          </div>
+        </div>
+        <div class="form-actions">
+          <div class="save-msg" id="personal-msg"></div>
+          <div style="display:flex;gap:10px">
+            <button class="btn-cancel" onclick="toggleEdit('personal')">Cancel</button>
+            <button class="btn-save" onclick="savePersonal()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Account info ── -->
+    <div class="panel reveal d2">
+      <div class="panel-head">
+        <span class="panel-title">Account Details</span>
+        <button class="panel-edit-btn" id="account-edit-btn" onclick="toggleEdit('account')">Edit</button>
+      </div>
+
+      <!-- Read-only view -->
+      <div class="panel-body" id="account-view">
+        <div class="info-row">
+          <span class="info-label">Username</span>
+          <span class="info-value" id="view-username">@{{this.userPerson.user.username}}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Email</span>
+          <span class="info-value" id="view-email">{{this.userPerson.user.email}}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Password</span>
+          <span class="info-value" style="letter-spacing:3px">••••••••</span>
+        </div>
+      </div>
+
+      <!-- Edit form (hidden by default) -->
+      <div class="panel-body" id="account-form" style="display:none">
+        <div class="form-grid">
+          <div class="field full">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="jeandupont">
+          </div>
+          <div class="field full">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="jean@example.com">
+          </div>
+          <div class="field full">
+            <label>New Password</label>
+            <div class="pw-wrap">
+              <input type="password" id="password" placeholder="Leave blank to keep current">
+              <button class="pw-toggle" type="button" onclick="togglePw('password', this)">◎</button>
+            </div>
+          </div>
+          <div class="field full">
+            <label>Confirm Password</label>
+            <div class="pw-wrap">
+              <input type="password" id="confirmPw" placeholder="Repeat new password">
+              <button class="pw-toggle" type="button" onclick="togglePw('confirmPw', this)">◎</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <div class="save-msg" id="account-msg"></div>
+          <div style="display:flex;gap:10px">
+            <button class="btn-cancel" onclick="toggleEdit('account')">Cancel</button>
+            <button class="btn-save" onclick="saveAccount()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Account stats (read-only) ── -->
+    <!-- <div class="panel reveal d3">
+      <div class="panel-head">
+        <span class="panel-title">Roles</span>
+      </div>
+      <div class="panel-body">
+        <div class="account-stat">
+          <div class="stat-row">
+            <div class="stat-icon">◷</div>
+            <div>
+              <div class="stat-label">Member Since</div>
+              <div class="stat-value" id="stat-since">—</div>
+            </div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-icon">◉</div>
+            <div>
+              <div class="stat-label">Role</div>
+              <div class="stat-value gold" id="stat-role">Member</div>
+            </div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-icon">◎</div>
+            <div>
+              <div class="stat-label">Account Status</div>
+              <div class="stat-value" style="color:var(--green)">Active</div>
+            </div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-icon">✉</div>
+            <div>
+              <div class="stat-label">Email</div>
+              <div class="stat-value" id="stat-email">jean@example.com</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- ── My Reservations preview ── -->
+    <div class="panel reveal d4 restaurants-panel">
+      <div class="panel-head">
+        <span class="panel-title">Recent Reservations</span>
+        <!-- <a href="/reserve" style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">View All →</a> -->
+      </div>
+      <div class="panel-body" id="reservations-list">
+        <div
+          style="display:flex;align-items:flex-start;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(200,169,106,.07);gap:12px">
+          <div>
+            <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:3px">
+              Table #1 • 4 Guests @ Golden Spoon
+            </div>
+            <div style="font-size:10px;color:var(--muted);letter-spacing:.5px">
+              Mar 29, 2026 · 00:00
+            </div>
+          </div>
+          <span
+            style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border:1px solid;color:var(--green);border-color:var(--green)26;background:var(--green)11;white-space:nowrap;flex-shrink:0">
+            Confirmed
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Danger zone ── -->
+    <div class="panel panel-full reveal d5">
+      <div class="panel-head">
+        <span class="panel-title" style="color:var(--red)">Danger Zone</span>
+      </div>
+      <div class="danger-zone">
+        <div class="danger-text">
+          <div class="danger-title">Delete Account</div>
+          <div class="danger-desc">Permanently delete your account and all associated reservations. This cannot be
+            undone.</div>
+        </div>
+        <button class="btn-delete" onclick="confirmDelete()">Delete My Account</button>
+      </div>
+    </div>
+
+  </div><!-- /body-grid -->
+</div><!-- /page -->
+
+<!-- ══ TOAST CONTAINER ══ -->
+<div class="toast-wrap" id="toast-wrap"></div>

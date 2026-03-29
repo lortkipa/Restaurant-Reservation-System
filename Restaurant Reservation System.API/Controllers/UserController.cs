@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Service;
 using Restaurant_Reservation_System.Service.DTOs;
 using Restaurant_Reservation_System.Service.DTOs.User;
@@ -19,7 +20,7 @@ namespace Restaurant_Reservation_System.API.Controllers
         }
 
         [HttpGet("GetProfile/{id:int}")]
-        public async Task<UserDTO> GetProfile(int id)
+        public async Task<UserPersonDTO> GetProfile(int id)
         {
             return await _service.GetByIdAsync(id);
         }
@@ -32,13 +33,25 @@ namespace Restaurant_Reservation_System.API.Controllers
                 if (res.Status == false) return BadRequest(res);
                 return Ok(res);
             }
-            return BadRequest();
+            return BadRequest(
+                new AuthResponseDTO      
+                {
+                    Status = false,
+                    Message = "Registration Failed"
+                }
+            );
         }
         [HttpPost("Login")]
-        public async Task<ActionResult<int>> Login(LoginUserDTO model)
+        public async Task<ActionResult<AuthResponseDTO>> Login(LoginUserDTO model)
         {
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(
+                    new AuthResponseDTO              
+                    {
+                        Status = false,
+                        Message = "Invalid Form"
+                    }
+                );
 
             AuthResponseDTO res = await _service.LoginAsync(model);
 
@@ -48,12 +61,18 @@ namespace Restaurant_Reservation_System.API.Controllers
             // Get user by username and await the result
             var user = await _service.GetByUsernameAsync(model.Username);
 
-            return Ok(user.Id);
+            return Ok(
+                    new AuthResponseDTO
+                    {
+                        Status = true,
+                        Message = user.Id.ToString()
+                    }
+                );
         }
         [HttpPost("Logout")]
         public async Task<ActionResult<AuthResponseDTO>> Logout(int id)
         {
-            UserDTO user = await _service.GetByIdAsync(id);
+            UserPersonDTO user = await _service.GetByIdAsync(id);
                 if (user == null) return NotFound("User doesn't exist");
 
             return new AuthResponseDTO
@@ -65,7 +84,7 @@ namespace Restaurant_Reservation_System.API.Controllers
         [HttpPut("UpdateProfile/{id:int}")]
         public async Task<ActionResult<AuthResponseDTO>> Update(int id, UpdateUserDTO model)
         {
-            UserDTO user = await _service.GetByIdAsync(id);
+            UserPersonDTO user = await _service.GetByIdAsync(id);
             if (user == null) return
                     BadRequest(new AuthResponseDTO
                     {
@@ -89,7 +108,7 @@ namespace Restaurant_Reservation_System.API.Controllers
         [HttpDelete("DeleteProfile/{id:int}")]
         public async Task<ActionResult<AuthResponseDTO>> Delete(int id)
         {
-            UserDTO user = await _service.GetByIdAsync(id);
+            UserPersonDTO user = await _service.GetByIdAsync(id);
             if (user == null) return
                     BadRequest( new AuthResponseDTO
                     {

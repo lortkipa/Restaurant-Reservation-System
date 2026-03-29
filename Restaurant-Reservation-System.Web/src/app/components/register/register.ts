@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RegisterModel } from '../../models/user-model';
 import { UserService } from '../../services/user-service';
 import { AlertService } from '../../services/alert-service';
+import { resetConsumerBeforeComputation } from '@angular/core/primitives/signals';
 
 @Component({
   standalone: true,
@@ -21,6 +22,7 @@ export class Register {
 
   registerModel: RegisterModel = {
     person: {
+      id: 0,
       firstName: '',
       lastName: '',
       phone: '',
@@ -32,29 +34,28 @@ export class Register {
     registrationDate: new Date()
   };
 
-  get passwordMismatch(): boolean {
-    return this.confirmPassword !== '' && this.confirmPassword !== this.registerModel.password;
-  }
-
   onSubmit(form: any) {
     if (form.invalid) {
       let missingFields = []
-      if (!this.registerModel.person.firstName) {this.alert.error("First Name is empty"); return;}
-      if (!this.registerModel.person.lastName) {this.alert.error("Last Name is empty"); return;}
-      if (!this.registerModel.person.phone) {this.alert.error("Phone is empty"); return;}
-      if (!this.registerModel.email) {this.alert.error("Email is empty"); return;}
-      if (!this.registerModel.person.address) {this.alert.error("Address is empty"); return;}
-      if (!this.registerModel.username) {this.alert.error("Username is empty"); return;}
-      if (!this.registerModel.password) {this.alert.error("Password is empty"); return;}
+      let formTitle = "Registration Failed"
+      if (!this.registerModel.person.firstName) {this.alert.error(formTitle, "First Name is empty"); return;}
+      if (!this.registerModel.person.lastName) {this.alert.error(formTitle, "Last Name is empty"); return;}
+      if (!this.registerModel.person.phone) {this.alert.error(formTitle, "Phone is empty"); return;}
+      if (!this.registerModel.email) {this.alert.error(formTitle, "Email is empty"); return;}
+      if (!this.registerModel.person.address) {this.alert.error(formTitle, "Address is empty"); return;}
+      if (!this.registerModel.username) {this.alert.error(formTitle, "Username is empty"); return;}
+      if (!this.registerModel.password) {this.alert.error(formTitle, "Password is empty"); return;}
 
       return;
     }
     this.user.Register(this.registerModel).subscribe({
       next: (res) => {
-        this.alert.success("Registration was successful");
+        this.alert.success("Registration was successful", '');
+        console.log(res.message);
       },
       error: (err) => {
-        this.alert.error("Something went wrong"); 
+        this.alert.error("Registration Failed", err.error.message); 
+        console.log(err.error.message);
       }
     });
   }

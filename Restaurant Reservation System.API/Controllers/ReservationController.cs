@@ -100,7 +100,7 @@ namespace Restaurant_Reservation_System.API.Controllers
                 {
                     CustomerId = reserv.CustomerId,
                     RestaurantId = reserv.RestaurantId,
-                    StatusId = (int) statusId,
+                    StatusId = (int)statusId,
                     Date = reserv.Date,
                     TableNumber = reserv.TableNumber,
                     GuestCount = reserv.GuestCount,

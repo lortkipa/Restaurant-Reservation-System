@@ -13,12 +13,24 @@
 
         <div class="afield">
           <label>Username</label>
-          <input type="text" placeholder="nikoloz123b">
+          <input 
+            type="text" 
+            placeholder="nikoloz123b" 
+            [(ngModel)]="loginModel.username" 
+            name="username"
+            required
+          >
         </div>
 
         <div class="afield">
           <label>Password</label>
-          <input type="password" placeholder="••••••••">
+          <input 
+            type="password" 
+            placeholder="••••••••" 
+            [(ngModel)]="loginModel.password" 
+            name="password"
+            required
+          >
         </div>
 
         <button class="auth-btn" type="submit">Sign In</button>

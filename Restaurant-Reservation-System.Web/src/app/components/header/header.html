@@ -1,19 +1,17 @@
 <nav id="nav" [class.scrolled]="isScrolled" *ngIf="pageName != 'admin-panel'">
   <a routerLink="/" class="nav-logo">{{globals.appFirstWord}} <span>{{globals.appSecondWord}}</span></a>
   <div class="nav-right">
-    <button class="btn-home-distinct" 
-            *ngIf="pageName != 'home'" 
-            routerLink="/">
-      HOME
-    </button>
+    <button class="btn-home-distinct" *ngIf="pageName != 'home'" routerLink="/">HOME</button>
 
-    <!-- Shown when logged in -->
-    <button class="nav-login-btn" id="navLoginBtn" *ngIf="isLoggedIn">Sign out</button>
+    <!-- LOGGED-IN BUTTONS -->
+    <ng-container *ngIf="isLoggedIn">
+      <button class="nav-login-btn" id="navLoginBtn" *ngIf="pageName != 'profile'" routerLink="/profile">Profile</button>
+    </ng-container>
 
-    <!-- Shown when logged out -->
-    <button class="nav-login-btn" id="navLoginBtn" *ngIf="!isLoggedIn && pageName != 'login'" routerLink="/login">Sign
-      In</button>
-    <button class="btn-gold" id="navRegisterBtn" style="font-size:10px;padding:10px 22px;"
-      *ngIf="!isLoggedIn  && pageName != 'register'" routerLink="/register">Join Free</button>
+    <!-- LOGGED-OUT BUTTONS -->
+    <ng-container *ngIf="!isLoggedIn">
+      <button class="nav-login-btn" id="navLoginBtn" *ngIf="pageName != 'login'" routerLink="/login">Sign In</button>
+      <button class="btn-gold" id="navRegisterBtn" style="font-size:10px;padding:10px 22px;" *ngIf="pageName != 'register'" routerLink="/register">Join Free</button>
+    </ng-container>
   </div>
 </nav>

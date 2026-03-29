@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Service.DTOs;
+using Restaurant_Reservation_System.Service.DTOs.Person;
 using Restaurant_Reservation_System.Service.DTOs.Reservation;
 using Restaurant_Reservation_System.Service.DTOs.Role;
 using Restaurant_Reservation_System.Service.DTOs.User;
@@ -52,12 +53,19 @@ namespace Restaurant_Reservation_System.Service
 
             return customers;
         }
-        public async Task<UserDTO> GetByIdAsync(int id)
+        public async Task<UserPersonDTO> GetByIdAsync(int id)
         {
             var user = await _userRepo.GetByIdAsync(id);
             if (user == null) return null;
 
-            return _mapper.Map<UserDTO>(user);
+            var person = await _personRepo.GetByIdAsync(user.PersonId);
+            if (person == null) { return null;  }
+
+            return new UserPersonDTO
+            {
+                user = _mapper.Map<UserDTO>(user),
+                person = _mapper.Map<PersonDTO>(person)
+            };
         }
         public async Task<IEnumerable<RoleDTO>> GetRolesById(int id)
         {
@@ -103,13 +111,10 @@ namespace Restaurant_Reservation_System.Service
             };
             await _roleUserRepo.AddAsync(roleUser);
 
-            return new AuthResponseDTO { Status = true, Message = "Registration successful" };
+            return new AuthResponseDTO { Status = true, Message = "Registration was successful" };
         }
         public async Task<AuthResponseDTO> LoginAsync(LoginUserDTO model)
         {
-            if (model == null || string.IsNullOrEmpty(model.Password))
-                return new AuthResponseDTO { Status = false, Message = "Invalid object or password" };
-
             var user = await _userRepo.GetByUsernameAsync(model.Username);
             if (user == null)
                 return new AuthResponseDTO { Status = false, Message = "User doesn't exist" };
