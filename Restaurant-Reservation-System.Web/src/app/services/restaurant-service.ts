@@ -14,4 +14,15 @@ export class RestaurantService {
   getAll() : Observable<RestaurantModel[]> {
     return this.http.get<RestaurantModel[]>(`${this.globals.apiUrl}/Restaurant/GetAll`)
   }
+  add(data: any): Observable<any> {
+    return this.http.post(`${this.globals.apiUrl}/Restaurant/Add`, data);
+  }
+
+  update(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.globals.apiUrl}/Restaurant/Update/${id}`, data);
+  }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete(`${this.globals.apiUrl}/Restaurant/Remove/${id}`);
+  }
 }

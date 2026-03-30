@@ -40,24 +40,48 @@ namespace Restaurant_Reservation_System.API.Controllers
             if (ModelState.IsValid)
             {
                 var restaurant = await _service.AddAsync(model);
-                if (restaurant == null) return BadRequest(restaurant);
-                return Ok(restaurant);
+                if (restaurant == null) return NotFound(new AuthResponseDTO
+                                        {
+                                            Status = false,
+                                            Message = "Restaurant Creation Failed"
+                                        });
+                return Ok(new AuthResponseDTO
+                {
+                    Status = true,
+                    Message = "Restaurant Added Successfully"
+                });
             }
 
-            return BadRequest(false);
+            return BadRequest(new AuthResponseDTO
+            {
+                Status = false,
+                Message = "Restaurant Creation Failed"
+            });
         }
         [HttpPut("Update/{id:int}")]
-        public async Task<ActionResult<bool>> Update(int id, UpdateRestaurantDTO model)
+        public async Task<ActionResult<AuthResponseDTO>> Update(int id, UpdateRestaurantDTO model)
         {
             if (ModelState.IsValid)
             {
                 var restaurant = await _service.GetByIdAsync(id);
-                if (restaurant == null) return BadRequest(restaurant);
+                if (restaurant == null) return NotFound(new AuthResponseDTO
+                                        {
+                                            Status = false,
+                                            Message = "Restaurant Not Found"
+                                        });
 
                 var result = await _service.UpdateAsync(id, model);
-                if (result == false) return BadRequest(result);
+                if (result == false) return BadRequest(new AuthResponseDTO
+                                     {
+                                         Status = false,
+                                         Message = "Restaurant Update Failed"
+                                     });
 
-                return Ok(restaurant);
+                return Ok(new AuthResponseDTO
+                {
+                    Status = true,
+                    Message = "Restaurant Updated Successfully"
+                });
             }
 
             return BadRequest(false);

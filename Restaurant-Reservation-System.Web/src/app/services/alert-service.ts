@@ -20,7 +20,7 @@ export class AlertService {
       title: title,
       text: text,
       icon: "error",
-      confirmButtonText: 'cool'
+      confirmButtonText: 'ok'
     })
   }
 

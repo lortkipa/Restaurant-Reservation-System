@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ReservationService } from '../../../services/reservation-service';
 import { CommonModule } from '@angular/common';
 import { ReservationModel } from '../../../models/reservation-model';
+import { AlertService } from '../../../services/alert-service';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -13,7 +15,7 @@ import { ReservationModel } from '../../../models/reservation-model';
 export class Reservations {
   reservations: any[] = []
 
-  constructor(private reservationService: ReservationService) { }
+  constructor(private reservationService: ReservationService, private alert: AlertService, private router: Router) { }
 
   ngOnInit() {
     this.load()
@@ -27,25 +29,40 @@ export class Reservations {
   }
 
   cancel(id: number) {
-    this.reservationService.cancel(id).subscribe({
-      next: () => {
-        this.load();
-        const reservation = this.reservations.find(r => r.id === id);
-        if (reservation) {
-          reservation.statusId = 3;
-        }
+    this.alert.confirm("Are You Sure?").then((res) => {
+      if (res.isConfirmed) {
+        this.reservationService.cancel(id).subscribe({
+          next: () => {
+            this.alert.success("Reservation Canceled", '').then(() => {
+              this.router.navigate(['/admin-panel']).then(() => {
+                window.location.reload();
+              });
+            })
+          },
+          error: (err) => {
+            this.alert.error("Reservation Not Canceled", err.error.message);
+          }
+        });
       }
-    });
+    })
   }
 
   delete(id: number) {
-    if (confirm('Are you sure?')) {
-      this.reservationService.delete(id).subscribe({
-        next: () => {
-          this.load();
-          this.reservations = this.reservations.filter(r => r.id !== id);
-        }
-      });
-    }
+    this.alert.confirm("Are You Sure?").then((res) => {
+      if (res.isConfirmed) {
+        this.reservationService.delete(id).subscribe({
+          next: () => {
+            this.alert.success("Reservation Removed", '').then(() => {
+              this.router.navigate(['/admin-panel']).then(() => {
+                window.location.reload();
+              });
+            })
+          },
+          error: (err) => {
+            this.alert.error("Reservation Not Removed", err.error.message);
+          }
+        });
+      }
+    })
   }
 }

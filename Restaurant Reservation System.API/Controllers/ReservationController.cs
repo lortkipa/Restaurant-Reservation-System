@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Service;
+using Restaurant_Reservation_System.Service.DTOs;
 using Restaurant_Reservation_System.Service.DTOs.Reservation;
 using Restaurant_Reservation_System.Service.Enums;
 using Restaurant_Reservation_System.Service.Interfaces;
@@ -116,10 +117,14 @@ namespace Restaurant_Reservation_System.API.Controllers
             return BadRequest();
         }
         [HttpPut("Cancel/{id:int}")]
-        public async Task<IActionResult> CancelReservation(int id)
+        public async Task<ActionResult<AuthResponseDTO>> CancelReservation(int id)
         {
             await _reservationService.CancelReservation(id);
-            return Ok("Reservation canceled");
+            return Ok( new AuthResponseDTO
+            {
+                Status = true,
+                Message = "Reservation cancelled successfully"
+            });
         }
         [HttpDelete("DeleteReservation/{id:int}")]
         public async Task<ActionResult<bool>> DeleteReservation(int id)

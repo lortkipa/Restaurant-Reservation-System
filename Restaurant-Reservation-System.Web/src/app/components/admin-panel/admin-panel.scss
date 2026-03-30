@@ -3,7 +3,7 @@
   min-height: 100vh;
   background: #0d0b09;
   color: #f5efe4;
-  font-family: 'Mulish', sans-serif;
+  font-family: "Mulish", sans-serif;
 }
 
 .sidebar {
@@ -68,11 +68,11 @@
     color: #f5efe4;
     background: rgba(200, 169, 106, 0.08);
   }
+}
 
-  &.active {
-    color: #f5efe4;
-    background: rgba(200, 169, 106, 0.12);
-  }
+.nav-button-pressed {
+  color: #f5efe4;
+  background: rgba(200, 169, 106, 0.08);
 }
 
 .sidebar-footer {
@@ -113,14 +113,4 @@
   padding: 40px;
   background: #111009;
   margin-top: 0;
-}
-
-.nav-item:hover {
-  color: #f5efe4;
-  background: rgba(200, 169, 106, 0.08);
-}
-
-.nav-item.active {
-  color: #f5efe4;
-  background: rgba(200, 169, 106, 0.2); /* slightly stronger than hover */
 }

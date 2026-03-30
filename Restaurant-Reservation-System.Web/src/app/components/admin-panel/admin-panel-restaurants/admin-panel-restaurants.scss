@@ -1,0 +1,176 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+
+  .page-title {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: #f5efe4;
+    text-transform: uppercase;
+  }
+
+  .page-sub {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(245, 239, 228, 0.3);
+    margin-left: 12px;
+  }
+}
+
+.btn-gold {
+  padding: 12px 24px;
+  background: #c8a96a;
+  color: #0d0b09;
+  border: none;
+  font-size: 10px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+
+  &:hover { background: #b8955a; }
+}
+
+.btn-ghost {
+  padding: 12px 24px;
+  background: transparent;
+  color: #f5efe4;
+  border: 1px solid rgba(245, 239, 228, 0.2);
+  font-size: 10px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover { border-color: #c8a96a; color: #c8a96a; }
+}
+
+.form-overlay {
+  background: rgba(13, 11, 9, 0.95);
+  border: 1px solid rgba(200, 169, 106, 0.2);
+  padding: 32px;
+  margin-bottom: 32px;
+
+  h3 {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #c8a96a;
+    margin-bottom: 24px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    input {
+      background: rgba(245, 239, 228, 0.05);
+      border: 1px solid rgba(200, 169, 106, 0.2);
+      color: #f5efe4;
+      padding: 10px 14px;
+      font-size: 13px;
+      outline: none;
+      width: 100%;
+
+      &::placeholder { color: rgba(245, 239, 228, 0.3); }
+      &:focus { border-color: #c8a96a; }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 12px;
+  }
+}
+
+.restaurant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.restaurant-card {
+  background: #0d0b09;
+  border: 1px solid rgba(200, 169, 106, 0.15);
+  padding: 28px;
+  transition: border-color 0.2s;
+
+  &:hover { border-color: rgba(200, 169, 106, 0.35); }
+
+  .card-top {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(200, 169, 106, 0.1);
+  }
+
+  .card-meta {
+    font-size: 8px;
+    letter-spacing: 4px;
+    color: #c8a96a;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .card-name {
+    font-size: 22px;
+    font-weight: 300;
+    color: #f5efe4;
+    margin-bottom: 4px;
+  }
+
+  .card-location {
+    font-size: 11px;
+    color: rgba(245, 239, 228, 0.35);
+    letter-spacing: 1px;
+  }
+
+  .card-details {
+    margin-bottom: 20px;
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(200, 169, 106, 0.06);
+    font-size: 12px;
+
+    span:first-child { color: rgba(245, 239, 228, 0.4); }
+    span:last-child { color: #f5efe4; }
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .btn-edit {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid rgba(200, 169, 106, 0.3);
+    color: #c8a96a;
+    font-size: 9px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover { background: rgba(200, 169, 106, 0.1); }
+  }
+
+  .btn-delete {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid rgba(200, 100, 100, 0.3);
+    color: rgba(200, 100, 100, 0.7);
+    font-size: 9px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover { background: rgba(200, 100, 100, 0.1); }
+  }
+}

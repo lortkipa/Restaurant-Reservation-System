@@ -21,14 +21,14 @@ namespace Restaurant_Reservation_System.API.Controllers
         private readonly IUserService _service;
         public readonly IPersonService _personalService;
         private readonly RestaurantContext _context;
-        private readonly TokenHelper _helper;
+        //private readonly TokenHelper _helper;
 
-        public UserController(TokenHelper helper, IUserService service, IPersonService personService, RestaurantContext context)
+        public UserController(IUserService service, IPersonService personService, RestaurantContext context)
         {
             _service = service;
             _personalService = personService;
             _context = context;
-            _helper = helper;
+            //_helper = helper;
         }
         
         [HttpGet("GetRolesById/{id:int}")]

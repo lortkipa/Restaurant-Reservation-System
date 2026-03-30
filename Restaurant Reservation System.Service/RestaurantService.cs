@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Data.Entities;
+using Restaurant_Reservation_System.Service.DTOs.Menu;
 using Restaurant_Reservation_System.Service.DTOs.Person;
 using Restaurant_Reservation_System.Service.DTOs.Restaurant;
 using Restaurant_Reservation_System.Service.Interfaces;
@@ -33,7 +34,7 @@ namespace Restaurant_Reservation_System.Service
         }
         public async Task<RestaurantDTO> AddAsync(CreateRestaurantDTO model)
         {
-            var restaurant = _mapper.Map<Restaurant>(model);
+            Restaurant restaurant = _mapper.Map<Restaurant>(model);
 
             await _repo.AddAsync(restaurant);
             return _mapper.Map<RestaurantDTO>(restaurant);
