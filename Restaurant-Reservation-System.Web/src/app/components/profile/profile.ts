@@ -146,4 +146,25 @@ export class Profile {
       }
     })
   }
+
+  deleteProfile() {
+    this.alert.confirm("Are You Sure?").then((confirmed) => {
+      if (confirmed.isConfirmed) {
+        this.userService.deleteProfile(this.token).subscribe({
+          next: () => {
+            this.alert.success("Account Deleted Successfully", '').then(() => {
+              this.localStorage.removeItem('token')
+              this.router.navigate(['/home']).then(() => {
+                window.location.reload();
+              });
+            })
+          },
+          error: (err) => {
+            this.alert.error("Update Failed", err.error.message);
+            console.log(err.error.message);
+          }
+        })
+      }
+    })
+  }
 }

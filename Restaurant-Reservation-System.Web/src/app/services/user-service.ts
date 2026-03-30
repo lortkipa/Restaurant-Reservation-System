@@ -33,6 +33,10 @@ export class UserService {
   }
 
   logout(token: string): Observable<AuthResponseModel> {
-    return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}User/Logout`, Number(token));
+    return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}/User/Logout`, Number(token));
+  }
+
+  deleteProfile(token: string): Observable<AuthResponseModel> {
+    return this.http.delete<AuthResponseModel>(`${this.globals.apiUrl}/User/DeleteProfile/${token}`)
   }
 }
