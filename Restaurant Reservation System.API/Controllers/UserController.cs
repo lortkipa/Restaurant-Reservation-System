@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Service;
 using Restaurant_Reservation_System.Service.DTOs;
+using Restaurant_Reservation_System.Service.DTOs.Person;
 using Restaurant_Reservation_System.Service.DTOs.User;
 using Restaurant_Reservation_System.Service.Interfaces;
 
@@ -13,10 +14,12 @@ namespace Restaurant_Reservation_System.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
+        public readonly IPersonService _personalService;
 
-        public UserController(IUserService service)
+        public UserController(IUserService service, IPersonService personService)
         {
             _service = service;
+            _personalService = personService;
         }
 
         [HttpGet("GetProfile/{id:int}")]
@@ -82,27 +85,51 @@ namespace Restaurant_Reservation_System.API.Controllers
             };
         }
         [HttpPut("UpdateProfile/{id:int}")]
-        public async Task<ActionResult<AuthResponseDTO>> Update(int id, UpdateUserDTO model)
+        public async Task<ActionResult<AuthResponseDTO>> UpdateProfile(int id, UpdateUserDTO model)
         {
             UserPersonDTO user = await _service.GetByIdAsync(id);
             if (user == null) return
                     BadRequest(new AuthResponseDTO
                     {
                         Status = false,
-                        Message = "user doesn't exist"
+                        Message = "User doesn't exist"
                     });
 
             bool res = await _service.UpdateAsync(id, model);
             if (res == false) return BadRequest(new AuthResponseDTO
             {
                 Status = false,
-                Message = "update failed"
+                Message = "Update Failed"
             });
 
             return Ok(new AuthResponseDTO
             {
                 Status = true,
-                Message = "updated successfully"
+                Message = "Profile Updated"
+            });
+        }
+        [HttpPut("UpdatePersonalInfo/{id:int}")]
+        public async Task<ActionResult<AuthResponseDTO>> UpdatePersonalInfo(int id, UpdatePersonDTO model)
+        {
+            UserPersonDTO user = await _service.GetByIdAsync(id);
+            if (user == null) return
+                    BadRequest(new AuthResponseDTO
+                    {
+                        Status = false,
+                        Message = "User doesn't exist"
+                    });
+
+            bool res = await _personalService.UpdateAsync(user.person.Id, model);
+            if (res == false) return BadRequest(new AuthResponseDTO
+            {
+                Status = false,
+                Message = "Update Failed"
+            });
+
+            return Ok(new AuthResponseDTO
+            {
+                Status = true,
+                Message = "Personal Info Updated"
             });
         }
         [HttpDelete("DeleteProfile/{id:int}")]

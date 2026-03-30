@@ -6,6 +6,13 @@ export interface PersonModel {
     address: string;
 }
 
+export interface UpdatePersonModel {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    address: string;
+}
+
 export interface UserModel {
     id: number;
     username: string;
@@ -13,9 +20,15 @@ export interface UserModel {
     registrationDate: Date;
 }
 
+export interface UpdateUserModel {
+    username: string
+    email: string
+    password: string
+}
+
 export interface UserPersonModel {
     user: UserModel;
-    person : PersonModel;
+    person: PersonModel;
 }
 
 export interface RegisterModel {

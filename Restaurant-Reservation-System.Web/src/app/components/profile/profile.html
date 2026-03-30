@@ -5,11 +5,11 @@
   <div class="page-header reveal">
     <div class="header-left">
       <div class="avatar" id="avatar">
-        <span id="avatar-initials">{{userPerson.user.username[0]}}{{userPerson.user.username[1]}}</span>
+        <span id="avatar-initials">{{userName[0]}}{{userName[1]}}</span>
         <div class="avatar-dot"></div>
       </div>
       <div class="header-info">
-        <div class="header-name" id="header-name">{{userPerson.user.username}}</div>
+        <div class="header-name" id="header-name">{{userName}}</div>
         <div class="header-meta">
           <!-- <span class="header-username" id="header-username">@jeandupont</span> -->
           <!-- <span class="header-role" id="header-role">Member</span> -->
@@ -38,11 +38,11 @@
     <div class="panel reveal d1">
       <div class="panel-head">
         <span class="panel-title">Personal Information</span>
-        <button class="panel-edit-btn" id="personal-edit-btn" onclick="toggleEdit('personal')">Edit</button>
+        <button class="panel-edit-btn" id="personal-edit-btn"  (click)="togglePersonalEdit()">Edit</button>
       </div>
 
       <!-- Read-only view -->
-      <div class="panel-body" id="personal-view">
+      <div class="panel-body" id="personal-view" *ngIf="editPersonal == false">
         <div class="info-row">
           <span class="info-label">First Name</span>
           <span class="info-value" id="view-firstName">{{this.userPerson.person.firstName}}</span>
@@ -62,47 +62,64 @@
       </div>
 
       <!-- Edit form (hidden by default) -->
-      <div class="panel-body" id="personal-form" style="display:none">
+      <form class="panel-body" id="personal-form" *ngIf="editPersonal == true" #myForm="ngForm" (ngSubmit)="updatePersonDetails(myForm)">
         <div class="form-grid">
           <div class="field">
             <label>First Name</label>
-            <input type="text" id="firstName" placeholder="Jean">
+            <input type="text" id="firstName" placeholder="Jean"
+              [(ngModel)]="this.userPerson.person.firstName"
+              name="firstName"
+              required
+            >
           </div>
           <div class="field">
             <label>Last Name</label>
-            <input type="text" id="lastName" placeholder="Dupont">
+            <input type="text" id="lastName" placeholder="Dupont"
+              [(ngModel)]="this.userPerson.person.lastName"
+              name="lastName"
+              required
+            >
           </div>
           <div class="field">
             <label>Phone</label>
-            <input type="tel" id="phone" placeholder="+1 (212) 555-0000">
+            <input type="tel" id="phone" placeholder="577 711 704"
+              [(ngModel)]="this.userPerson.person.phone"
+              name="phone"
+              required
+
+            >
           </div>
           <div class="field">
             <label>Address</label>
-            <input type="text" id="address" placeholder="Street, City">
+            <input type="text" id="address" placeholder="Street, City"
+              [(ngModel)]="this.userPerson.person.address"
+              name="address"
+              required
+            >
           </div>
         </div>
         <div class="form-actions">
           <div class="save-msg" id="personal-msg"></div>
           <div style="display:flex;gap:10px">
-            <button class="btn-cancel" onclick="toggleEdit('personal')">Cancel</button>
-            <button class="btn-save" onclick="savePersonal()">Save Changes</button>
+            <button class="btn-cancel" type="button" (click)="togglePersonalEdit()">Cancel</button>
+            <button class="btn-save" type="submit">Save Changes</button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
 
     <!-- ── Account info ── -->
     <div class="panel reveal d2">
       <div class="panel-head">
         <span class="panel-title">Account Details</span>
-        <button class="panel-edit-btn" id="account-edit-btn" onclick="toggleEdit('account')">Edit</button>
+        <button class="panel-edit-btn" id="account-edit-btn" (click)="toggleAccountEdit()">Edit</button>
       </div>
 
       <!-- Read-only view -->
-      <div class="panel-body" id="account-view">
+      <div class="panel-body" id="account-view" *ngIf="editAccount == false">
         <div class="info-row">
           <span class="info-label">Username</span>
-          <span class="info-value" id="view-username">@{{this.userPerson.user.username}}</span>
+          <span class="info-value" id="view-username">{{this.userPerson.user.username}}</span>
         </div>
         <div class="info-row">
           <span class="info-label">Email</span>
@@ -115,39 +132,51 @@
       </div>
 
       <!-- Edit form (hidden by default) -->
-      <div class="panel-body" id="account-form" style="display:none">
+      <form class="panel-body" id="account-form" *ngIf="editAccount == true" #myForm="ngForm" (ngSubmit)="updateUserDetails(myForm)">
         <div class="form-grid">
           <div class="field full">
             <label>Username</label>
-            <input type="text" id="username" placeholder="jeandupont">
+            <input type="text" id="username" placeholder="jeandupont"
+              [(ngModel)]="userPerson.user.username"
+              name="username"
+            >
           </div>
           <div class="field full">
             <label>Email Address</label>
-            <input type="email" id="email" placeholder="jean@example.com">
+            <input type="email" id="email" placeholder="jean@example.com"
+              [(ngModel)]="userPerson.user.email"
+              name="email"
+              required
+              email
+            >
           </div>
           <div class="field full">
             <label>New Password</label>
             <div class="pw-wrap">
-              <input type="password" id="password" placeholder="Leave blank to keep current">
-              <button class="pw-toggle" type="button" onclick="togglePw('password', this)">◎</button>
+              <input type="password" id="password" placeholder="Leave blank to keep current"
+                [(ngModel)]="password"
+                name="password"
+                required
+              >
+              <button class="pw-toggle" type="button">◎</button>
             </div>
           </div>
-          <div class="field full">
+          <!-- <div class="field full">
             <label>Confirm Password</label>
             <div class="pw-wrap">
               <input type="password" id="confirmPw" placeholder="Repeat new password">
               <button class="pw-toggle" type="button" onclick="togglePw('confirmPw', this)">◎</button>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="form-actions">
           <div class="save-msg" id="account-msg"></div>
           <div style="display:flex;gap:10px">
-            <button class="btn-cancel" onclick="toggleEdit('account')">Cancel</button>
-            <button class="btn-save" onclick="saveAccount()">Save Changes</button>
+            <button class="btn-cancel" type="button" (click)="toggleAccountEdit()">Cancel</button>
+            <button class="btn-save" type="submit">Save Changes</button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
 
     <!-- ── Account stats (read-only) ── -->

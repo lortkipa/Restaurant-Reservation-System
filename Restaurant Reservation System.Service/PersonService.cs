@@ -44,7 +44,7 @@ namespace Restaurant_Reservation_System.Service
             if (person == null)
                 return false;
 
-            person = _mapper.Map<Person>(model);
+            _mapper.Map(model, person);
             await _repo.UpdateAsync(person);
             return true;
         }
