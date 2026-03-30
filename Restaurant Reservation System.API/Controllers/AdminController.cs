@@ -57,18 +57,6 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok(user);
         }
-        [HttpGet("GetUserRolesById/{id:int}")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUserRolesById(int id)
-        {
-            //if (!await IsAdmin(adminId))
-            //    return Forbid("Logged in user is not Admin");
-
-            var roles = await _userService.GetRolesById(id);
-            if (roles == null)
-                return NotFound("User has no roles");
-
-            return Ok(roles);
-        }
         [HttpPut("UpdateUserProfile/{id:int}")]
         public async Task<ActionResult<bool>> UpdateUserProfile(int id, UpdateUserDTO model)
         {

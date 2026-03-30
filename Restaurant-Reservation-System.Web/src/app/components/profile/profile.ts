@@ -3,15 +3,16 @@ import { LocalStorageService } from '../../services/local-storage-service';
 import { UserService } from '../../services/user-service';
 import { UserModel, UserPersonModel } from '../../models/user-model';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AlertService } from '../../services/alert-service';
 import { FormsModule } from "@angular/forms";
 import { RouterUpgradeInitializer } from '@angular/router/upgrade';
+import { RoleModel } from '../../models/role-model';
 
 @Component({
   standalone: true,
   selector: 'app-profile',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
@@ -19,6 +20,8 @@ export class Profile {
   constructor(private localStorage: LocalStorageService, private userService: UserService, private router: Router, private alert: AlertService) { }
 
   token: string = '';
+
+  isAdmin: boolean = false;
 
   userName: string = '';
 
@@ -51,6 +54,14 @@ export class Profile {
 
   ngOnInit() {
     this.token = this.localStorage.getItem('token')
+
+    this.userService.getRoles(this.token).subscribe((roles: RoleModel[]) => {
+      roles.forEach(role => {
+        if (role.name === "Admin") {
+            this.isAdmin = true;
+        }
+      });
+    });
 
     if (this.token) {
       this.userService.getProfile(this.token).subscribe({

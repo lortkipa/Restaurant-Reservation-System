@@ -4,6 +4,7 @@ using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Service;
 using Restaurant_Reservation_System.Service.DTOs;
 using Restaurant_Reservation_System.Service.DTOs.Person;
+using Restaurant_Reservation_System.Service.DTOs.Role;
 using Restaurant_Reservation_System.Service.DTOs.User;
 using Restaurant_Reservation_System.Service.Interfaces;
 
@@ -22,6 +23,18 @@ namespace Restaurant_Reservation_System.API.Controllers
             _personalService = personService;
         }
 
+        [HttpGet("GetRolesById/{id:int}")]
+        public async Task<ActionResult<IEnumerable<RoleDTO>>> GetUserRolesById(int id)
+        {
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
+
+            var roles = await _service.GetRolesById(id);
+            if (roles == null)
+                return NotFound("User has no roles");
+
+            return Ok(roles);
+        }
         [HttpGet("GetProfile/{id:int}")]
         public async Task<UserPersonDTO> GetProfile(int id)
         {

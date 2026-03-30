@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthResponseModel } from '../models/auth-response-model';
 import { GoldLine } from '../components/gold-line/gold-line';
 import { LoginModel, RegisterModel, UpdatePersonModel, UpdateUserModel, UserModel, UserPersonModel } from '../models/user-model';
+import {  RoleModel } from '../models/role-model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,12 @@ import { LoginModel, RegisterModel, UpdatePersonModel, UpdateUserModel, UserMode
 export class UserService {
   constructor(private globals: Globals, private http: HttpClient) { }
 
+  getRoles(token: string): Observable<RoleModel[]> {
+    return this.http.get<RoleModel[]>(`${this.globals.apiUrl}/User/GetRolesById/${token}`)
+  }
+
   getProfile(token: string): Observable<UserPersonModel> {
-    return this.http.get<UserPersonModel>(`${this.globals.apiUrl}/user/GetProfile/${token}`);
+    return this.http.get<UserPersonModel>(`${this.globals.apiUrl}/User/GetProfile/${token}`);
   }
 
   updateProfile(token: string, data: UpdateUserModel): Observable<AuthResponseModel> {

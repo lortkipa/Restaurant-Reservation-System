@@ -3,11 +3,12 @@ import { RestaurantService } from '../../services/restaurant-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LocalStorageService } from '../../services/local-storage-service';
+import { RouterLink } from "@angular/router";
 
 @Component({
   standalone: true,
   selector: 'app-reservation-form',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './reservation-form.html',
   styleUrl: './reservation-form.scss',
 })

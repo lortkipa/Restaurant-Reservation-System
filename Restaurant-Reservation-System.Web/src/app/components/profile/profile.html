@@ -21,7 +21,7 @@
 
     <div class="header-actions">
       <!-- Admin panel link — hidden if not admin -->
-      <a href="/admin" class="btn-admin" id="admin-btn">
+      <a routerLink="/admin-panel" class="btn-admin" id="admin-btn" *ngIf="isAdmin">
         <span class="btn-admin-icon">◈</span>
         Admin Panel
       </a>

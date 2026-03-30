@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { RegisterModel } from '../../models/user-model';
 import { UserService } from '../../services/user-service';
@@ -15,7 +15,7 @@ import { resetConsumerBeforeComputation } from '@angular/core/primitives/signals
   styleUrl: './register.scss',
 })
 export class Register {
-  constructor(private user: UserService, private alert: AlertService) { }
+  constructor(private user: UserService, private alert: AlertService, private router: Router) { }
 
   confirmPassword: string = '';
   submitted = false;
@@ -50,7 +50,9 @@ export class Register {
     this.user.Register(this.registerModel).subscribe({
       next: (res) => {
         this.alert.success("Registration was successful", '');
-        console.log(res.message);
+        this.router.navigate(['/home']).then(() => {
+          window.location.reload();
+        });
       },
       error: (err) => {
         this.alert.confirm("Are you sure?").then((res) => {
