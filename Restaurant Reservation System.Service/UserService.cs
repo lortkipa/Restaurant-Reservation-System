@@ -70,7 +70,7 @@ namespace Restaurant_Reservation_System.Service
         public async Task<IEnumerable<RoleDTO>> GetRolesById(int id)
         {
             var roles = await _roleUserRepo.GetRolesByUserId(id);
-            if (!roles.Any()) throw new Exception("role not found");
+            if (!roles.Any()) return null;
             return _mapper.Map<IEnumerable<RoleDTO>>(roles);
         }
         public async Task<UserDTO> GetByEmailAsync(string email)

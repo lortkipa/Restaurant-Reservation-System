@@ -1,11 +1,13 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Data;
 using Restaurant_Reservation_System.Service;
 using Restaurant_Reservation_System.Service.Interfaces;
 using Restaurant_Reservation_System.Service.Mapping;
+using System.Text;
 
 namespace Restaurant_Reservation_System.API
 {
@@ -34,6 +36,30 @@ namespace Restaurant_Reservation_System.API
             });
 
             builder.Services.AddScoped<DbContext, RestaurantContext>();
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTConfig:Key"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            if (context.Request.Cookies.ContainsKey("Token"))
+                            {
+                                context.Token = context.Request.Cookies["Token"];
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
 
             builder.Services.AddControllers();
             builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile).Assembly);
@@ -72,6 +98,7 @@ namespace Restaurant_Reservation_System.API
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
 

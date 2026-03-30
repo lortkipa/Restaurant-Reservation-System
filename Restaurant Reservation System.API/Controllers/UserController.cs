@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Restaurant_Reservation_System.Dal.Repositories;
+using Restaurant_Reservation_System.Data;
+using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Service;
 using Restaurant_Reservation_System.Service.DTOs;
 using Restaurant_Reservation_System.Service.DTOs.Person;
 using Restaurant_Reservation_System.Service.DTOs.Role;
 using Restaurant_Reservation_System.Service.DTOs.User;
+using Restaurant_Reservation_System.Service.Helpers;
 using Restaurant_Reservation_System.Service.Interfaces;
 
 namespace Restaurant_Reservation_System.API.Controllers
@@ -16,13 +20,17 @@ namespace Restaurant_Reservation_System.API.Controllers
     {
         private readonly IUserService _service;
         public readonly IPersonService _personalService;
+        private readonly RestaurantContext _context;
+        private readonly TokenHelper _helper;
 
-        public UserController(IUserService service, IPersonService personService)
+        public UserController(TokenHelper helper, IUserService service, IPersonService personService, RestaurantContext context)
         {
             _service = service;
             _personalService = personService;
+            _context = context;
+            _helper = helper;
         }
-
+        
         [HttpGet("GetRolesById/{id:int}")]
         public async Task<ActionResult<IEnumerable<RoleDTO>>> GetUserRolesById(int id)
         {
