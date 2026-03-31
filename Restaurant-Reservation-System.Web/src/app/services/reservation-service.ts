@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Globals } from './globals';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ReservationModel } from '../models/reservation-model';
+import { CreateReservationModel, ReservationModel } from '../models/reservation-model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +12,10 @@ export class ReservationService {
 
   getAll(): Observable<ReservationModel[]> {
     return this.http.get<any[]>(`${this.globals.apiUrl}/Reservation/GetAll`);
+  }
+
+  add(data: CreateReservationModel) : Observable<ReservationModel> {
+    return this.http.post<ReservationModel>(`${this.globals.apiUrl}/Reservation/Add`, data)
   }
 
   cancel(id: number): Observable<any> {

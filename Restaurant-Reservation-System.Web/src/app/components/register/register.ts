@@ -49,16 +49,15 @@ export class Register {
     }
     this.user.Register(this.registerModel).subscribe({
       next: (res) => {
-        this.alert.success("Registration was successful", '');
-        this.router.navigate(['/home']).then(() => {
-          window.location.reload();
-        });
+        this.alert.success("Registration was successful", '').then(() => {
+          this.router.navigate(['/home']).then(() => {
+            window.location.reload();
+          });
+        })
       },
       error: (err) => {
-        this.alert.confirm("Are you sure?").then((res) => {
-          this.alert.error("Registration Failed", err.error.message);
-          console.log(err.error.message);
-        })
+        this.alert.error("Registration Failed", err.error.message);
+        console.log(err.error.message);
       }
     });
   }

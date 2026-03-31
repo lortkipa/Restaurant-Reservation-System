@@ -13,6 +13,6 @@ export interface RestaurantModel {
     location : string;
     description : string;
     email : string;
-    totalTables : string;
-    seatsPerTable : string;
+    totalTables : number;
+    seatsPerTable : number;
 }

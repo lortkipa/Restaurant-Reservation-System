@@ -4,36 +4,47 @@
   <div class="res-info reveal">
     <div class="res-selected-box" id="selectedBox">
       <div class="sel-label">Your Selection</div>
-      <div class="sel-name" id="selName" style="color:rgba(245,239,228,0.2)">No restaurant selected</div>
-      <div class="sel-sub" id="selSub"></div>
+      <div class="sel-name" id="selName" style="color:rgba(245,239,228,0.2)"></div>
+      <div class="sel-sub" id="selSub">{{ selectedRestaurant.name || 'No restaurant selected' }}</div>
     </div>
     <div class="info-rows">
       <div class="info-row">
         <div class="info-icon">◷</div>
         <div>
-          <div class="info-lbl">Hours</div>
-          <div class="info-val empty" id="iHours">Select a restaurant above</div>
+          <div class="info-lbl">Date</div>
+          <div class="info-val empty" id="iHours">{{ selectedDate || 'Select Date' }}</div>
         </div>
       </div>
       <div class="info-row">
         <div class="info-icon">◎</div>
         <div>
           <div class="info-lbl">Address</div>
-          <div class="info-val empty" id="iAddr">—</div>
+          <div class="info-val empty" id="iAddr"> {{ selectedRestaurant.location }}</div>
         </div>
       </div>
       <div class="info-row">
-        <div class="info-icon">☏</div>
+        <div class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-chair-director">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M6 21l12 -9" />
+            <path d="M6 12l12 9" />
+            <path d="M5 12h14" />
+            <path d="M6 3v9" />
+            <path d="M18 3v9" />
+            <path d="M6 8h12" />
+            <path d="M6 5h12" />
+          </svg></div>
         <div>
-          <div class="info-lbl">Phone</div>
-          <div class="info-val empty" id="iPhone">—</div>
+          <div class="info-lbl">Table</div>
+          <div class="info-val empty" id="iPhone">{{ selectedTables }} Table{{ selectedTables > 1 ? 's' : '' }}</div>
         </div>
       </div>
       <div class="info-row">
         <div class="info-icon">◈</div>
         <div>
-          <div class="info-lbl">Dress Code</div>
-          <div class="info-val empty" id="iDress">—</div>
+          <div class="info-lbl">Guests</div>
+          <div class="info-val empty" id="iDress">{{ selectedGuests || "2 Guests" }}</div>
         </div>
       </div>
     </div>
@@ -55,7 +66,7 @@
 
     <!-- ── Form: shown when logged in ── -->
     <div class="form-content" *ngIf="IsLoggedIn">
-      <div id="formInner">
+      <form id="formInner" #myForm="ngForm" (ngSubmit)="submitReservation(myForm)">
         <div class="form-header">
           <div class="form-header-title">Make a Reservation</div>
           <div class="form-badge" id="formBadge">Select restaurant</div>
@@ -75,63 +86,35 @@
 
         <div class="frow">
           <div class="fgroup"><label class="flabel">Date</label>
-            <input class="finput" id="fDate" type="date">
-          </div>
-          <div class="fgroup"><label class="flabel">Time</label>
-            <div class="sel-wrap"><select class="fselect" id="fTime">
-                <option value="">Select time</option>
-                <option>6:00 PM</option>
-                <option>6:30 PM</option>
-                <option>7:00 PM</option>
-                <option>7:30 PM</option>
-                <option>8:00 PM</option>
-                <option>8:30 PM</option>
-                <option>9:00 PM</option>
-                <option>9:30 PM</option>
-              </select></div>
+            <input class="finput" id="fDate" type="date" name="selectedDate" [(ngModel)]="selectedDate" required>
           </div>
         </div>
         <div class="frow">
-          <div class="fgroup"><label class="flabel">Guests</label>
-            <div class="sel-wrap"><select class="fselect" id="fGuests">
-                <option>1 Guest</option>
-                <option selected>2 Guests</option>
-                <option>3 Guests</option>
-                <option>4 Guests</option>
-                <option>5 Guests</option>
-                <option>6+ Guests</option>
-              </select></div>
+          <div class="fgroup">
+            <label class="flabel">Guests</label>
+            <div class="sel-wrap">
+              <select class="fselect" name="selectedGuests" [(ngModel)]="selectedGuests" required
+                (ngModelChange)="updateTableCount()">
+                <option *ngFor="let _ of [].constructor(selectedRestaurant.seatsPerTable); let i = index"
+                  [value]="i + 1">
+                  {{ i + 1 }} Guest{{ i + 1 > 1 ? 's' : '' }}
+                </option>
+              </select>
+            </div>
           </div>
-          <div class="fgroup"><label class="flabel">Table</label>
-            <div class="sel-wrap"><select class="fselect" id="fOccasion">
-                <option>1 Table</option>
-                <option>2 Table</option>
-                <option>3 Table</option>
-                <option>4 Table</option>
-                <option>5 Table</option>
-                <option>6 Table</option>
-                <option>7 Table</option>
-                <option>8 Table</option>
-                <option>9 Table</option>
-                <option>10 Table</option>
-                <option>11 Table</option>
-                <option>12 Table</option>
-                <option>13 Table</option>
-                <option>14 Table</option>
-                <option>15 Table</option>
-              </select></div>
+          <div class="fgroup">
+            <label class="flabel">Table</label>
+            <div class="sel-wrap">
+              <select class="fselect" name="selectedTables" [(ngModel)]="selectedTables" required>
+                <option *ngFor="let n of getTablesArray()" [value]="n">
+                  {{ n }} Table{{ n > 1 ? 's' : '' }}
+                </option>
+              </select>
+            </div>
           </div>
         </div>
-        <button class="submit-btn" onclick="submitReservation()">Confirm Reservation</button>
-      </div>
-    </div>
-    <!-- success -->
-    <div class="success-panel" id="successPanel">
-      <div class="success-glyph">✦</div>
-      <div class="success-ttl">Reservation Confirmed</div>
-      <p class="success-txt">Thank you, <span id="successUser" style="color:var(--cream)"></span>! Your table at <span
-          id="successRest" style="color:var(--gold)"></span> {{Request}}</p>
-      <div class="success-detail">Confirmation sent</div>
+        <button class="submit-btn" type="submit">Confirm Reservation</button>
+      </form>
     </div>
   </div>
 </section>

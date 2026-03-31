@@ -36,14 +36,14 @@ export class Login {
     this.user.Login(this.loginModel).subscribe({
       next: (res) => {
         this.localStorage.setItem("token", res.message);
-        this.alert.success("Registration was successful", '').then(() => {
+        this.alert.success("Login was successful", '').then(() => {
           this.router.navigate(['/home']).then(() => {
             window.location.reload();
           });
         })
       },
       error: (err) => {
-        this.alert.error("Registration Failed", err.error.message);
+        this.alert.error("Login Failed", err.error.message);
       }
     });
 
