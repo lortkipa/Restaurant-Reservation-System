@@ -35,7 +35,7 @@ export class AdminPanelRestaurants {
   ) {}
 
   ngOnInit() {
-    this.load();
+    this.load()
   }
 
   load() {

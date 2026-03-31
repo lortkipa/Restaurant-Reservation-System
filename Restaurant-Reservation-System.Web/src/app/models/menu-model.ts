@@ -1,0 +1,19 @@
+export interface MenuModel {
+    id: number
+    restaurantId: number
+    name: string
+}
+
+export interface DishModel {
+    id: number
+    name: string,
+    price: number,
+    isAvailable: boolean
+}
+
+export interface MenuDishModel {
+    id: number
+    name: string
+    restaurantId: number
+    dishes: DishModel[]
+}

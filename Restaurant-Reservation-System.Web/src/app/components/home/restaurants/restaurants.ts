@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Restaurant } from "../restaurant/restaurant";
-import { RestaurantService } from '../../services/restaurant-service';
-import { RestaurantModel } from '../../models/restaurant-model';
+import { Restaurant } from './restaurant/restaurant';
+import { RestaurantService } from '../../../services/restaurant-service';
+import { RestaurantModel } from '../../../models/restaurant-model';
 import { CommonModule } from '@angular/common';
 
 @Component({

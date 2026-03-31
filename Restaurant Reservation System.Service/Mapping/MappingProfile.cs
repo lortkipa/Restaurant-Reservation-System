@@ -48,6 +48,8 @@ namespace Restaurant_Reservation_System.Service.Mapping
             //CreateMap<UpdateReservationDTO, Reservation>();
             // Reservation → DTO
             CreateMap<Reservation, ReservationDTO>();
+            CreateMap<CreateReservationDTO, Reservation>();
+            CreateMap<UpdateReservationDTO, Reservation>();
 
             // Create DTO → Entity
             CreateMap<CreateReservationDTO, Reservation>()

@@ -6,6 +6,7 @@
   <div class="restaurants-grid" id="restaurantsGrid">
     <div  *ngFor="let restaurant of restaurants; let i = index">
       <app-restaurant
+        [id]="restaurant.id"
         [name]="restaurant.name"
         [location]="restaurant.location"
         [description]="restaurant.description"

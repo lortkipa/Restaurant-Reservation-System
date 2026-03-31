@@ -1,17 +1,21 @@
-<nav id="nav" [class.scrolled]="isScrolled" *ngIf="pageName != 'admin-panel'">
+<nav id="nav" [class.scrolled]="isScrolled" 
+  *ngIf="pageName != 'admin-panel' && pageName != 'restaurants' && pageName != 'reservations' && pageName != 'users'"
+  >
   <a routerLink="/" class="nav-logo">{{globals.appFirstWord}} <span>{{globals.appSecondWord}}</span></a>
   <div class="nav-right">
     <button class="btn-home-distinct" *ngIf="pageName != 'home'" routerLink="/">HOME</button>
 
     <!-- LOGGED-IN BUTTONS -->
     <ng-container *ngIf="isLoggedIn">
-      <button class="nav-login-btn" id="navLoginBtn" *ngIf="pageName != 'profile'" routerLink="/profile">Profile</button>
+      <button class="nav-login-btn" id="navLoginBtn" *ngIf="pageName != 'profile'"
+        routerLink="/profile">Profile</button>
     </ng-container>
 
     <!-- LOGGED-OUT BUTTONS -->
     <ng-container *ngIf="!isLoggedIn">
       <button class="nav-login-btn" id="navLoginBtn" *ngIf="pageName != 'login'" routerLink="/login">Sign In</button>
-      <button class="btn-gold" id="navRegisterBtn" style="font-size:10px;padding:10px 22px;" *ngIf="pageName != 'register'" routerLink="/register">Join Free</button>
+      <button class="btn-gold" id="navRegisterBtn" style="font-size:10px;padding:10px 22px;"
+        *ngIf="pageName != 'register'" routerLink="/register">Join Free</button>
     </ng-container>
   </div>
 </nav>

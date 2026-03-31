@@ -6,5 +6,5 @@
       <div class="card-divider"></div>
       <div class="card-desc">{{description}}</div>
       <!-- <div class="card-meta"><div class="card-stars">★</div><div class="card-price">$$</div></div> -->
-      <button class="card-btn">Select Restaurant</button>
+      <button class="card-btn" [routerLink]="'/menu'" [queryParams]="{ restaurantId: id }">See Menu</button>
 </div>

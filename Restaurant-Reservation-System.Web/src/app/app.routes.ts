@@ -4,6 +4,9 @@ import { Login } from './components/login/login';
 import { Register } from './components/register/register';
 import { AdminPanel } from './components/admin-panel/admin-panel';
 import { Profile } from './components/profile/profile';
+import { Menus } from './components/menus/menus';
+import { Reservations } from './components/admin-panel/reservations/reservations';
+import { AdminPanelRestaurants } from './components/admin-panel/admin-panel-restaurants/admin-panel-restaurants';
 
 
 export const routes: Routes = [
@@ -17,6 +20,10 @@ export const routes: Routes = [
         component: Home
     },
     {
+        path: "menu",
+        component: Menus
+    },
+    {
         path: 'login',
         component: Login
     },
@@ -24,12 +31,21 @@ export const routes: Routes = [
         path: 'register',
         component: Register
     },
-     {
+    {
         path: 'profile',
         component: Profile
     },
+    // {
+    //     path: 'admin-panel',
+    //     component: AdminPanel
+    // }
     {
         path: 'admin-panel',
-        component: AdminPanel
+        component: AdminPanel,
+        children: [
+            { path: 'reservations', component: Reservations },
+            { path: 'restaurants', component: AdminPanelRestaurants },
+            //{path: 'users', component: }
+        ]
     }
 ];

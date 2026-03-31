@@ -19,7 +19,7 @@
       <div class="nav-section-label">DINING</div>
       <a routerLink="restaurants" routerLinkActive="active" class="nav-item"
         [ngClass]="{'nav-button-pressed': show == 'restaurants'}"
-        (click)="switchShow('restaurants')"
+                routerLink="restaurants"
 
       >
         ◈ Restaurants
@@ -27,7 +27,7 @@
       <div class="nav-section-label">BOOKINGS</div>
       <a routerLink="reservations" routerLinkActive="active" class="nav-item"
         [ngClass]="{'nav-button-pressed': show == 'reservations'}"
-        (click)="switchShow('reservations')"
+                routerLink="reservations"
 
       >
         ◷ Reservations
@@ -42,7 +42,8 @@
     </div>
   </aside>
   <main class="main-content">
-    <app-admin-panel-restaurants *ngIf="show == 'restaurants'"></app-admin-panel-restaurants>
-    <app-reservations *ngIf="show == 'reservations'"></app-reservations>
+    <!-- <app-admin-panel-restaurants *ngIf="show == 'restaurants'"></app-admin-panel-restaurants>
+    <app-reservations *ngIf="show == 'reservations'"></app-reservations> -->
+    <router-outlet></router-outlet>
   </main>
 </div>

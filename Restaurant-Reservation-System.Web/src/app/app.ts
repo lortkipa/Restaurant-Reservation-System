@@ -3,9 +3,9 @@ import { RouterOutlet } from '@angular/router';
 import { Header } from "./components/header/header";
 import { Footer } from "./components/footer/footer";
 import { Home } from "./components/home/home";
-import { Restaurants } from './components/restaurants/restaurants';
-import { Restaurant } from './components/restaurant/restaurant';
-import { Hero } from './components/hero/hero';
+import { Restaurants } from './components/home/restaurants/restaurants';
+import { Restaurant } from './components/home/restaurants/restaurant/restaurant';
+import { Hero } from './components/home/hero/hero';
 
 @Component({
   standalone: true,

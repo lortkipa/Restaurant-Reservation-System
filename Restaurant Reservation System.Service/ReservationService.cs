@@ -62,8 +62,8 @@ namespace Restaurant_Reservation_System.Service
         {
             var user = await _repo.GetUserWithRoles(reservation.CustomerId);
 
-            var isCustomer = user.RoleUsers
-                .Any(ru => ru.Role.Name == "Customer");
+            //var isCustomer = user.RoleUsers
+            //    .Any(ru => ru.Role.Name == "Customer");
 
 
             var available = await AreSeatsAvailable(reservation.RestaurantId, reservation.Date, reservation.GuestCount);

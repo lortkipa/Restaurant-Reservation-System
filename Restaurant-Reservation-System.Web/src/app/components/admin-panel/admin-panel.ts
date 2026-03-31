@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { Reservations } from "./reservations/reservations";
-import { RouterOutlet, RouterLinkActive } from '@angular/router';
+import { RouterOutlet, RouterLinkActive, RouterLinkWithHref } from '@angular/router';
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
 import { Globals } from '../../services/globals';
-import { Restaurants } from "../restaurants/restaurants";
+import { Restaurants } from '../home/restaurants/restaurants';
 import { AdminPanelRestaurants } from "./admin-panel-restaurants/admin-panel-restaurants";
 
 @Component({
   standalone: true,
   selector: 'app-admin-panel',
-  imports: [Reservations, FormsModule, CommonModule, RouterLinkActive, Restaurants, AdminPanelRestaurants],
+  imports: [Reservations, FormsModule, CommonModule, RouterLinkActive, Restaurants, AdminPanelRestaurants, RouterOutlet, RouterLinkWithHref],
   templateUrl: './admin-panel.html',
   styleUrl: './admin-panel.scss',
 })

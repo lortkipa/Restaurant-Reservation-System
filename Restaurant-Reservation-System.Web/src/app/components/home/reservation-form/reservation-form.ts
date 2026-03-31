@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { RestaurantService } from '../../services/restaurant-service';
+import { RestaurantService } from '../../../services/restaurant-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { LocalStorageService } from '../../services/local-storage-service';
+import { LocalStorageService } from '../../../services/local-storage-service';
 import { Router, RouterLink } from "@angular/router";
-import { RestaurantModel } from '../../models/restaurant-model';
-import { AlertService } from '../../services/alert-service';
-import { CreateReservationModel } from '../../models/reservation-model';
-import { ReservationService } from '../../services/reservation-service';
+import { RestaurantModel } from '../../../models/restaurant-model';
+import { AlertService } from '../../../services/alert-service';
+import { CreateReservationModel } from '../../../models/reservation-model';
+import { ReservationService } from '../../../services/reservation-service';
 
 @Component({
   standalone: true,

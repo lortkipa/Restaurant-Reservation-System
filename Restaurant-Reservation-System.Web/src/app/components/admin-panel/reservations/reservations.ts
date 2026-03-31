@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ReservationService } from '../../../services/reservation-service';
 import { CommonModule } from '@angular/common';
 import { ReservationModel } from '../../../models/reservation-model';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrl: './reservations.scss',
 })
 export class Reservations {
-  reservations: any[] = []
+  reservations: ReservationModel[] = []
 
   constructor(private reservationService: ReservationService, private alert: AlertService, private router: Router) { }
 

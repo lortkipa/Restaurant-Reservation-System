@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { LocalStorageService } from '../../services/local-storage-service';
 import { UserService } from '../../services/user-service';
 import { UserModel, UserPersonModel } from '../../models/user-model';
@@ -17,7 +17,7 @@ import { RoleModel } from '../../models/role-model';
   styleUrl: './profile.scss',
 })
 export class Profile {
-  constructor(private localStorage: LocalStorageService, private userService: UserService, private router: Router, private alert: AlertService) { }
+  constructor(private cdr: ChangeDetectorRef, private localStorage: LocalStorageService, private userService: UserService, private router: Router, private alert: AlertService) { }
 
   token: string = '';
 
@@ -74,6 +74,8 @@ export class Profile {
         }
       })
     }
+
+    //this.cdr.detectChanges()
   }
 
   logout() {

@@ -23,6 +23,10 @@ namespace Restaurant_Reservation_System.API
                 policy.WithOrigins("http://localhost:4200")
                       .AllowAnyHeader()
                       .AllowAnyMethod());
+                options.AddPolicy("AllowAngular", policy =>
+               policy.WithOrigins("http://localhost:60499")
+                     .AllowAnyHeader()
+                     .AllowAnyMethod());
             });
 
             //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

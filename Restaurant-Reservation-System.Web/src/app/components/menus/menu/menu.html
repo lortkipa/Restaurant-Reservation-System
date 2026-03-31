@@ -1,0 +1,14 @@
+  <!-- Drinks Section -->
+  <section class="menu-section active">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <!-- <div class="section-icon">🍷</div> -->
+        <h2 class="section-name"><em>{{menuDish.name}}</em></h2>
+        <!-- <p class="section-desc">Curated wines, classic cocktails, artisan spirits and house-made non-alcoholic pairings.</p> -->
+      </div>
+    </div>
+
+    <div class="dish-grid" *ngFor="let d of menuDish.dishes">
+      <app-dish [dish]="d"></app-dish>
+    </div>
+  </section>
