@@ -75,6 +75,27 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok(menus);
         }
+        [HttpGet("GetMenusWithDishes/{restaurantId}")]
+        public async Task<IActionResult> GetMenusWithDishesByRestaurant(int restaurantId)
+        {
+            var menus = await _context.Set<Menu>()
+                .Where(m => m.RestaurantId == restaurantId)
+                .Include(m => m.MenuItems)
+                .Select(m => new
+                {
+                    m.Id,
+                    m.Name,
+                    m.RestaurantId,
+                    Dishes = m.MenuItems
+                        .Select(d => new { d.Id, d.Name, d.Price, d.IsAvaiable })
+                })
+                .ToListAsync();
+
+            if (!menus.Any())
+                return NotFound($"No menus found for restaurant ID {restaurantId}");
+
+            return Ok(menus);
+        }
         [HttpGet("GetWithAvailableDishes")]
         public async Task<IActionResult> GetMenusWithAvailableDishes()
         {

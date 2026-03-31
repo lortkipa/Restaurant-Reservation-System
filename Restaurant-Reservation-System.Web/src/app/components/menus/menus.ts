@@ -1,48 +1,31 @@
-import { Component } from '@angular/core';
-import { Menu } from "./menu/menu";
-import { MenuDishModel, MenuModel } from '../../models/menu-model';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Menu } from './menu/menu';
+import { MenuDishModel } from '../../models/menu-model';
+import { MenuService } from '../../services/menu-service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-menus',
   imports: [Menu, CommonModule],
   templateUrl: './menus.html',
-  styleUrl: './menus.scss',
+  styleUrls: ['./menus.scss'],
 })
 export class Menus {
-  menuDishes: MenuDishModel[] = [
-    {
-      id: 1,
-      restaurantId: 1,
-      name: "Foods",
-      dishes: [
-        {
-          id: 1,
-          name: 'burger',
-          price: 9.99,
-          isAvailable: true
-        },
-        {
-          id: 2,
-          name: 'pizza',
-          price: 12,
-          isAvailable: true
-        }
-      ]
-    },
-    {
-      id: 2,
-      restaurantId: 1,
-      name: "Drinks",
-      dishes: [
-        {
-          id: 3,
-          name: 'coca-cola',
-          price: 1.85,
-          isAvailable: true
-        }
-      ]
-    }
-  ]
+  restaurantId: number = 0
+
+  // Declare signal type only
+  menuDishesSignal: any;
+
+  constructor(private menuService: MenuService, private route : ActivatedRoute) {
+    this.route.queryParams.subscribe(params => {
+      this.restaurantId = params['restaurantId'] ? + params['restaurantId'] : 0;
+      console.log('Restaurant ID:', this.restaurantId);
+    });
+
+    // Initialize the signal here, AFTER the service is available
+    this.menuDishesSignal = toSignal(this.menuService.GetMenusWithDishes(this.restaurantId), { initialValue: [] });
+  }
 }
