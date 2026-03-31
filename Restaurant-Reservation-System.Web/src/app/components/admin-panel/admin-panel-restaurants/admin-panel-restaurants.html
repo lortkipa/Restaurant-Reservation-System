@@ -6,40 +6,34 @@
   <button class="btn-gold" (click)="openAdd()">+ ADD RESTAURANT</button>
 </div>
 
-<div class="form-overlay" *ngIf="showForm">
+<div class="form-overlay" *ngIf="showForm()">
   <div class="form-card">
-    <h3>{{ editMode ? 'EDIT RESTAURANT' : 'ADD RESTAURANT' }}</h3>
+    <h3>{{ editMode() ? 'EDIT RESTAURANT' : 'ADD RESTAURANT' }}</h3>
     <div class="form-grid">
-      <input [(ngModel)]="form.name" placeholder="Name" />
-      <input [(ngModel)]="form.location" placeholder="Location" />
-      <input [(ngModel)]="form.email" placeholder="Email" />
-      <input [(ngModel)]="form.description" placeholder="Description" />
-      <input [(ngModel)]="form.totalTables" type="number" placeholder="Total Tables" />
-      <input [(ngModel)]="form.seatsPerTable" type="number" placeholder="Seats Per Table" />
+      <input [(ngModel)]="form().name" placeholder="Name" />
+      <input [(ngModel)]="form().location" placeholder="Location" />
+      <input [(ngModel)]="form().email" placeholder="Email" />
+      <input [(ngModel)]="form().description" placeholder="Description" />
+      <input [(ngModel)]="form().totalTables" type="number" placeholder="Total Tables" />
+      <input [(ngModel)]="form().seatsPerTable" type="number" placeholder="Seats Per Table" />
     </div>
     <div class="form-actions">
       <button class="btn-gold" (click)="save()">SAVE</button>
-      <button class="btn-ghost" (click)="showForm = false">CANCEL</button>
+      <button class="btn-ghost" (click)="showForm.set(false)">CANCEL</button>
     </div>
   </div>
 </div>
 
 <div class="restaurant-grid">
-  <div class="restaurant-card" *ngFor="let r of restaurants">
+  <div class="restaurant-card" *ngFor="let r of restaurants()">
     <div class="card-top">
-      <!-- <div class="card-meta">{{ r.description || 'FINE DINING' }}</div> -->
       <h2 class="card-name">{{ r.name }}</h2>
-      <!-- <p class="card-location">{{ r.location }}</p> -->
     </div>
     <div class="card-details">
       <div class="detail-row">
         <span>Email</span>
         <span>{{ r.email }}</span>
       </div>
-      <!-- <div class="detail-row">
-        <span>Capacity</span>
-        <span>{{ +r.totalTables * +r.seatsPerTable }} covers</span>
-      </div> -->
       <div class="detail-row">
         <span>Tables</span>
         <span>{{ r.totalTables }}</span>

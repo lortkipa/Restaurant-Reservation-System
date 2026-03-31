@@ -1,12 +1,11 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { LocalStorageService } from '../../services/local-storage-service';
 import { UserService } from '../../services/user-service';
-import { UserModel, UserPersonModel } from '../../models/user-model';
-import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
 import { AlertService } from '../../services/alert-service';
-import { FormsModule } from "@angular/forms";
-import { RouterUpgradeInitializer } from '@angular/router/upgrade';
+import { UserPersonModel } from '../../models/user-model';
 import { RoleModel } from '../../models/role-model';
 
 @Component({
@@ -14,170 +13,132 @@ import { RoleModel } from '../../models/role-model';
   selector: 'app-profile',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './profile.html',
-  styleUrl: './profile.scss',
+  styleUrls: ['./profile.scss'],
 })
 export class Profile {
-  constructor(private cdr: ChangeDetectorRef, private localStorage: LocalStorageService, private userService: UserService, private router: Router, private alert: AlertService) { }
+  // --- Signals for reactive state ---
+  token = signal<string>('');
+  isAdmin = signal(false);
+  userName = signal('');
+  editAccount = signal(false);
+  editPersonal = signal(false);
+  password = signal('');
 
-  token: string = '';
+  userPerson = signal<UserPersonModel>({
+    user: { id: 0, username: '', email: '', registrationDate: new Date() },
+    person: { id: 0, firstName: '', lastName: '', phone: '', address: '' }
+  });
 
-  isAdmin: boolean = false;
+  constructor(
+    private localStorage: LocalStorageService,
+    private userService: UserService,
+    private router: Router,
+    private alert: AlertService
+  ) {
+    // Automatically fetch token
+    this.token.set(this.localStorage.getItem('token') || '');
 
-  userName: string = '';
+    // Effect: fetch roles when token changes
+    effect(() => {
+      const currentToken = this.token();
+      if (currentToken) {
+        this.userService.getRoles(currentToken).subscribe((roles: RoleModel[]) => {
+          this.isAdmin.set(roles.some(r => r.name === 'Admin'));
+        });
 
-  editAccount: boolean = false;
-  editPersonal: boolean = false;
-
-  toggleAccountEdit() {
-    this.editAccount = !this.editAccount
-  }
-  togglePersonalEdit() {
-    this.editPersonal = !this.editPersonal
-  }
-
-  userPerson: UserPersonModel = {
-    user: {
-      id: 0,
-      username: '',
-      email: '',
-      registrationDate: new Date()
-    },
-    person: {
-      id: 0,
-      firstName: '',
-      lastName: '',
-      phone: '',
-      address: ''
-    }
-  };
-  password: string = '';
-
-  ngOnInit() {
-    this.token = this.localStorage.getItem('token')
-
-    this.userService.getRoles(this.token).subscribe((roles: RoleModel[]) => {
-      roles.forEach(role => {
-        if (role.name === "Admin") {
-            this.isAdmin = true;
-        }
-      });
+        // Fetch profile data
+        this.userService.getProfile(currentToken).subscribe({
+          next: (res) => {
+            this.userPerson.set(res);
+            this.userName.set(res.user.username);
+          },
+          error: (err) => console.error(err)
+        });
+      }
     });
-
-    if (this.token) {
-      this.userService.getProfile(this.token).subscribe({
-        next: (res) => {
-          this.userPerson = res;
-          this.userName = this.userPerson.user.username;
-        },
-        error: (err) => {
-          console.error(err)
-        }
-      })
-    }
-
-    //this.cdr.detectChanges()
   }
+
+  // --- Methods using signals ---
+  toggleAccountEdit() { this.editAccount.update(v => !v); }
+  togglePersonalEdit() { this.editPersonal.update(v => !v); }
 
   logout() {
-    const token = this.localStorage.getItem('token')
+    const token = this.token();
+    if (!token) return;
 
-    if (token) {
-      this.alert.confirm("Are you sure?").then((res) => {
-        if (res.isConfirmed) {
-          this.userService.logout(token);
-          this.localStorage.removeItem('token')
-          this.router.navigate(['/home']).then(() => {
-            window.location.reload();
-          });
-        }
-      })
-    }
+    this.alert.confirm("Are you sure?").then(res => {
+      if (res.isConfirmed) {
+        this.userService.logout(token);
+        this.localStorage.removeItem('token');
+        this.router.navigate(['/home']).then(() => window.location.reload());
+      }
+    });
   }
 
   updatePersonDetails(form: any) {
     if (form.invalid) {
-      let formTitle = "Update Failed"
-      if (!this.userPerson.person.firstName) { this.alert.error(formTitle, "First Name is empty"); return; }
-      if (!this.userPerson.person.lastName) { this.alert.error(formTitle, "Last Name is empty"); return; }
-      if (!this.userPerson.person.phone) { this.alert.error(formTitle, "Phone is empty"); return; }
-      if (!this.userPerson.person.address) { this.alert.error(formTitle, "Address is empty"); return; }
-
+      const p = this.userPerson();
+      if (!p.person.firstName)  this.alert.error("Update Failed", "First Name is empty");
+      if (!p.person.lastName)  this.alert.error("Update Failed", "Last Name is empty");
+      if (!p.person.phone)  this.alert.error("Update Failed", "Phone is empty");
+      if (!p.person.address)  this.alert.error("Update Failed", "Address is empty");
+      
       return;
     }
 
-    this.alert.confirm("Are You Sure?").then((confirmed) => {
-      if (confirmed.isConfirmed) {
-        this.userService.updatePersonalDetails(this.token, {
-          firstName: this.userPerson.person.firstName,
-          lastName: this.userPerson.person.lastName,
-          address: this.userPerson.person.address,
-          phone: this.userPerson.person.phone
-        }).subscribe({
-          next: () => {
-            this.alert.success("Personal Info Updated", '').then(() => {
-              this.router.navigate(['/profile']).then(() => {
-                window.location.reload();
-              });
-            })
-          },
-          error: (err) => {
-            this.alert.error("Update Failed", err.error.message);
-          }
-        })
-      }
-    })
+    this.alert.confirm("Are You Sure?").then(conf => {
+      if (!conf.isConfirmed) return;
+      const p = this.userPerson();
+      this.userService.updatePersonalDetails(this.token(), {
+        firstName: p.person.firstName,
+        lastName: p.person.lastName,
+        address: p.person.address,
+        phone: p.person.phone
+      }).subscribe({
+        next: () => this.alert.success("Personal Info Updated", '').then(() => {
+          this.router.navigate(['/profile']).then(() => window.location.reload());
+        }),
+        error: err => this.alert.error("Update Failed", err.error.message)
+      });
+    });
   }
 
-  updateUserDetails(form: any) {
+  updateUserDetails(form: any): void {
     if (form.invalid) {
-      let formTitle = "Update Failed"
-      if (!this.userPerson.user.username) { this.alert.error(formTitle, "Username is empty"); return; }
-      if (!this.userPerson.user.email) { this.alert.error(formTitle, "Email is empty"); return; }
-      if (!this.password) { this.alert.error(formTitle, "Password is empty"); return; }
+      const u = this.userPerson().user;
+      if (!u.username) this.alert.error("Update Failed", "Username is empty");
+      if (!u.email) this.alert.error("Update Failed", "Email is empty");
+      if (!this.password()) this.alert.error("Update Failed", "Password is empty");
 
       return;
     }
-    this.alert.confirm("Are You Sure?").then((confirmed) => {
-      if (confirmed.isConfirmed) {
-        this.userService.updateProfile(this.token, {
-          username: this.userPerson.user.username,
-          email: this.userPerson.user.email,
-          password: this.password
-        }).subscribe({
-          next: () => {
-            this.alert.success("Account Info Updated", '').then(() => {
-              this.router.navigate(['/profile']).then(() => {
-                window.location.reload();
-              });
-            })
-          },
-          error: (err) => {
-            this.alert.error("Update Failed", err.error.message);
-            console.log(err.error.message);
-          }
-        })
-      }
-    })
+
+    this.alert.confirm("Are You Sure?").then(conf => {
+      if (!conf.isConfirmed) return;
+      const u = this.userPerson().user;
+      this.userService.updateProfile(this.token(), {
+        username: u.username,
+        email: u.email,
+        password: this.password()
+      }).subscribe({
+        next: () => this.alert.success("Account Info Updated", '').then(() => {
+          this.router.navigate(['/profile']).then(() => window.location.reload());
+        }),
+        error: err => this.alert.error("Update Failed", err.error.message)
+      });
+    });
   }
 
   deleteProfile() {
-    this.alert.confirm("Are You Sure?").then((confirmed) => {
-      if (confirmed.isConfirmed) {
-        this.userService.deleteProfile(this.token).subscribe({
-          next: () => {
-            this.alert.success("Account Deleted Successfully", '').then(() => {
-              this.localStorage.removeItem('token')
-              this.router.navigate(['/home']).then(() => {
-                window.location.reload();
-              });
-            })
-          },
-          error: (err) => {
-            this.alert.error("Update Failed", err.error.message);
-            console.log(err.error.message);
-          }
-        })
-      }
-    })
+    this.alert.confirm("Are You Sure?").then(conf => {
+      if (!conf.isConfirmed) return;
+      this.userService.deleteProfile(this.token()).subscribe({
+        next: () => this.alert.success("Account Deleted Successfully", '').then(() => {
+          this.localStorage.removeItem('token');
+          this.router.navigate(['/home']).then(() => window.location.reload());
+        }),
+        error: err => this.alert.error("Update Failed", err.error.message)
+      });
+    });
   }
 }

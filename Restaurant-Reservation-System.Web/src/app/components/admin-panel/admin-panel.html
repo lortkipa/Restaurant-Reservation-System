@@ -1,38 +1,32 @@
 <div class="admin-layout">
   <aside class="sidebar">
     <div class="sidebar-brand">
-      <span class="brand-name">{{globals.appName}}</span>
+      <span class="brand-name">{{ globals.appName }}</span>
       <span class="brand-sub">ADMIN CONSOLE</span>
     </div>
     <nav class="sidebar-nav">
-      <!-- <div class="nav-section-label">OVERVIEW</div>
-      <a routerLink="dashboard" routerLinkActive="active" class="nav-item">
-        ◎ Dashboard
-      </a> -->
       <div class="nav-section-label">PEOPLE</div>
       <a routerLink="users" routerLinkActive="active" class="nav-item"
-        [ngClass]="{'nav-button-pressed': show == 'users'}"
-        (click)="switchShow('users')"
-      >
+         [ngClass]="{'nav-button-pressed': show() === 'users'}"
+         (click)="switchShow('users')">
         ○ Users
       </a>
+
       <div class="nav-section-label">DINING</div>
       <a routerLink="restaurants" routerLinkActive="active" class="nav-item"
-        [ngClass]="{'nav-button-pressed': show == 'restaurants'}"
-                routerLink="restaurants"
-
-      >
+         [ngClass]="{'nav-button-pressed': show() === 'restaurants'}"
+         (click)="switchShow('restaurants')">
         ◈ Restaurants
       </a>
+
       <div class="nav-section-label">BOOKINGS</div>
       <a routerLink="reservations" routerLinkActive="active" class="nav-item"
-        [ngClass]="{'nav-button-pressed': show == 'reservations'}"
-                routerLink="reservations"
-
-      >
+         [ngClass]="{'nav-button-pressed': show() === 'reservations'}"
+         (click)="switchShow('reservations')">
         ◷ Reservations
       </a>
     </nav>
+
     <div class="sidebar-footer">
       <div class="admin-avatar">A</div>
       <div>
@@ -41,9 +35,8 @@
       </div>
     </div>
   </aside>
+
   <main class="main-content">
-    <!-- <app-admin-panel-restaurants *ngIf="show == 'restaurants'"></app-admin-panel-restaurants>
-    <app-reservations *ngIf="show == 'reservations'"></app-reservations> -->
     <router-outlet></router-outlet>
   </main>
 </div>

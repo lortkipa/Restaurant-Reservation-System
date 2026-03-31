@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { Reservations } from "./reservations/reservations";
 import { RouterOutlet, RouterLinkActive, RouterLinkWithHref } from '@angular/router';
 import { FormsModule } from "@angular/forms";
@@ -10,16 +10,22 @@ import { AdminPanelRestaurants } from "./admin-panel-restaurants/admin-panel-res
 @Component({
   standalone: true,
   selector: 'app-admin-panel',
-  imports: [Reservations, FormsModule, CommonModule, RouterLinkActive, Restaurants, AdminPanelRestaurants, RouterOutlet, RouterLinkWithHref],
+  imports: [
+    Reservations, FormsModule, CommonModule,
+    RouterLinkActive, Restaurants, AdminPanelRestaurants,
+    RouterOutlet, RouterLinkWithHref
+  ],
   templateUrl: './admin-panel.html',
   styleUrl: './admin-panel.scss',
 })
 export class AdminPanel {
-  constructor(public globals : Globals){}
+  constructor(public globals: Globals) {}
 
-  show: string = "reservations"
+  // ✅ Writable signal
+  show: WritableSignal<string> = signal("reservations");
 
-  switchShow(show: string) {
-    this.show = show;
+  // ✅ Explicit void return
+  switchShow(show: string): void {
+    this.show.set(show);
   }
 }

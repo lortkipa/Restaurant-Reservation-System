@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { RestaurantModel } from '../../../models/restaurant-model';
 import { RestaurantService } from '../../../services/restaurant-service';
 import { CommonModule } from '@angular/common';
@@ -14,19 +14,19 @@ import { Router } from '@angular/router';
   styleUrl: './admin-panel-restaurants.scss',
 })
 export class AdminPanelRestaurants {
-  restaurants: RestaurantModel[] = [];
-  showForm = false;
-  editMode = false;
-  selectedId = 0;
+  restaurants: WritableSignal<RestaurantModel[]> = signal([]);
+  showForm: WritableSignal<boolean> = signal(false);
+  editMode: WritableSignal<boolean> = signal(false);
+  selectedId: WritableSignal<number> = signal(0);
 
-  form = {
+  form = signal({
     name: '',
     location: '',
     description: '',
     email: '',
     totalTables: 0,
     seatsPerTable: 0
-  };
+  });
 
   constructor(
     private router: Router,
@@ -35,74 +35,68 @@ export class AdminPanelRestaurants {
   ) {}
 
   ngOnInit() {
-    this.load()
+    this.load();
   }
 
   load() {
     this.restaurantService.getAll().subscribe({
-      next: (data) => (this.restaurants = data),
+      next: (data) => this.restaurants.set(data),
       error: (err) => console.error(err),
     });
   }
 
   openAdd() {
-    this.editMode = false;
-    this.selectedId = 0;
-    this.form = {
+    this.editMode.set(false);
+    this.selectedId.set(0);
+    this.form.set({
       name: '',
       location: '',
       description: '',
       email: '',
       totalTables: 0,
       seatsPerTable: 0
-    };
-    this.showForm = true;
+    });
+    this.showForm.set(true);
   }
 
   openEdit(r: RestaurantModel) {
-    this.editMode = true;
-    this.selectedId = r.id;
-    this.form = {
+    this.editMode.set(true);
+    this.selectedId.set(r.id);
+    this.form.set({
       name: r.name,
       location: r.location,
       description: r.description,
       email: r.email,
       totalTables: +r.totalTables,
       seatsPerTable: +r.seatsPerTable
-    };
-    this.showForm = true;
+    });
+    this.showForm.set(true);
   }
 
   save() {
     this.alert.confirm("Are You Sure?").then((res) => {
       if (!res.isConfirmed) return;
 
-      if (this.editMode) {
-        // ✅ UPDATE
-        this.restaurantService.update(this.selectedId, this.form).subscribe({
+      const payload = this.form();
+      if (this.editMode()) {
+        this.restaurantService.update(this.selectedId(), payload).subscribe({
           next: () => {
             this.alert.success("Restaurant Updated", '').then(() => {
-              this.load();           // reload data
-              this.showForm = false; // close form
+              this.load();
+              this.showForm.set(false);
             });
           },
-          error: (err) => {
-            this.alert.error("Restaurant Not Updated", err.error?.message);
-          }
+          error: (err) => this.alert.error("Restaurant Not Updated", err.error?.message)
         });
-
       } else {
-        // ✅ ADD (FIXED — no update call after)
-        this.restaurantService.add(this.form).subscribe({
+        this.restaurantService.add(payload).subscribe({
           next: () => {
             this.alert.success("Restaurant Added", '').then(() => {
-              this.load();           // reload data
-              this.showForm = false; // close form
+              this.load();
+              this.showForm.set(false);
             });
           },
-          error: (err) => {
-            this.alert.error("Restaurant Not Added", err.error?.message);
-          }
+          error: (err) => this.alert.error("Restaurant Not Added", err.error?.message)
         });
       }
     });
@@ -114,13 +108,9 @@ export class AdminPanelRestaurants {
 
       this.restaurantService.delete(id).subscribe({
         next: () => {
-          this.alert.success("Restaurant Deleted", '').then(() => {
-            this.load();
-          });
+          this.alert.success("Restaurant Deleted", '').then(() => this.load());
         },
-        error: (err) => {
-          this.alert.error("Delete Failed", err.error?.message);
-        }
+        error: (err) => this.alert.error("Delete Failed", err.error?.message)
       });
     });
   }
