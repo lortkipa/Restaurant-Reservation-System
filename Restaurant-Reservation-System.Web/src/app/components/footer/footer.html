@@ -1,4 +1,6 @@
-<footer *ngIf="pageName != 'admin-panel'">
+<footer 
+ *ngIf="pageName != 'admin-panel' && pageName != 'restaurants' && pageName != 'reservations' && pageName != 'users' && pageName != 'menus'"
+>
   <div class="footer-copy">© {{ year }} · IT {{this.globals.appName}}</div>
   <div class="footer-links">
     <a routerLink="/about">About</a>

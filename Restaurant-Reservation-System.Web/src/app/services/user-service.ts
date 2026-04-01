@@ -13,22 +13,6 @@ import {  RoleModel } from '../models/role-model';
 export class UserService {
   constructor(private globals: Globals, private http: HttpClient) { }
 
-  getRoles(token: string): Observable<RoleModel[]> {
-    return this.http.get<RoleModel[]>(`${this.globals.apiUrl}/User/GetRolesById/${token}`)
-  }
-
-  getProfile(token: string): Observable<UserPersonModel> {
-    return this.http.get<UserPersonModel>(`${this.globals.apiUrl}/User/GetProfile/${token}`);
-  }
-
-  updateProfile(token: string, data: UpdateUserModel): Observable<AuthResponseModel> {
-    return this.http.put<AuthResponseModel>(`${this.globals.apiUrl}/User/UpdateProfile/${token}`, data)
-  }
-
-  updatePersonalDetails(token: string, data: UpdatePersonModel): Observable<AuthResponseModel> {
-    return this.http.put<AuthResponseModel>(`${this.globals.apiUrl}/User/UpdatePersonalInfo/${token}`, data)
-  }
-
   Register(data: RegisterModel): Observable<AuthResponseModel> {
     return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}/User/Register`, data);
   }
@@ -41,7 +25,40 @@ export class UserService {
     return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}/User/Logout`, Number(token));
   }
 
+  getRoles(token: string): Observable<RoleModel[]> {
+    return this.http.get<RoleModel[]>(
+      `${this.globals.apiUrl}/User/GetRolesById`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
+
+  getProfile(token: string): Observable<UserPersonModel> {
+    return this.http.get<UserPersonModel>(
+      `${this.globals.apiUrl}/User/GetProfile`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
+
+  updateProfile(token: string, data: UpdateUserModel): Observable<AuthResponseModel> {
+    return this.http.put<AuthResponseModel>(
+      `${this.globals.apiUrl}/User/UpdateProfile`,
+      data,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
+
+  updatePersonalDetails(token: string, data: UpdatePersonModel): Observable<AuthResponseModel> {
+    return this.http.put<AuthResponseModel>(
+      `${this.globals.apiUrl}/User/UpdatePersonalInfo`,
+      data,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
+
   deleteProfile(token: string): Observable<AuthResponseModel> {
-    return this.http.delete<AuthResponseModel>(`${this.globals.apiUrl}/User/DeleteProfile/${token}`)
+    return this.http.delete<AuthResponseModel>(
+      `${this.globals.apiUrl}/User/DeleteProfile`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
   }
 }

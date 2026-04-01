@@ -29,7 +29,7 @@ namespace Restaurant_Reservation_System.Service.Helpers
             }
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTConfig:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.Sha256);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken
                 (
                     claims: claims,

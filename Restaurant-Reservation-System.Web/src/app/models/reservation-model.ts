@@ -12,7 +12,7 @@ export interface CreateReservationModel {
     customerId: number
     restaurantId: number
     statusId: number
-    date: Date
+    date: string
     tableNumber: number
     guestCount: number
 }

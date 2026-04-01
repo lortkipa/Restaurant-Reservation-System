@@ -32,12 +32,16 @@ export class ReservationForm {
     totalTables: 1,
     seatsPerTable: 1
   };
-  selectedDate: Date = new Date;
+  selectedDate: string = '';
   selectedGuests: number = 1;
   customGuestCount: number | null = null;
   selectedTables: number = 1;
 
-  constructor(private router: Router, private alert: AlertService, private restaurantService: RestaurantService, private localStorage: LocalStorageService, private reservationsService: ReservationService) { }
+  token: string = ''
+
+  constructor(private router: Router, private alert: AlertService, private restaurantService: RestaurantService, private localStorage: LocalStorageService, private reservationsService: ReservationService) {
+    this.token = localStorage.getItem('token')
+  }
 
   ngOnInit(): void {
     this.IsLoggedIn = this.localStorage.getItem('token') != '';
@@ -98,8 +102,8 @@ export class ReservationForm {
 
     this.alert.confirm("Are You Sure?").then((res) => {
       if (res.isConfirmed) {
-        this.reservationsService.add({
-          customerId: Number(this.localStorage.getItem('token')),
+        this.reservationsService.add(this.token, {
+          customerId: 0,
           restaurantId: this.selectedRestaurant.id,
           statusId: 2,
           date: this.selectedDate,

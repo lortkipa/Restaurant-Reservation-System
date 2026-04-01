@@ -3,6 +3,7 @@ import { ReservationService } from '../../../services/reservation-service';
 import { CommonModule } from '@angular/common';
 import { ReservationModel } from '../../../models/reservation-model';
 import { AlertService } from '../../../services/alert-service';
+import { LocalStorageService } from '../../../services/local-storage-service';
 
 @Component({
   standalone: true,
@@ -13,18 +14,22 @@ import { AlertService } from '../../../services/alert-service';
 })
 export class Reservations {
   reservations: WritableSignal<ReservationModel[]> = signal([]);
+  token: string = ''
 
   constructor(
     private reservationService: ReservationService,
-    private alert: AlertService
-  ) {}
+    private alert: AlertService,
+    private localStorage: LocalStorageService
+  ) {
+    this.token = localStorage.getItem('token')
+  }
 
   ngOnInit() {
     this.load();
   }
 
   load() {
-    this.reservationService.getAll().subscribe({
+    this.reservationService.getAll(this.token).subscribe({
       next: (data) => this.reservations.set(data),
       error: (err) => console.error(err),
     });
@@ -34,7 +39,7 @@ export class Reservations {
     this.alert.confirm("Are You Sure?").then((res) => {
       if (!res.isConfirmed) return;
 
-      this.reservationService.cancel(id).subscribe({
+      this.reservationService.cancel(this.token, id).subscribe({
         next: () => {
           this.alert.success("Reservation Canceled", '').then(() => {
             // Remove cancelled reservation from the signal array
@@ -51,7 +56,7 @@ export class Reservations {
     this.alert.confirm("Are You Sure?").then((res) => {
       if (!res.isConfirmed) return;
 
-      this.reservationService.delete(id).subscribe({
+      this.reservationService.delete(this.token, id).subscribe({
         next: () => {
           this.alert.success("Reservation Removed", '').then(() => {
             // Remove deleted reservation from the signal array

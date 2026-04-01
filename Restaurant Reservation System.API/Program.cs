@@ -7,6 +7,7 @@ using Restaurant_Reservation_System.Data;
 using Restaurant_Reservation_System.Service;
 using Restaurant_Reservation_System.Service.Interfaces;
 using Restaurant_Reservation_System.Service.Mapping;
+using System.Security.Claims;
 using System.Text;
 
 namespace Restaurant_Reservation_System.API
@@ -29,11 +30,6 @@ namespace Restaurant_Reservation_System.API
                //      .AllowAnyMethod());
             });
 
-            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //    })
-
             // DB connection
             builder.Services.AddDbContext<RestaurantContext>(options => {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("RestaurantDBConnection"));
@@ -42,28 +38,48 @@ namespace Restaurant_Reservation_System.API
             builder.Services.AddScoped<DbContext, RestaurantContext>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JWTConfig:Key"])),
+
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+
+            // 🔥 Tell ASP.NET which claim to use for roles
+            RoleClaimType = ClaimTypes.Role,
+            NameClaimType = ClaimTypes.NameIdentifier
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                // If token is in cookies (optional)
+                if (context.Request.Cookies.ContainsKey("Token"))
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters
+                    context.Token = context.Request.Cookies["Token"];
+                }
+
+                // Or fallback: read from Authorization header
+                if (string.IsNullOrEmpty(context.Token) &&
+                    context.Request.Headers.ContainsKey("Authorization"))
+                {
+                    var authHeader = context.Request.Headers["Authorization"].ToString();
+                    if (authHeader.StartsWith("Bearer "))
                     {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTConfig:Key"])),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true
-                    };
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnMessageReceived = context =>
-                        {
-                            if (context.Request.Cookies.ContainsKey("Token"))
-                            {
-                                context.Token = context.Request.Cookies["Token"];
-                            }
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
+                        context.Token = authHeader.Substring("Bearer ".Length).Trim();
+                    }
+                }
+
+                return Task.CompletedTask;
+            }
+        };
+    });
 
             builder.Services.AddControllers();
             builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile).Assembly);

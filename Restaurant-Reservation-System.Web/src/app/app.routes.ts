@@ -8,6 +8,7 @@ import { Menus } from './components/menus/menus';
 import { Reservations } from './components/admin-panel/reservations/reservations';
 import { AdminPanelRestaurants } from './components/admin-panel/admin-panel-restaurants/admin-panel-restaurants';
 import { About } from './components/about/about';
+import { AdminPanelMenus } from './components/admin-panel/admin-panel-menus/admin-panel-menus';
 
 
 export const routes: Routes = [
@@ -46,6 +47,7 @@ export const routes: Routes = [
         children: [
             { path: 'reservations', component: Reservations },
             { path: 'restaurants', component: AdminPanelRestaurants },
+            { path: 'menus', component: AdminPanelMenus }
             //{path: 'users', component: }
         ]
     },

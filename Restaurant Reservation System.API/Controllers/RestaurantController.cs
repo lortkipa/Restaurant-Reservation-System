@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Restaurant_Reservation_System.Service;
 using Restaurant_Reservation_System.Service.DTOs;
 using Restaurant_Reservation_System.Service.DTOs.Restaurant;
-using Restaurant_Reservation_System.Service.DTOs.User;
 using Restaurant_Reservation_System.Service.Interfaces;
 
 namespace Restaurant_Reservation_System.API.Controllers
@@ -19,83 +17,119 @@ namespace Restaurant_Reservation_System.API.Controllers
             _service = service;
         }
 
+        // 🔹 PUBLIC
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<RestaurantDTO>>> GetAll()
         {
             var restaurants = await _service.GetAllAsync();
             return Ok(restaurants);
         }
-        [HttpGet("GetById")]
-        public async Task<ActionResult<RestaurantDTO>> GetUserById(int id)
-        {
-            var restaurants = await _service.GetByIdAsync(id);
-            if (restaurants == null)
-                return NotFound("User not found");
 
-            return Ok(restaurants);
+        // 🔹 PUBLIC
+        [HttpGet("GetById/{id:int}")]
+        public async Task<ActionResult<RestaurantDTO>> GetById(int id)
+        {
+            var restaurant = await _service.GetByIdAsync(id);
+
+            if (restaurant == null)
+                return NotFound("Restaurant not found");
+
+            return Ok(restaurant);
         }
-        [HttpPost("Add")]
-        public async Task<ActionResult<bool>> Add(CreateRestaurantDTO model)
-        {
-            if (ModelState.IsValid)
-            {
-                var restaurant = await _service.AddAsync(model);
-                if (restaurant == null) return NotFound(new AuthResponseDTO
-                                        {
-                                            Status = false,
-                                            Message = "Restaurant Creation Failed"
-                                        });
-                return Ok(new AuthResponseDTO
-                {
-                    Status = true,
-                    Message = "Restaurant Added Successfully"
-                });
-            }
 
-            return BadRequest(new AuthResponseDTO
+        // 🔹 ADMIN ONLY
+        //[Authorize(Roles = "Admin")]
+        [HttpPost("Add")]
+        public async Task<ActionResult<AuthResponseDTO>> Add(CreateRestaurantDTO model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Invalid data"
+                });
+
+            var restaurant = await _service.AddAsync(model);
+
+            if (restaurant == null)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Restaurant creation failed"
+                });
+
+            return Ok(new AuthResponseDTO
             {
-                Status = false,
-                Message = "Restaurant Creation Failed"
+                Status = true,
+                Message = "Restaurant added successfully"
             });
         }
+
+        // 🔹 ADMIN ONLY
+        //[Authorize]
         [HttpPut("Update/{id:int}")]
         public async Task<ActionResult<AuthResponseDTO>> Update(int id, UpdateRestaurantDTO model)
         {
-            if (ModelState.IsValid)
-            {
-                var restaurant = await _service.GetByIdAsync(id);
-                if (restaurant == null) return NotFound(new AuthResponseDTO
-                                        {
-                                            Status = false,
-                                            Message = "Restaurant Not Found"
-                                        });
-
-                var result = await _service.UpdateAsync(id, model);
-                if (result == false) return BadRequest(new AuthResponseDTO
-                                     {
-                                         Status = false,
-                                         Message = "Restaurant Update Failed"
-                                     });
-
-                return Ok(new AuthResponseDTO
+            if (!ModelState.IsValid)
+                return BadRequest(new AuthResponseDTO
                 {
-                    Status = true,
-                    Message = "Restaurant Updated Successfully"
+                    Status = false,
+                    Message = "Invalid data"
                 });
-            }
 
-            return BadRequest(false);
+            var restaurant = await _service.GetByIdAsync(id);
+
+            if (restaurant == null)
+                return NotFound(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Restaurant not found"
+                });
+
+            var result = await _service.UpdateAsync(id, model);
+
+            if (!result)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Restaurant update failed"
+                });
+
+            return Ok(new AuthResponseDTO
+            {
+                Status = true,
+                Message = "Restaurant updated successfully"
+            });
         }
+
+        // 🔹 ADMIN ONLY
+        //[Authorize]
         [HttpDelete("Remove/{id:int}")]
-        public async Task<ActionResult<bool>> Delete(int id)
+        public async Task<ActionResult<AuthResponseDTO>> Delete(int id)
         {
-            var user = await _service.GetByIdAsync(id);
-            if (user == null) return BadRequest(user);
+            var restaurant = await _service.GetByIdAsync(id);
+
+            if (restaurant == null)
+                return NotFound(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Restaurant not found"
+                });
 
             bool res = await _service.DeleteAsync(id);
-            if (res == false) return BadRequest(res);
 
-            return Ok(res);
+            if (!res)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Delete failed"
+                });
+
+            return Ok(new AuthResponseDTO
+            {
+                Status = true,
+                Message = "Restaurant deleted successfully"
+            });
         }
     }
 }

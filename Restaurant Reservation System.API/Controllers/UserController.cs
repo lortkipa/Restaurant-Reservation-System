@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Restaurant_Reservation_System.Dal.Repositories;
@@ -11,6 +12,7 @@ using Restaurant_Reservation_System.Service.DTOs.Role;
 using Restaurant_Reservation_System.Service.DTOs.User;
 using Restaurant_Reservation_System.Service.Helpers;
 using Restaurant_Reservation_System.Service.Interfaces;
+using System.Security.Claims;
 
 namespace Restaurant_Reservation_System.API.Controllers
 {
@@ -21,32 +23,51 @@ namespace Restaurant_Reservation_System.API.Controllers
         private readonly IUserService _service;
         public readonly IPersonService _personalService;
         private readonly RestaurantContext _context;
-        //private readonly TokenHelper _helper;
+        private readonly IConfiguration _config;
 
-        public UserController(IUserService service, IPersonService personService, RestaurantContext context)
+        public UserController(IConfiguration config, IUserService service, IPersonService personService, RestaurantContext context)
         {
             _service = service;
             _personalService = personService;
             _context = context;
-            //_helper = helper;
+            _config = config;
         }
         
-        [HttpGet("GetRolesById/{id:int}")]
-        public async Task<ActionResult<IEnumerable<RoleDTO>>> GetUserRolesById(int id)
+        [Authorize]
+        [HttpGet("GetRolesById")]
+        public async Task<ActionResult<IEnumerable<RoleDTO>>> GetUserRolesById()
         {
-            //if (!await IsAdmin(adminId))
-            //    return Forbid("Logged in user is not Admin");
+            // Get current user ID from JWT claims
+            var userIdClaim = User.Claims.FirstOrDefault(c =>
+                c.Type == ClaimTypes.NameIdentifier ||
+                c.Type == "http://schemas.xmlsoap.org/ws/2005/identity/claims/nameidentifier");
 
-            var roles = await _service.GetRolesById(id);
-            if (roles == null)
+            if (userIdClaim == null)
+                return Unauthorized("Invalid token");
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            // Fetch roles from service
+            var roles = await _service.GetRolesById(userId);
+            if (roles == null || !roles.Any())
                 return NotFound("User has no roles");
 
             return Ok(roles);
         }
-        [HttpGet("GetProfile/{id:int}")]
-        public async Task<UserPersonDTO> GetProfile(int id)
+        [Authorize]
+        [HttpGet("GetProfile")]
+        public async Task<ActionResult<UserPersonDTO>> GetProfile()
         {
-            return await _service.GetByIdAsync(id);
+            // Extract user ID from JWT claims
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "http://schemas.xmlsoap.org/ws/2005/identity/claims/nameidentifier");
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            var profile = await _service.GetByIdAsync(userId);
+            return Ok(profile);
         }
         [HttpPost("Register")]
         public async Task<ActionResult<AuthResponseDTO>> Register(RegisterUserDTO model)
@@ -68,36 +89,30 @@ namespace Restaurant_Reservation_System.API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<AuthResponseDTO>> Login(LoginUserDTO model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(
-                    new AuthResponseDTO              
-                    {
-                        Status = false,
-                        Message = "Invalid Form"
-                    }
-                );
+            if (ModelState.IsValid)
+            {
+                var result = await _service.LoginAsync(model);
+                if (result.Status)
+                {
+                    var loggedUser = await _service.GetByUsernameAsync(model.Username);
+                    List<RoleDTO> userRoles = (await _service.GetRolesById(loggedUser.Id)).ToList();
+                    var token = TokenHelper.TokenGeneration(loggedUser.Id, loggedUser.Username, userRoles, _config);
 
-            AuthResponseDTO res = await _service.LoginAsync(model);
+                    HttpContext.Response.Cookies.Append("Token", token);
 
-            if (!res.Status)
-                return BadRequest(res);
+                    return Ok(new AuthResponseDTO { Status = true, Message = token });
+                }
 
-            // Get user by username and await the result
-            var user = await _service.GetByUsernameAsync(model.Username);
+                return Unauthorized(result.Message);
+            }
 
-            return Ok(
-                    new AuthResponseDTO
-                    {
-                        Status = true,
-                        Message = user.Id.ToString()
-                    }
-                );
+            return BadRequest();
         }
+        [Authorize]
         [HttpPost("Logout")]
-        public async Task<ActionResult<AuthResponseDTO>> Logout(int id)
+        public async Task<ActionResult<AuthResponseDTO>> Logout(string token)
         {
-            UserPersonDTO user = await _service.GetByIdAsync(id);
-                if (user == null) return NotFound("User doesn't exist");
+            HttpContext.Response.Cookies.Delete("Token");
 
             return new AuthResponseDTO
             {
@@ -105,76 +120,131 @@ namespace Restaurant_Reservation_System.API.Controllers
                 Message = "Logged out successfully"
             };
         }
-        [HttpPut("UpdateProfile/{id:int}")]
-        public async Task<ActionResult<AuthResponseDTO>> UpdateProfile(int id, UpdateUserDTO model)
+        [Authorize]
+        [HttpPut("UpdateProfile")]
+        public async Task<ActionResult<AuthResponseDTO>> UpdateProfile(UpdateUserDTO model)
         {
-            UserPersonDTO user = await _service.GetByIdAsync(id);
-            if (user == null) return
-                    BadRequest(new AuthResponseDTO
-                    {
-                        Status = false,
-                        Message = "User doesn't exist"
-                    });
+            // Get current user ID from JWT claims
+            var userIdClaim = User.Claims.FirstOrDefault(c =>
+                c.Type == ClaimTypes.NameIdentifier ||
+                c.Type == "http://schemas.xmlsoap.org/ws/2005/identity/claims/nameidentifier");
 
-            bool res = await _service.UpdateAsync(id, model);
-            if (res == false) return BadRequest(new AuthResponseDTO
-            {
-                Status = false,
-                Message = "Update Failed"
-            });
+            if (userIdClaim == null)
+                return Unauthorized(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Invalid token"
+                });
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            // Get user
+            UserPersonDTO user = await _service.GetByIdAsync(userId);
+            if (user == null)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "User doesn't exist"
+                });
+
+            // Update profile
+            bool res = await _service.UpdateAsync(userId, model);
+            if (!res)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Update failed"
+                });
 
             return Ok(new AuthResponseDTO
             {
                 Status = true,
-                Message = "Profile Updated"
+                Message = "Profile updated"
             });
         }
-        [HttpPut("UpdatePersonalInfo/{id:int}")]
-        public async Task<ActionResult<AuthResponseDTO>> UpdatePersonalInfo(int id, UpdatePersonDTO model)
+        [Authorize]
+        [HttpPut("UpdatePersonalInfo")]
+        public async Task<ActionResult<AuthResponseDTO>> UpdatePersonalInfo(UpdatePersonDTO model)
         {
-            UserPersonDTO user = await _service.GetByIdAsync(id);
-            if (user == null) return
-                    BadRequest(new AuthResponseDTO
-                    {
-                        Status = false,
-                        Message = "User doesn't exist"
-                    });
+            // Get current user ID from JWT claims
+            var userIdClaim = User.Claims.FirstOrDefault(c =>
+                c.Type == ClaimTypes.NameIdentifier ||
+                c.Type == "http://schemas.xmlsoap.org/ws/2005/identity/claims/nameidentifier");
 
+            if (userIdClaim == null)
+                return Unauthorized(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Invalid token"
+                });
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            // Get the user from the service
+            UserPersonDTO user = await _service.GetByIdAsync(userId);
+            if (user == null)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "User doesn't exist"
+                });
+
+            // Update personal info
             bool res = await _personalService.UpdateAsync(user.person.Id, model);
-            if (res == false) return BadRequest(new AuthResponseDTO
-            {
-                Status = false,
-                Message = "Update Failed"
-            });
+            if (!res)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Update failed"
+                });
 
             return Ok(new AuthResponseDTO
             {
                 Status = true,
-                Message = "Personal Info Updated"
+                Message = "Personal info updated"
             });
         }
-        [HttpDelete("DeleteProfile/{id:int}")]
-        public async Task<ActionResult<AuthResponseDTO>> Delete(int id)
-        {
-            UserPersonDTO user = await _service.GetByIdAsync(id);
-            if (user == null) return
-                    BadRequest( new AuthResponseDTO
-                    {
-                        Status = false,
-                        Message = "user doesn't exist"
-                    });
 
-            bool res = await _service.DeleteAsync(id);
-            if (res == false) return BadRequest(new AuthResponseDTO
-                   {
-                       Status = false,
-                       Message = "delete failed"
-                   });
+        [Authorize(Roles = "Customer")]
+        [HttpDelete("DeleteProfile")]
+        public async Task<ActionResult<AuthResponseDTO>> Delete()
+        {
+            // Get current user ID from JWT claims
+            var userIdClaim = User.Claims.FirstOrDefault(c =>
+                c.Type == ClaimTypes.NameIdentifier ||
+                c.Type == "http://schemas.xmlsoap.org/ws/2005/identity/claims/nameidentifier");
+
+            if (userIdClaim == null)
+                return Unauthorized(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Invalid token"
+                });
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            // Get the user from the service
+            UserPersonDTO user = await _service.GetByIdAsync(userId);
+            if (user == null)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "User doesn't exist"
+                });
+
+            // Delete user
+            bool res = await _service.DeleteAsync(userId);
+            if (!res)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Delete failed"
+                });
 
             return Ok(new AuthResponseDTO
             {
                 Status = true,
-                Message = "deleted successfully"
+                Message = "Deleted successfully"
             });
         }
     }

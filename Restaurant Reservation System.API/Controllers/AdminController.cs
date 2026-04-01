@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Restaurant_Reservation_System.Data;
@@ -32,6 +33,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             return roles.Any(r => r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
@@ -41,6 +43,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             var users = await _userService.GetAllAsync();
             return Ok(users);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAllCustomers")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAllCustomers()
         {
@@ -62,6 +65,7 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok(user);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateUserProfile/{id:int}")]
         public async Task<ActionResult<bool>> UpdateUserProfile(int id, UpdateUserDTO model)
         {
@@ -81,6 +85,7 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok(result);
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteUserProfile/{id:int}")]
         public async Task<ActionResult> DeleteUserProfile(int id)
         {
@@ -97,6 +102,7 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok();
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("RemoveRole/{id:int}")]
         public async Task<ActionResult<AuthResponseDTO>> RemoveRole(int id, int roleId)
         {
@@ -119,7 +125,8 @@ namespace Restaurant_Reservation_System.API.Controllers
                 Message = "Role removed"
             });
         }
-        [HttpPost("AddRole/{id:int}")]
+        [Authorize(Roles = "Admin")]
+        [HttpPost("GiveRole/{id:int}")]
         public async Task<ActionResult<AuthResponseDTO>> SetUserRole(int id, int roleId)
         {
             var user = await _context.Users.FindAsync(id);

@@ -45,7 +45,26 @@ namespace Restaurant_Reservation_System.Service
             if (restaurant == null)
                 return false;
 
-            restaurant = _mapper.Map<Restaurant>(model);
+            // Map only the fields from model to the existing restaurant
+            if (!string.IsNullOrEmpty(model.Name))
+                restaurant.Name = model.Name;
+
+            if (!string.IsNullOrEmpty(model.Location))
+                restaurant.Location = model.Location;
+
+            if (!string.IsNullOrEmpty(model.Description))
+                restaurant.Description = model.Description;
+
+            if (!string.IsNullOrEmpty(model.Email))
+                restaurant.Email = model.Email;
+
+            if (model.TotalTables > 0)
+                restaurant.TotalTables = model.TotalTables;
+
+            if (model.SeatsPerTable > 0)
+                restaurant.SeatsPerTable = model.SeatsPerTable;
+
+            // Save changes
             await _repo.UpdateAsync(restaurant);
             return true;
         }
