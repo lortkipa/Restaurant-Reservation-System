@@ -118,67 +118,130 @@ namespace Restaurant_Reservation_System.Data
                 }
             );
             modelBuilder.Entity<Restaurant>().HasData(
-                new Restaurant
-                {
-                    Id = 1,
-                    Name = "Shavi Lomi",
-                    Location = "Tbilisi, 30 Zurab Kvlividze St",
-                    Description = "Modern Georgian cuisine with creative twists and a cozy, artsy atmosphere.",
-                    Email = "shavilomi@example.com",
-                    TotalTables = 15,
-                    SeatsPerTable = 4
-                },
-                new Restaurant
-                {
-                    Id = 2,
-                    Name = "Barbarestan",
-                    Location = "Tbilisi, 132 Davit Aghmashenebeli Ave",
-                    Description = "Historic recipes from a 19th-century cookbook served in an elegant setting.",
-                    Email = "barbarestan@example.com",
-                    TotalTables = 12,
-                    SeatsPerTable = 4
-                },
-                new Restaurant
-                {
-                    Id = 3,
-                    Name = "Keto and Kote",
-                    Location = "Tbilisi, 3 Mikheil Zandukeli St",
-                    Description = "Charming garden restaurant known for traditional dishes and romantic vibes.",
-                    Email = "ketoandkote@example.com",
-                    TotalTables = 10,
-                    SeatsPerTable = 4
-                },
-                new Restaurant
-                {
-                    Id = 4,
-                    Name = "Salobie Bia",
-                    Location = "Mtskheta, 1 Samtavro St",
-                    Description = "Famous for authentic lobio and rustic Georgian comfort food.",
-                    Email = "salobie@example.com",
-                    TotalTables = 8,
-                    SeatsPerTable = 4
-                },
-                new Restaurant
-                {
-                    Id = 5,
-                    Name = "Machakhela",
-                    Location = "Batumi, 26 May 6 St",
-                    Description = "Casual spot popular for Adjarian khachapuri and local favorites.",
-                    Email = "machakhela@example.com",
-                    TotalTables = 14,
-                    SeatsPerTable = 4
-                },
-                new Restaurant
-                {
-                    Id = 6,
-                    Name = "Heart of Batumi",
-                    Location = "Batumi, 11 Gen. Mazniashvili St",
-                    Description = "Cozy restaurant offering classic Georgian meals in a warm setting.",
-                    Email = "heartofbatumi@example.com",
-                    TotalTables = 12,
-                    SeatsPerTable = 4
-                }
-            );
+             new Restaurant
+             {
+                 Id = 1,
+                 Name = "Shavi Lomi",
+                 Location = "Tbilisi, 30 Zurab Kvlividze St",
+                 Description = "Modern Georgian cuisine with creative twists and a cozy, artsy atmosphere.",
+                 Email = "shavilomi@example.com",
+                 TotalTables = 15,
+                 SeatsPerTable = 4
+             },
+             new Restaurant
+             {
+                 Id = 2,
+                 Name = "Barbarestan",
+                 Location = "Tbilisi, 132 Davit Aghmashenebeli Ave",
+                 Description = "Historic recipes from a 19th-century cookbook served in an elegant setting.",
+                 Email = "barbarestan@example.com",
+                 TotalTables = 12,
+                 SeatsPerTable = 4
+             },
+             new Restaurant
+             {
+                 Id = 3,
+                 Name = "Keto and Kote",
+                 Location = "Tbilisi, 3 Mikheil Zandukeli St",
+                 Description = "Charming garden restaurant known for traditional dishes and romantic vibes.",
+                 Email = "ketoandkote@example.com",
+                 TotalTables = 10,
+                 SeatsPerTable = 4
+             },
+             new Restaurant
+             {
+                 Id = 4,
+                 Name = "Salobie Bia",
+                 Location = "Mtskheta, 1 Samtavro St",
+                 Description = "Famous for authentic lobio and rustic Georgian comfort food.",
+                 Email = "salobie@example.com",
+                 TotalTables = 8,
+                 SeatsPerTable = 4
+             },
+             new Restaurant
+             {
+                 Id = 5,
+                 Name = "Machakhela",
+                 Location = "Batumi, 26 May 6 St",
+                 Description = "Casual spot popular for Adjarian khachapuri and local favorites.",
+                 Email = "machakhela@example.com",
+                 TotalTables = 14,
+                 SeatsPerTable = 4
+             },
+             new Restaurant
+             {
+                 Id = 6,
+                 Name = "Heart of Batumi",
+                 Location = "Batumi, 11 Gen. Mazniashvili St",
+                 Description = "Cozy restaurant offering classic Georgian meals in a warm setting.",
+                 Email = "heartofbatumi@example.com",
+                 TotalTables = 12,
+                 SeatsPerTable = 4
+             }
+         );
+            modelBuilder.Entity<Menu>().HasData(
+    // Shavi Lomi
+    new Menu { Id = 1, RestaurantId = 1, Name = "Main Dishes" },
+    new Menu { Id = 2, RestaurantId = 1, Name = "Drinks" },
+
+    // Barbarestan
+    new Menu { Id = 3, RestaurantId = 2, Name = "Traditional Meals" },
+    new Menu { Id = 4, RestaurantId = 2, Name = "Wine & Drinks" },
+
+    // Keto and Kote
+    new Menu { Id = 5, RestaurantId = 3, Name = "Garden Specials" },
+    new Menu { Id = 6, RestaurantId = 3, Name = "Desserts" },
+
+    // Salobie Bia
+    new Menu { Id = 7, RestaurantId = 4, Name = "Lobio & Beans" },
+    new Menu { Id = 8, RestaurantId = 4, Name = "Extras" },
+
+    // Machakhela
+    new Menu { Id = 9, RestaurantId = 5, Name = "Khachapuri" },
+    new Menu { Id = 10, RestaurantId = 5, Name = "Drinks" },
+
+    // Heart of Batumi
+    new Menu { Id = 11, RestaurantId = 6, Name = "Georgian Classics" },
+    new Menu { Id = 12, RestaurantId = 6, Name = "Drinks" }
+);
+            modelBuilder.Entity<MenuItem>().HasData(
+
+    // Shavi Lomi
+    new MenuItem { Id = 1, MenuId = 1, Name = "Chashushuli", Price = 18.5M, IsAvaiable = true },
+    new MenuItem { Id = 2, MenuId = 1, Name = "Ojakhuri", Price = 16.0M, IsAvaiable = true },
+    new MenuItem { Id = 3, MenuId = 2, Name = "Red Wine", Price = 12.0M, IsAvaiable = true },
+    new MenuItem { Id = 4, MenuId = 2, Name = "Craft Beer", Price = 8.5M, IsAvaiable = true },
+
+    // Barbarestan
+    new MenuItem { Id = 5, MenuId = 3, Name = "Kharcho", Price = 20.0M, IsAvaiable = true },
+    new MenuItem { Id = 6, MenuId = 3, Name = "Chkmeruli", Price = 19.5M, IsAvaiable = true },
+    new MenuItem { Id = 7, MenuId = 4, Name = "White Wine", Price = 13.0M, IsAvaiable = true },
+    new MenuItem { Id = 8, MenuId = 4, Name = "Mineral Water", Price = 3.0M, IsAvaiable = true },
+
+    // Keto and Kote
+    new MenuItem { Id = 9, MenuId = 5, Name = "Mtsvadi", Price = 17.0M, IsAvaiable = true },
+    new MenuItem { Id = 10, MenuId = 5, Name = "Badrijani Nigvzit", Price = 11.0M, IsAvaiable = true },
+    new MenuItem { Id = 11, MenuId = 6, Name = "Churchkhela", Price = 6.0M, IsAvaiable = true },
+    new MenuItem { Id = 12, MenuId = 6, Name = "Honey Cake", Price = 7.5M, IsAvaiable = true },
+
+    // Salobie Bia
+    new MenuItem { Id = 13, MenuId = 7, Name = "Lobio (Clay Pot)", Price = 9.0M, IsAvaiable = true },
+    new MenuItem { Id = 14, MenuId = 7, Name = "Lobio with Mchadi", Price = 11.0M, IsAvaiable = true },
+    new MenuItem { Id = 15, MenuId = 8, Name = "Pickled Vegetables", Price = 5.5M, IsAvaiable = true },
+    new MenuItem { Id = 16, MenuId = 8, Name = "Cornbread (Mchadi)", Price = 3.5M, IsAvaiable = true },
+
+    // Machakhela
+    new MenuItem { Id = 17, MenuId = 9, Name = "Adjarian Khachapuri", Price = 14.0M, IsAvaiable = true },
+    new MenuItem { Id = 18, MenuId = 9, Name = "Imeretian Khachapuri", Price = 12.0M, IsAvaiable = true },
+    new MenuItem { Id = 19, MenuId = 10, Name = "Lemonade", Price = 4.0M, IsAvaiable = true },
+    new MenuItem { Id = 20, MenuId = 10, Name = "Beer", Price = 6.5M, IsAvaiable = true },
+
+    // Heart of Batumi
+    new MenuItem { Id = 21, MenuId = 11, Name = "Khinkali (10 pcs)", Price = 13.0M, IsAvaiable = true },
+    new MenuItem { Id = 22, MenuId = 11, Name = "Chakapuli", Price = 18.0M, IsAvaiable = true },
+    new MenuItem { Id = 23, MenuId = 12, Name = "Red Wine", Price = 11.0M, IsAvaiable = true },
+    new MenuItem { Id = 24, MenuId = 12, Name = "Cola", Price = 3.0M, IsAvaiable = true }
+);
         }
     }
 }

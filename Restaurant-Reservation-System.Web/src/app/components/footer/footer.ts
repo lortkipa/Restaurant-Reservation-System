@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Globals } from '../../services/globals';
-import { NavigationEnd, Route, Router } from '@angular/router';
+import { NavigationEnd, Route, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-footer',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './footer.html',
   styleUrl: './footer.scss',
 })

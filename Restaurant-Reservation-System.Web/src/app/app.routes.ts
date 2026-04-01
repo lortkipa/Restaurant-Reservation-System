@@ -7,6 +7,7 @@ import { Profile } from './components/profile/profile';
 import { Menus } from './components/menus/menus';
 import { Reservations } from './components/admin-panel/reservations/reservations';
 import { AdminPanelRestaurants } from './components/admin-panel/admin-panel-restaurants/admin-panel-restaurants';
+import { About } from './components/about/about';
 
 
 export const routes: Routes = [
@@ -47,5 +48,9 @@ export const routes: Routes = [
             { path: 'restaurants', component: AdminPanelRestaurants },
             //{path: 'users', component: }
         ]
+    },
+    {
+        path: 'about',
+        component: About
     }
 ];
