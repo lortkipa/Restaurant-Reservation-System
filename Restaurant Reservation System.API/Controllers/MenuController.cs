@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Restaurant_Reservation_System.Dal.Repositories;
 using Restaurant_Reservation_System.Data;
 using Restaurant_Reservation_System.Data.Entities;
+using Restaurant_Reservation_System.Service.DTOs;
 using Restaurant_Reservation_System.Service.DTOs.Menu;
 using Restaurant_Reservation_System.Service.Interfaces;
 
@@ -117,13 +118,13 @@ namespace Restaurant_Reservation_System.API.Controllers
 
         // Admin only
         [HttpPost("AddDish/{id}")]
-        public async Task<IActionResult> AddDishToMenu(int id, [FromBody] MenuItemDTO item)
+        public async Task<ActionResult<AuthResponseDTO>> AddDishToMenu(int id, MenuItemDTO item)
         {
             var menu = await _context.Set<Menu>()
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (menu == null)
-                return NotFound("Menu not found.");
+                return new AuthResponseDTO { Status = false, Message = "Invalid Dish Property" };
 
             var dish = new MenuItem
             {
@@ -136,25 +137,25 @@ namespace Restaurant_Reservation_System.API.Controllers
             _context.Set<MenuItem>().Add(dish);
             await _context.SaveChangesAsync();
 
-            return Ok("Dish added successfully.");
+            return new AuthResponseDTO { Status = true, Message = "Dish Added Successfully" };
         }
 
         // Admin only
         [HttpPut("UpdateDish/{menuItemId}")]
-        public async Task<IActionResult> UpdateDish(int menuItemId, [FromBody] MenuItemDTO item)
+        public async Task<ActionResult<AuthResponseDTO>> UpdateDish(int menuItemId, MenuItemDTO item)
         {
             var dish = await _context.Set<MenuItem>()
                 .FirstOrDefaultAsync(d => d.Id == menuItemId);
 
             if (dish == null)
-                return NotFound("Dish not found.");
+                return new AuthResponseDTO { Status = false, Message = "Dish Not Found" };
 
             dish.Name = item.Name;
             dish.Price = item.Price;
             dish.IsAvaiable = item.IsAvaiable;
 
             await _context.SaveChangesAsync();
-            return Ok("Dish updated successfully.");
+            return new AuthResponseDTO { Status = true, Message = "Dish Added Successfully" };
         }
 
         // Admin only
@@ -174,20 +175,21 @@ namespace Restaurant_Reservation_System.API.Controllers
         }
 
         // Admin only
-        [HttpDelete("Remove/{menuId}/dishes/{dishId}")]
-        public async Task<IActionResult> RemoveDishFromMenu(int menuId, int dishId)
+        //[HttpDelete("Remove/{menuId}/dishes/{dishId}")]
+        [HttpDelete("RemoveDish/{dishId}")]
+        public async Task<ActionResult<AuthResponseDTO>> RemoveDishFromMenu(int dishId)
         {
             var dish = await _context.Set<MenuItem>()
-                .FirstOrDefaultAsync(d => d.Id == dishId && d.MenuId == menuId);
+                .FirstOrDefaultAsync(d => d.Id == dishId);
 
             if (dish == null)
-                return NotFound("Dish not found in this menu.");
+                return new AuthResponseDTO { Status = false, Message = "Dish Not Found" };
 
             _context.Set<MenuItem>().Remove(dish);
             await _context.SaveChangesAsync();
 
             // Return 204 No Content since deletion was successful
-            return NoContent();
+            return new AuthResponseDTO { Status = true, Message = "Dish Removed Successfully" };
         }
     }
 }

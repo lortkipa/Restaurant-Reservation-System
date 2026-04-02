@@ -1,1 +1,100 @@
-<p>menus work</p>
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Menus</h1>
+  </div>
+  <button class="btn-gold">+ ADD MENU</button>
+</div>
+
+<!-- RESTAURANTS ROW (Read-only, Hard-coded) -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">Restaurants</h2>
+    <span class="section-count">{{restaurants().length}} available</span>
+  </div>
+  <div class="restaurants-row">
+    <div class="restaurant-chip" *ngFor="let res of restaurants()" (click)="selectRestaurant(res.id, res.name)"
+      [ngClass]="selectedRestaurantId() == res.id ? 'active' : ''">
+      <div class="rc-name">{{res.name}}</div>
+    </div>
+  </div>
+</div>
+
+<!-- MENUS ROW (For selected restaurant) -->
+<div class="section" *ngIf="selectedMenuDishes() != null">
+  <div class="section-header">
+    <h2 class="section-title">Menus for <em>{{selectedRestaurantName()}}</em></h2>
+    <span class="section-count">{{selectedMenuDishes()?.length}} menus</span>
+  </div>
+  <div class="menus-row">
+    <div class="menu-chip" *ngFor="let menuDish of selectedMenuDishes()"
+      (click)="selectMenu(menuDish.id, menuDish.name, menuDish.dishes)" [ngClass]="selectedMenuId() == menuDish.id ? 'active' : ''">
+      <div class="mc-name">{{menuDish.name}}</div>
+      <div class="mc-n">{{menuDish.dishes.length}} dishes</div>
+      <div class="mc-btns">
+        <button class="mc-btn">EDIT</button>
+        <button class="mc-btn del">DELETE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD / EDIT DISH FORM -->
+<div class="form-overlay" *ngIf="showDishForm()">
+  <div class="form-card">
+    <h3>{{ dishEditMode() ? 'EDIT DISH' : 'ADD DISH' }}</h3>
+    <div class="form-grid">
+      <input [(ngModel)]="dishForm().name" placeholder="Dish Name" />
+      <input [(ngModel)]="dishForm().price" type="number" placeholder="Price" />
+      <!-- <input type="checkbox" [(ngModel)]="dishForm().isAvaiable" /> -->
+      <!-- <textarea placeholder="Description"></textarea> -->
+    </div>
+    <div class="form-actions">
+      <button class="btn-gold" (click)="saveDish()">SAVE</button>
+      <button class="btn-ghost" (click)="showDishForm.set(false)">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- DISHES PANEL (For selected menu) -->
+<div class="dishes-container" *ngIf="selectedMenuId() != 0">
+  <div class="dishes-header">
+    <div>
+      <h3 class="dh-title">Dishes in <span>{{selectedMenuName()}}</span></h3>
+      <!-- <p class="dh-desc">Restaurant: Le Bernardin</p> -->
+    </div>
+    <button class="btn-gold" (click)="openAddDish()">+ ADD DISH</button>
+  </div>
+
+  <div class="dishes-table-wrapper">
+    <table class="dishes-table">
+      <!-- <thead>
+        <tr>
+          <th>DISH NAME</th>
+          <th>DESCRIPTION</th>
+          <th class="text-right">PRICE</th>
+          <th class="text-right">STATUS</th>
+          <th class="text-right">ACTIONS</th>
+        </tr>
+      </thead> -->
+      <tbody>
+        <tr *ngFor="let dish of selectedDishes()">
+          <div>
+            <td class="dish-name-cell">{{dish.name}}</td>
+            <!-- <td class="td-desc">Fresh Atlantic tuna with herb crust and ponzu sauce</td> -->
+            <td class="dish-price text-right"></td>
+            <td class="text-right">
+              <span class="status-tag available">{{dish.isAvaiable ? 'AVAILABLE' : 'UNAVAILABLE'}}</span>
+            </td>
+            <td class="text-right">
+              <div class="dish-actions">
+                <button class="action-link" (click)="openEditDish(dish)">Edit</button>
+                <button class="action-link del" (click)="removeDish(dish.id)">Delete</button>
+              </div>
+            </td>
+          </div>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

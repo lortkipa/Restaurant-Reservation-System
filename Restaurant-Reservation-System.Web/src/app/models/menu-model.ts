@@ -8,7 +8,13 @@ export interface DishModel {
     id: number
     name: string,
     price: number,
-    isAvailable: boolean
+    isAvaiable: boolean
+}
+
+export interface CreateDishModel {
+    name: string,
+    price: number,
+    isAvaiable: boolean
 }
 
 export interface MenuDishModel {

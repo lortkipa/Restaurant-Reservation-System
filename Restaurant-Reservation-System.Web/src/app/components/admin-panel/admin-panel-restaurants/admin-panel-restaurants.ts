@@ -4,11 +4,12 @@ import { RestaurantService } from '../../../services/restaurant-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertService } from '../../../services/alert-service';
+import { RouterLink } from "@angular/router";
 
 @Component({
   standalone: true,
   selector: 'app-admin-panel-restaurants',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './admin-panel-restaurants.html',
   styleUrl: './admin-panel-restaurants.scss',
 })
