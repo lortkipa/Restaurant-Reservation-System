@@ -13,6 +13,10 @@ import {  RoleModel } from '../models/role-model';
 export class UserService {
   constructor(private globals: Globals, private http: HttpClient) { }
 
+  GetAll(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllUsers`)
+  }
+
   Register(data: RegisterModel): Observable<AuthResponseModel> {
     return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}/User/Register`, data);
   }

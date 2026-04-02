@@ -101,10 +101,10 @@ namespace Restaurant_Reservation_System.Service
         {
             var user = await _repo.GetUserWithRoles(customerId);
 
-            var isCustomer = user.RoleUsers
-                .Any(ru => ru.Role.Name == "Customer");
+            //var isCustomer = user.RoleUsers
+            //    .Any(ru => ru.Role.Name == "Customer");
 
-            if (!isCustomer) return null;
+            //if (!isCustomer) return null;
 
             var reserv = await _repo.GetByCustomerIdAsync(customerId);
             return _mapper.Map<IEnumerable<ReservationDTO>>(reserv);

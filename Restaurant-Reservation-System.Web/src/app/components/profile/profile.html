@@ -149,6 +149,71 @@
       </form>
     </div>
 
+    <!-- <div class="panel reveal d4 restaurants-panel">
+      <div class="panel-head">
+        <span class="panel-title">Recent Reservations</span>
+      </div>
+      <div class="panel-body" id="reservations-list">
+        <div
+          style="display:flex;align-items:flex-start;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(200,169,106,.07);gap:12px">
+          <div>
+            <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:3px">
+              Table #1 • 4 Guests @ Golden Spoon
+            </div>
+            <div style="font-size:10px;color:var(--muted);letter-spacing:.5px">
+              Mar 29, 2026 · 00:00
+            </div>
+          </div>
+          <span
+            style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border:1px solid;color:var(--green);border-color:var(--green)26;background:var(--green)11;white-space:nowrap;flex-shrink:0">
+            Confirmed
+          </span>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="panel reveal d4 restaurants-panel">
+  <div class="panel-head">
+    <span class="panel-title">Recent Reservations</span>
+  </div>
+  
+  <div class="panel-body" id="reservations-list">
+    <div *ngIf="reservations.length === 0" style="color:var(--muted); font-size:12px; padding:15px 0;">
+      No recent reservations found.
+    </div>
+
+    <div *ngFor="let res of reservations"
+      style="display:flex;align-items:flex-start;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(200,169,106,.07);gap:12px">
+      
+      <div>
+        <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:3px">
+          Table #{{ res.tableNumber }}
+          <span style="color:var(--gold)"> • {{ res.date | date:'MMM d, y' }}</span>
+        </div>
+        <div style="font-size:10px;color:var(--muted);letter-spacing:.5px">
+          {{ res.guestCount }} Guests
+        </div>
+      </div>
+
+      <button *ngIf="res.statusId !== 3" 
+          (click)="cancelReservation(res.id)"
+          style="background:none; border:1px solid rgba(255,82,82,0.4); color:#ff5252; font-size:9px; padding:4px 10px; cursor:pointer; text-transform:uppercase; transition: 0.3s; margin-right: 8px;"
+          onmouseover="this.style.background='rgba(255,82,82,0.1)'" 
+          onmouseout="this.style.background='none'">
+    Cancel
+  </button>
+
+      <span [style.color]="getStatusColor(res.statusId)"
+            [style.border-color]="getStatusColor(res.statusId) + '26'"
+            [style.background]="getStatusColor(res.statusId) + '11'"
+            style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border:1px solid;white-space:nowrap;flex-shrink:0">
+        {{ getStatusLabel(res.statusId) }}
+      </span>
+      
+    </div>
+  </div>
+</div>
+
     <!-- ── Danger zone ── -->
     <div class="panel panel-full reveal d5">
       <div class="panel-head">

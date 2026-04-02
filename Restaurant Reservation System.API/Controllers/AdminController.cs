@@ -33,7 +33,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             return roles.Any(r => r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
@@ -43,7 +43,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             var users = await _userService.GetAllAsync();
             return Ok(users);
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet("GetAllCustomers")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAllCustomers()
         {

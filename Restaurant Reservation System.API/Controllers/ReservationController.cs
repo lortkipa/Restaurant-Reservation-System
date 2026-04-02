@@ -74,9 +74,9 @@ namespace Restaurant_Reservation_System.API.Controllers
             }
 
             // 🔹 CURRENT USER ONLY (no customerId param anymore)
-            [Authorize(Roles = "Customer")]
+            [Authorize]
             [HttpGet("Get")]
-            public async Task<IActionResult> GetMyReservations()
+            public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetMyReservations()
             {
                 var userId = GetUserId();
                 if (userId == null) return Unauthorized();
