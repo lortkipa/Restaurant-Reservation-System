@@ -33,7 +33,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             return roles.Any(r => r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
         }
 
-        [Authorize]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
@@ -43,7 +43,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             var users = await _userService.GetAllAsync();
             return Ok(users);
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet("GetAllCustomers")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAllCustomers()
         {
@@ -65,7 +65,7 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok(user);
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("UpdateUserProfile/{id:int}")]
         public async Task<ActionResult<bool>> UpdateUserProfile(int id, UpdateUserDTO model)
         {
@@ -85,7 +85,7 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok(result);
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("DeleteUserProfile/{id:int}")]
         public async Task<ActionResult> DeleteUserProfile(int id)
         {

@@ -63,7 +63,7 @@ export class Profile {
   loadUserReservations() {
     let currentToken = this.token();
     if (!currentToken) return;
-    this.userService.GetAll().subscribe((d) => console.log(d))
+    this.userService.GetAll(currentToken).subscribe((d) => console.log(d))
     this.reservationService.getMyReservations(currentToken).subscribe({
       next: (data: ReservationModel[]) => {
         console.log(data)

@@ -1,0 +1,140 @@
+<div class="pg active">
+
+    <!-- SEARCH -->
+    <div class="search-row">
+        <input class="si" placeholder="Search by name or email..." [(ngModel)]="search" />
+    </div>
+    <div class="role-filter">
+        <button class="rf-btn" [ngClass]="filterBy() == 'all' ? 'active' : ''"
+            (click)="getAllUsers()" 
+            (click)="setFilterBy('all')">All</button>
+        <button class="rf-btn" [ngClass]="filterBy() == 'customers' ? 'active' : ''"
+            (click)="getAllCustomers()" 
+            (click)="setFilterBy('customers')">Customers</button>
+    </div>
+
+    <!-- PANEL -->
+    <div class="panel">
+
+
+        <div class="pb">
+            <table class="dt">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let user of filteredUsers()">
+
+                        <!-- USER -->
+                        <td>
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <div style="
+                  width:28px;
+                  height:28px;
+                  border-radius:50%;
+                  background:var(--gold);
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  font-size:11px;
+                  font-weight:700;
+                  color:var(--bg);
+                ">
+                                    {{ user.username.charAt(0) }}
+                                </div>
+
+                                <strong style="font-weight:500">
+                                    {{ user.username }}
+                                </strong>
+                            </div>
+                        </td>
+
+                        <!-- EMAIL -->
+                        <td class="dim">
+                            {{ user.email }}
+                        </td>
+
+                        <!-- JOINED DATE -->
+                        <td class="dim">
+                            {{ user.registrationDate | date:'dd MMM yyyy' }}
+                        </td>
+
+                        <!-- ACTIONS -->
+                        <td>
+                            <div style="display:flex;gap:6px;flex-wrap:wrap">
+                                <button class="ab" (click)="openUser(user)">View</button>
+                                <button class="ab" (click)="openEditUser(user)">Edit</button>
+                                <button class="ab del" (click)="deleteUser(user.id)">Delete</button>
+                            </div>
+                        </td>
+
+                    </tr>
+
+                    <!-- EMPTY STATE -->
+                    <tr *ngIf="users().length === 0">
+                        <td colspan="4">
+                            <div class="empty">
+                                <div class="empty-icon">◯</div>
+                                <div class="empty-text">No users found</div>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel reveal d2" *ngIf="selectedUser() as user">
+    <div class="panel-head">
+        <span class="panel-title">Account Details</span>
+        <button class="panel-edit-btn" (click)="openEditUser(user)">Edit</button>
+    </div>
+
+    <!-- Read-only view -->
+    <div class="panel-body" *ngIf="editMode() == false">
+        <div class="info-row">
+            <span class="info-label">Username</span>
+            <span class="info-value">{{ selectedUser()?.username }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value">{{ selectedUser()?.email }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Password</span>
+            <span class="info-value" style="letter-spacing:3px">••••••••</span>
+        </div>
+    </div>
+
+    <form class="panel-body" *ngIf="editMode()" #myForm="ngForm" (ngSubmit)="updateUserDetails(myForm)">
+        <div class="form-grid">
+            <div class="field full">
+                <label>Username</label>
+                <input type="text" [(ngModel)]="username" name="username">
+            </div>
+            <div class="field full">
+                <label>Email Address</label>
+                <input type="email" [(ngModel)]="email" name="email" required email>
+            </div>
+            <div class="field full">
+                <label>New Password</label>
+                <input type="password" [(ngModel)]="password" name="password" placeholder="Leave blank to keep current"
+                    required>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div style="display:flex;gap:10px">
+                <button class="btn-cancel" type="button">Cancel</button>
+                <button class="btn-save" type="submit">Save Changes</button>
+            </div>
+        </div>
+    </form>
+</div>

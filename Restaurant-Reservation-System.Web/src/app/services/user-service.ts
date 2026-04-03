@@ -13,8 +13,29 @@ import {  RoleModel } from '../models/role-model';
 export class UserService {
   constructor(private globals: Globals, private http: HttpClient) { }
 
-  GetAll(): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllUsers`)
+  GetAll(token: string): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllUsers`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+  }
+
+  GetAllCustomers(token: string) : Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllCustomers`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+  }
+
+  UpdateUserProfile(token: string, id:number, data: UpdateUserModel) : Observable<boolean> {
+    return this.http.put<boolean>(`${this.globals.apiUrl}/Admin/UpdateUserProfile/${id}`,
+      data,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
+
+  removeUserProfile(token: string, id:number) : Observable<boolean> {
+    return this.http.delete<boolean>(`${this.globals.apiUrl}/Admin/DeleteUserProfile/${id}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
   }
 
   Register(data: RegisterModel): Observable<AuthResponseModel> {
