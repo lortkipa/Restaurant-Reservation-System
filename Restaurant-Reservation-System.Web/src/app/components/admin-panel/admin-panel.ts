@@ -21,11 +21,17 @@ import { AdminPanelRestaurants } from "./admin-panel-restaurants/admin-panel-res
 export class AdminPanel {
   constructor(public globals: Globals) {}
 
-  // ✅ Writable signal
-  show: WritableSignal<string> = signal("reservations");
+  show: WritableSignal<string> = signal("");
+  // Signal to handle mobile menu state
+  isSidebarOpen = signal(false);
 
-  // ✅ Explicit void return
   switchShow(show: string): void {
     this.show.set(show);
+    // Close sidebar automatically on mobile after clicking a link
+    this.isSidebarOpen.set(false);
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarOpen.update(v => !v);
   }
 }

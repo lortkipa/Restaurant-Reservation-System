@@ -26,10 +26,17 @@ namespace Restaurant_Reservation_System.API.Controllers
 
         // Admin only
         [HttpPost("Add")]
-        public async Task<IActionResult> CreateMenu([FromBody] CreateMenuDTO model)
+        public async Task<ActionResult<bool>> CreateMenu([FromBody] CreateMenuDTO model)
         {
             var menu = await _menuService.CreateAsync(model);
             return Ok(menu);
+        }
+
+        [HttpDelete("Remove/{id:int}")]
+        public async Task<ActionResult<bool>> RemoveMenu(int id)
+        {
+            var res = _menuService.DeleteAsync(id);
+            return Ok(res.Result);
         }
 
         // Admin + Customer

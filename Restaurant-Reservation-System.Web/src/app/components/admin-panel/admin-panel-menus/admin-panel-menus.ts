@@ -1,5 +1,5 @@
 import { Component, signal, WritableSignal, inject } from '@angular/core';
-import { CreateDishModel, DishModel, MenuDishModel } from '../../../models/menu-model';
+import { CreateDishModel, DishModel, MenuDishModel, MenuModel } from '../../../models/menu-model';
 import { AlertService } from '../../../services/alert-service';
 import { MenuService } from '../../../services/menu-service';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RestaurantModel } from '../../../models/restaurant-model';
 import { RestaurantService } from '../../../services/restaurant-service';
+import { Route, Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -34,11 +35,17 @@ export class AdminPanelMenus {
   constructor(
     private restaurantService: RestaurantService,
     private menuService: MenuService,
-    private alert: AlertService
+    private alert: AlertService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.load();
+  }
+
+  showAddMenu = signal<boolean>(false)
+  toggleAddMenu() {
+    this.showMenuForm.set(!this.showMenuForm())
   }
 
   load() {
@@ -85,15 +92,32 @@ export class AdminPanelMenus {
   }
 
   // Show/hide add/edit dish form
+  showMenuForm = signal(false)
+  menuEditMode = signal(false)
   showDishForm = signal(false);
   dishEditMode = signal(false);
 
   // Form for adding/editing dish
+  menuForm = signal<MenuModel>({
+    id: 0,
+    restaurantId: 0,
+    name: ''
+  })
   dishForm = signal<CreateDishModel>({
     name: '',
     price: 0,
     isAvaiable: true
   });
+
+  openAddMenu() {
+    this.menuEditMode.set(false)
+    this.menuForm.set({
+      id: 0,
+      name: '',
+      restaurantId: 0
+    })
+     this.showMenuForm.set(true);
+  }
 
   // Method to open Add Dish form
   openAddDish() {
@@ -115,6 +139,28 @@ export class AdminPanelMenus {
     this.selectedDishId.set(dish.id)
   }
 
+  saveMenu() {
+    const newMenu = this.menuForm()
+    if (!newMenu.name) {this.alert.error("Failed to Add Menu", "Name is Empty"); return;}
+
+    newMenu.restaurantId = this.selectedRestaurantId()
+
+    if (!this.menuEditMode()) {
+      this.alert.confirm("Are You Sure?").then((res) => {
+        if(!res.isConfirmed) return
+
+        this.menuService.AddMenu(newMenu).subscribe({
+          next: () => {
+            this.alert.success("Menu Added", '').then(() => this.load()).then(() => {
+              this.router.navigate(['/home']).then(() => {window.location.reload();});
+            })
+          },
+          error: (err) => this.alert.error("Menu Not Added", err.error.message)
+        })
+      })
+    }
+  }
+
   // Method to save dish
   saveDish() {
     const newDish = this.dishForm();
@@ -128,7 +174,9 @@ export class AdminPanelMenus {
 
         this.menuService.UpdateDish(this.selectedDishId(), this.dishForm()).subscribe({
           next: () => {
-            this.alert.success("Dish Updated", '').then(() => this.load());
+            this.alert.success("Dish Updated", '').then(() => this.load()).then(() => {
+              this.router.navigate(['/admin-panel/menus']).then(() => {window.location.reload();});
+            })
           },
           error: (err) => this.alert.error("Dish Not Updated", err.error.message)
         })
@@ -148,13 +196,30 @@ export class AdminPanelMenus {
     this.showDishForm.set(false);
   }
 
+   removeMenu(id: number) {
+    this.alert.confirm("Are You Sure?").then((res) => {
+      if (!res.isConfirmed) return;
+
+      this.menuService.RemoveMenu(id).subscribe({
+        next: () => {
+          this.alert.success("Menu Removed", '').then(() => this.load()).then(() => {
+              this.router.navigate(['/admin-panel/menus']).then(() => {window.location.reload();});
+            })
+        },
+        error: (err) => this.alert.error("Menu Not Removed", err.error.message)
+      })
+    })
+  }
+
   removeDish(id: number) {
     this.alert.confirm("Are You Sure?").then((res) => {
       if (!res.isConfirmed) return;
 
       this.menuService.RemoveDish(id).subscribe({
         next: () => {
-          this.alert.success("Dish Removed", '').then(() => this.load());
+          this.alert.success("Dish Removed", '').then(() => this.load()).then(() => {
+              this.router.navigate(['/admin-panel/menus']).then(() => {window.location.reload();});
+            })
         },
         error: (err) => this.alert.error("Dish Not Removed", err.error.message)
       })

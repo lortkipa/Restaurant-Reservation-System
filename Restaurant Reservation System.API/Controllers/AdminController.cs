@@ -102,8 +102,8 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok();
         }
-        [Authorize(Roles = "Admin")]
-        [HttpDelete("RemoveRole/{id:int}")]
+        //[Authorize(Roles = "Admin")]
+        [HttpDelete("RemoveRole/{id:int}/{roleId:int}")]
         public async Task<ActionResult<AuthResponseDTO>> RemoveRole(int id, int roleId)
         {
             var userRole = await _context.RoleUsers
@@ -125,8 +125,8 @@ namespace Restaurant_Reservation_System.API.Controllers
                 Message = "Role removed"
             });
         }
-        [Authorize(Roles = "Admin")]
-        [HttpPost("GiveRole/{id:int}")]
+        //[Authorize(Roles = "Admin")]
+        [HttpPost("SetRole/{id:int}/{roleId:int}")]
         public async Task<ActionResult<AuthResponseDTO>> SetUserRole(int id, int roleId)
         {
             var user = await _context.Users.FindAsync(id);
@@ -165,6 +165,17 @@ namespace Restaurant_Reservation_System.API.Controllers
                 Status = true,
                 Message = "Role assigned"
             });
+        }
+        [HttpGet("GetRoles/{id:int}")]
+        public async Task<ActionResult<IEnumerable<RoleDTO>>> GetUserRoles(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return NotFound("User not found");
+            var roles = await _userService.GetRolesById(id);
+            if (roles == null || !roles.Any())
+                return NotFound("User has no roles");
+            return Ok(roles);
         }
     }
 }

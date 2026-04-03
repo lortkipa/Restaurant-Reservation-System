@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthResponseModel } from '../models/auth-response-model';
 import { GoldLine } from '../components/gold-line/gold-line';
 import { LoginModel, RegisterModel, UpdatePersonModel, UpdateUserModel, UserModel, UserPersonModel } from '../models/user-model';
-import {  RoleModel } from '../models/role-model';
+import {  RoleModel, Roles } from '../models/role-model';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +36,18 @@ export class UserService {
     return this.http.delete<boolean>(`${this.globals.apiUrl}/Admin/DeleteUserProfile/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
+  }
+
+  setUserRole(id:number, roleId:Roles) : Observable<AuthResponseModel> {
+    return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}/Admin/SetRole/${id}/${roleId}`, {})
+  }
+
+  removeUserRole(id:number, roleId:Roles) : Observable<AuthResponseModel> {
+    return this.http.delete<AuthResponseModel>(`${this.globals.apiUrl}/Admin/RemoveRole/${id}/${roleId}`)
+  }
+
+  getUserRoles(id:number) : Observable<RoleModel[]> {
+    return this.http.get<RoleModel[]>(`${this.globals.apiUrl}/Admin/GetRoles/${id}`)
   }
 
   Register(data: RegisterModel): Observable<AuthResponseModel> {

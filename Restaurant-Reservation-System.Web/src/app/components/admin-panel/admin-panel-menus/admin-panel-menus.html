@@ -2,7 +2,6 @@
   <div>
     <h1 class="page-title">Menus</h1>
   </div>
-  <button class="btn-gold">+ ADD MENU</button>
 </div>
 
 <!-- RESTAURANTS ROW (Read-only, Hard-coded) -->
@@ -23,16 +22,32 @@
 <div class="section" *ngIf="selectedMenuDishes() != null">
   <div class="section-header">
     <h2 class="section-title">Menus for <em>{{selectedRestaurantName()}}</em></h2>
-    <span class="section-count">{{selectedMenuDishes()?.length}} menus</span>
+    <button class="btn-gold" (click)="toggleAddMenu()">+ ADD MENU</button>
   </div>
+
+  <div class="form-overlay" *ngIf="showMenuForm()">
+  <div class="form-card">
+    <h3>{{ dishEditMode() ? 'EDIT MENU' : 'ADD MENU' }}</h3>
+    <div class="form-grid" style="grid-template-columns: 1fr">
+      <input [(ngModel)]="menuForm().name" placeholder="Menu Name" />
+      <!-- <input [(ngModel)]="dishForm().price" type="number" placeholder="Price" /> -->
+    </div>
+    <div class="form-actions">
+      <button class="btn-gold" (click)="saveMenu()">SAVE</button>
+      <button class="btn-ghost" (click)="showDishForm.set(false)" (click)="toggleAddMenu()">CANCEL</button>
+    </div>
+  </div>
+</div>
+
   <div class="menus-row">
     <div class="menu-chip" *ngFor="let menuDish of selectedMenuDishes()"
-      (click)="selectMenu(menuDish.id, menuDish.name, menuDish.dishes)" [ngClass]="selectedMenuId() == menuDish.id ? 'active' : ''">
+      (click)="selectMenu(menuDish.id, menuDish.name, menuDish.dishes)"
+      [ngClass]="selectedMenuId() == menuDish.id ? 'active' : ''">
       <div class="mc-name">{{menuDish.name}}</div>
       <div class="mc-n">{{menuDish.dishes.length}} dishes</div>
       <div class="mc-btns">
         <button class="mc-btn">EDIT</button>
-        <button class="mc-btn del">DELETE</button>
+        <button class="mc-btn del" (click)="removeMenu(menuDish.id)">DELETE</button>
       </div>
     </div>
   </div>

@@ -1,16 +1,24 @@
 <div class="admin-layout">
-  <aside class="sidebar">
+  <header class="mobile-top-bar">
+    <span class="brand-name">{{ globals.appName }}</span>
+    <button class="menu-toggle" (click)="toggleSidebar()">
+      {{ isSidebarOpen() ? '✕' : '☰' }}
+    </button>
+  </header>
+
+  <div class="sidebar-overlay" 
+       [class.active]="isSidebarOpen()" 
+       (click)="toggleSidebar()"></div>
+
+  <aside class="sidebar" [class.open]="isSidebarOpen()">
     <div class="sidebar-brand">
       <span class="brand-name">{{ globals.appName }}</span>
       <span class="brand-sub">ADMIN CONSOLE</span>
     </div>
 
-
     <nav class="sidebar-nav">
-
       <div class="nav-section-label">GENERAL</div>
-      <a routerLink="users" routerLinkActive="active" class="nav-item"
-        routerLink="/home">
+      <a routerLink="/home" routerLinkActive="active" class="nav-item">
         ⌂ Home
       </a>
 
@@ -39,7 +47,7 @@
 
     <div class="sidebar-footer">
       <div class="admin-avatar">A</div>
-      <div>
+      <div class="admin-info">
         <div class="admin-name">Administrator</div>
         <div class="admin-role">Super Admin</div>
       </div>

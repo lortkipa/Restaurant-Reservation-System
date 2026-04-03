@@ -1,3 +1,11 @@
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Users</h1>
+        <!-- <span class="page-sub">All bookings</span> -->
+    </div>
+</div>
+
+
 <div class="pg active">
 
     <!-- SEARCH -->
@@ -5,11 +13,9 @@
         <input class="si" placeholder="Search by name or email..." [(ngModel)]="search" />
     </div>
     <div class="role-filter">
-        <button class="rf-btn" [ngClass]="filterBy() == 'all' ? 'active' : ''"
-            (click)="getAllUsers()" 
+        <button class="rf-btn" [ngClass]="filterBy() == 'all' ? 'active' : ''" (click)="getAllUsers()"
             (click)="setFilterBy('all')">All</button>
-        <button class="rf-btn" [ngClass]="filterBy() == 'customers' ? 'active' : ''"
-            (click)="getAllCustomers()" 
+        <button class="rf-btn" [ngClass]="filterBy() == 'customers' ? 'active' : ''" (click)="getAllCustomers()"
             (click)="setFilterBy('customers')">Customers</button>
     </div>
 
@@ -23,6 +29,7 @@
                     <tr>
                         <th>User</th>
                         <th>Email</th>
+                        <th>Roles</th>
                         <th>Joined</th>
                         <th>Actions</th>
                     </tr>
@@ -58,6 +65,16 @@
                         <!-- EMAIL -->
                         <td class="dim">
                             {{ user.email }}
+                        </td>
+
+                        <td>
+                            <span *ngFor="let role of (getUserRoles(user.id) | async) ?? []" class="badge" [ngClass]="{
+                                'b-red': role.name === 'Admin',
+                                'b-amber': role.name === 'Worker',
+                                'b-green': role.name === 'Customer'
+                                }">
+                                {{ role.name }}
+                            </span>
                         </td>
 
                         <!-- JOINED DATE -->
@@ -100,6 +117,15 @@
 
     <!-- Read-only view -->
     <div class="panel-body" *ngIf="editMode() == false">
+        <td *ngFor="let role of (getUserRoles(user.id) | async) ?? []">
+            <span class="badge" [ngClass]="{
+                                'b-red': role.name === 'Admin',
+                                'b-amber': role.name === 'Worker',
+                                'b-green': role.name === 'Customer'
+                                }">
+                {{ role.name }}
+            </span>
+        </td>
         <div class="info-row">
             <span class="info-label">Username</span>
             <span class="info-value">{{ selectedUser()?.username }}</span>
@@ -115,7 +141,24 @@
     </div>
 
     <form class="panel-body" *ngIf="editMode()" #myForm="ngForm" (ngSubmit)="updateUserDetails(myForm)">
-        <div class="form-grid">
+        <td *ngIf="(getUserRoles(user.id) | async) as roles">
+            <span class="badge" style="cursor: pointer;" [ngClass]="roles.some(r => r.name === 'Admin') ? 'b-red' : ''"
+                (click)="addRole(user.id, 'Admin', roles)"
+                (click)="removeRole(user.id, 'Admin', roles)">
+                Admin
+            </span>
+            <span class="badge" style="cursor: pointer;" [ngClass]="roles.some(r => r.name === 'Worker') ? 'b-amber' : ''"
+                (click)="addRole(user.id, 'Worker', roles)"
+                (click)="removeRole(user.id, 'Worker', roles)">
+                Worker
+            </span>
+            <span class="badge" style="cursor: pointer;" [ngClass]="roles.some(r => r.name === 'Customer') ? 'b-green' : ''"
+                (click)="addRole(user.id, 'Customer', roles)"
+                (click)="removeRole(user.id, 'Customer', roles)">
+                Customer
+            </span>
+        </td>
+        <div class="form-grid" style="margin-top: 16px;">
             <div class="field full">
                 <label>Username</label>
                 <input type="text" [(ngModel)]="username" name="username">
@@ -132,7 +175,7 @@
         </div>
         <div class="form-actions">
             <div style="display:flex;gap:10px">
-                <button class="btn-cancel" type="button">Cancel</button>
+                <button class="btn-cancel" type="button" (click)="openEditUser(user)">Cancel</button>
                 <button class="btn-save" type="submit">Save Changes</button>
             </div>
         </div>

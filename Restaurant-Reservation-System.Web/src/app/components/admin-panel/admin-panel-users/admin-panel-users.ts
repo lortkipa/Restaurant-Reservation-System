@@ -7,6 +7,8 @@ import { LocalStorageService } from '../../../services/local-storage-service';
 import { AlertService } from '../../../services/alert-service';
 import { Router } from '@angular/router';
 import { RouterUpgradeInitializer } from '@angular/router/upgrade';
+import { Observable } from 'rxjs';
+import { RoleModel, Roles } from '../../../models/role-model';
 
 @Component({
   selector: 'app-admin-panel-users',
@@ -51,8 +53,72 @@ export class AdminPanelUsers {
   }
 
   filterBy = signal<string>('all')
-  setFilterBy(data:string) {
+  setFilterBy(data: string) {
     this.filterBy.set(data)
+  }
+
+  rolesMap: { [key: number]: Observable<RoleModel[]> } = {};
+
+  getUserRoles(id: number) {
+    if (!this.rolesMap[id]) {
+      this.rolesMap[id] = this.userService.getUserRoles(id);
+    }
+    return this.rolesMap[id];
+  }
+
+  addRole(id: number, roleName: string, roles: RoleModel[]) {
+    const hasRole = roles.some(r => r.name === roleName);
+    if (hasRole) return;
+
+    this.alert.confirm("Do You Want to Add Role?").then((res) => {
+      if (!res.isConfirmed) return;
+
+      let roleId
+      if (roleName == 'Admin')
+        roleId = Roles.Admin
+      else if (roleName == 'Worker')
+        roleId = Roles.Worker
+      else
+        roleId = Roles.Customer
+
+      console.log(roleId)
+
+      this.userService.setUserRole(id, roleId).subscribe({
+        next: () => this.alert.success("Role Added", '').then(() => {
+          this.router.navigate(['/admin-panel/users']).then(() => window.location.reload());
+        }),
+        error: err => this.alert.error("Role Not Added", err.error.message)
+      });
+    })
+  }
+
+  removeRole(id: number, roleName: string, roles: RoleModel[]) {
+    // Only allow removal if user actually has this role
+    const hasRole = roles.some(r => r.name === roleName);
+    if (!hasRole) return;
+
+    if (roles.length < 2) {
+      this.alert.error("Cannot Remove Last Role", '')
+      return;
+    }
+
+    this.alert.confirm(`Do you want to remove ${roleName}?`).then(res => {
+      if (!res.isConfirmed) return;
+
+      // Map roleName to roleId
+      let roleId: Roles;
+      if (roleName === 'Admin') roleId = Roles.Admin;
+      else if (roleName === 'Worker') roleId = Roles.Worker;
+      else roleId = Roles.Customer;
+
+      // Call backend to remove role
+      this.userService.removeUserRole(id, roleId).subscribe({
+        next: () => this.alert.success("Role Removed", '').then(() => {
+          this.router.navigate(['/admin-panel/users']).then(() => window.location.reload());
+        }),
+        error: err => this.alert.error("Role Not Removed", err.error.message)
+      });
+    });
   }
 
   getAllUsers(): void {
@@ -62,7 +128,7 @@ export class AdminPanelUsers {
     )
   }
 
-  getAllCustomers() : void {
+  getAllCustomers(): void {
     const token = localStorage.getItem('token')
     this.userService.GetAllCustomers(token != null ? token : '').subscribe((data) =>
       this.users.set(data)

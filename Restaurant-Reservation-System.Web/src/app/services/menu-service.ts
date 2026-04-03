@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Globals } from './globals';
 import { HttpClient } from '@angular/common/http';
-import { CreateDishModel, DishModel, MenuDishModel } from '../models/menu-model';
+import { CreateDishModel, DishModel, MenuDishModel, MenuModel } from '../models/menu-model';
 import { Observable } from 'rxjs';
 import { AuthResponseModel } from '../models/auth-response-model';
 
@@ -18,6 +18,14 @@ export class MenuService {
 
   GetMenusWithDishes(restaurantId:number): Observable<MenuDishModel[]> {
     return this.http.get<MenuDishModel[]>(`${this.globals.apiUrl}/Menu/GetMenusWithDishes/${restaurantId}`)
+  }
+
+  AddMenu(data : MenuModel) : Observable<boolean> {
+    return this.http.post<boolean>(`${this.globals.apiUrl}/Menu/Add`, data)
+  }
+
+  RemoveMenu(id: number) : Observable<boolean> {
+    return this.http.delete<boolean>(`${this.globals.apiUrl}/Menu/Remove/${id}`)
   }
 
   AddDish(menuId: number, data: CreateDishModel) : Observable<AuthResponseModel> {
