@@ -31,6 +31,12 @@ namespace Restaurant_Reservation_System.API.Controllers
             var menu = await _menuService.CreateAsync(model);
             return Ok(menu);
         }
+        [HttpPut("Update/{id:int}")]
+        public async Task<ActionResult<bool>> UpdateMenu(int id, UpdateMenuDTO model)
+        {
+            var menu = await _menuService.UpdateAsync(id, model);
+            return Ok(menu);
+        }
 
         [HttpDelete("Remove/{id:int}")]
         public async Task<ActionResult<bool>> RemoveMenu(int id)

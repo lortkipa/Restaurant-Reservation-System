@@ -46,7 +46,7 @@
       <div class="mc-name">{{menuDish.name}}</div>
       <div class="mc-n">{{menuDish.dishes.length}} dishes</div>
       <div class="mc-btns">
-        <button class="mc-btn">EDIT</button>
+        <button class="mc-btn" (click)="openEditMenu(menuDish)">EDIT</button>
         <button class="mc-btn del" (click)="removeMenu(menuDish.id)">DELETE</button>
       </div>
     </div>

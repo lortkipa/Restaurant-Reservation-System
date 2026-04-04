@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ReservationModel } from '../../../models/reservation-model';
 import { AlertService } from '../../../services/alert-service';
 import { LocalStorageService } from '../../../services/local-storage-service';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -19,7 +20,8 @@ export class Reservations {
   constructor(
     private reservationService: ReservationService,
     private alert: AlertService,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private router: Router
   ) {
     this.token = localStorage.getItem('token')
   }
@@ -42,9 +44,9 @@ export class Reservations {
       this.reservationService.cancel(this.token, id).subscribe({
         next: () => {
           this.alert.success("Reservation Canceled", '').then(() => {
-            // Remove cancelled reservation from the signal array
-            const updated = this.reservations().filter(r => r.id !== id);
-            this.reservations.set(updated);
+            this.router.navigate(['/home']).then(() => {
+              window.location.reload();
+            });
           });
         },
         error: (err) => this.alert.error("Reservation Not Canceled", err.error?.message)
@@ -59,9 +61,9 @@ export class Reservations {
       this.reservationService.delete(this.token, id).subscribe({
         next: () => {
           this.alert.success("Reservation Removed", '').then(() => {
-            // Remove deleted reservation from the signal array
-            const updated = this.reservations().filter(r => r.id !== id);
-            this.reservations.set(updated);
+            this.router.navigate(['/home']).then(() => {
+              window.location.reload();
+            });
           });
         },
         error: (err) => this.alert.error("Reservation Not Removed", err.error?.message)

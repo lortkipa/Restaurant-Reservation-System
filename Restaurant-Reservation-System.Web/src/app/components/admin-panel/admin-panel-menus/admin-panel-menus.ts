@@ -116,7 +116,17 @@ export class AdminPanelMenus {
       name: '',
       restaurantId: 0
     })
-     this.showMenuForm.set(true);
+    this.showMenuForm.set(true);
+  }
+
+  openEditMenu(menuDish: MenuDishModel) {
+    this.menuEditMode.set(true)
+    this.menuForm.set({
+      id: 0,
+      name: menuDish.name,
+      restaurantId: 0
+    })
+    this.showMenuForm.set(true);
   }
 
   // Method to open Add Dish form
@@ -141,24 +151,32 @@ export class AdminPanelMenus {
 
   saveMenu() {
     const newMenu = this.menuForm()
-    if (!newMenu.name) {this.alert.error("Failed to Add Menu", "Name is Empty"); return;}
+    if (!newMenu.name) { this.alert.error("Failed to Add Menu", "Name is Empty"); return; }
 
     newMenu.restaurantId = this.selectedRestaurantId()
 
-    if (!this.menuEditMode()) {
-      this.alert.confirm("Are You Sure?").then((res) => {
-        if(!res.isConfirmed) return
-
+    console.log("menu: " + this.menuEditMode())
+    this.alert.confirm("Are You Sure?").then((res) => {
+      if (!res.isConfirmed) return
+      if (this.menuEditMode()) {
+        if (!newMenu.name) { this.alert.error('Menu Not Updated', 'Name is Empty'); return; }
+        this.menuService.UpdateMenu(this.selectedMenuId(), newMenu).subscribe(
+          () => {
+            this.alert.success("Menu Updated", '').then(() => this.load()).then(() => {
+              this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
+            })
+        })
+      } else {
         this.menuService.AddMenu(newMenu).subscribe({
           next: () => {
             this.alert.success("Menu Added", '').then(() => this.load()).then(() => {
-              this.router.navigate(['/home']).then(() => {window.location.reload();});
+              this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
             })
           },
           error: (err) => this.alert.error("Menu Not Added", err.error.message)
         })
-      })
-    }
+      }
+    })
   }
 
   // Method to save dish
@@ -175,7 +193,7 @@ export class AdminPanelMenus {
         this.menuService.UpdateDish(this.selectedDishId(), this.dishForm()).subscribe({
           next: () => {
             this.alert.success("Dish Updated", '').then(() => this.load()).then(() => {
-              this.router.navigate(['/admin-panel/menus']).then(() => {window.location.reload();});
+              this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
             })
           },
           error: (err) => this.alert.error("Dish Not Updated", err.error.message)
@@ -186,7 +204,9 @@ export class AdminPanelMenus {
         if (!res.isConfirmed) return;
         this.menuService.AddDish(this.selectedMenuId(), this.dishForm()).subscribe({
           next: () => {
-            this.alert.success("Dish Added", '').then(() => this.load());
+            this.alert.success("Dish Added", '').then(() => this.load()).then(() => {
+              this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
+            })
           },
           error: (err) => this.alert.error("Dish Not Failed", err.error.message)
         });
@@ -196,15 +216,15 @@ export class AdminPanelMenus {
     this.showDishForm.set(false);
   }
 
-   removeMenu(id: number) {
+  removeMenu(id: number) {
     this.alert.confirm("Are You Sure?").then((res) => {
       if (!res.isConfirmed) return;
 
       this.menuService.RemoveMenu(id).subscribe({
         next: () => {
           this.alert.success("Menu Removed", '').then(() => this.load()).then(() => {
-              this.router.navigate(['/admin-panel/menus']).then(() => {window.location.reload();});
-            })
+            this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
+          })
         },
         error: (err) => this.alert.error("Menu Not Removed", err.error.message)
       })
@@ -218,8 +238,8 @@ export class AdminPanelMenus {
       this.menuService.RemoveDish(id).subscribe({
         next: () => {
           this.alert.success("Dish Removed", '').then(() => this.load()).then(() => {
-              this.router.navigate(['/admin-panel/menus']).then(() => {window.location.reload();});
-            })
+            this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
+          })
         },
         error: (err) => this.alert.error("Dish Not Removed", err.error.message)
       })

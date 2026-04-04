@@ -24,6 +24,15 @@ export class MenuService {
     return this.http.post<boolean>(`${this.globals.apiUrl}/Menu/Add`, data)
   }
 
+  UpdateMenu(id: number, data: MenuModel): Observable<boolean> {
+    console.log(id)
+    console.log(data)
+    return this.http.put<boolean>(`${this.globals.apiUrl}/Menu/Update/${id}`, {
+      restaurantId: data.restaurantId,
+      name: data.name
+    })
+  }
+
   RemoveMenu(id: number) : Observable<boolean> {
     return this.http.delete<boolean>(`${this.globals.apiUrl}/Menu/Remove/${id}`)
   }
