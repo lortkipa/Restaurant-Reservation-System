@@ -5,8 +5,8 @@
   </div>
 </div>
 
-<div class="table-wrap">
-  <table>
+<!-- <div class="table-container">
+  <table class="res-table">
     <thead>
       <tr>
         <th>Customer</th>
@@ -20,13 +20,50 @@
     </thead>
     <tbody>
       <tr *ngFor="let r of reservations()">
-        <td>{{ r.customerId }}</td>
-        <td>{{ r.restaurantId }}</td>
-        <td>{{ r.statusId }}</td>
-        <td>{{ r.date | date:'mediumDate' }}</td>
-        <td>{{ r.tableNumber }}</td>
-        <td>{{ r.guestCount }}</td>
+        <td data-label="Customer">{{ r.customerId }}</td>
+        <td data-label="Restaurant">{{ r.restaurantId }}</td>
+        <td data-label="Status">{{ r.statusId }}</td>
+        <td data-label="Date">{{ r.date | date:'mediumDate' }}</td>
+        <td data-label="Table">{{ r.tableNumber }}</td>
+        <td data-label="Guests">{{ r.guestCount }}</td>
+        <td class="actions-cell">
+          <button class="btn-cancel" (click)="cancel(r.id)">CANCEL</button>
+          <button class="btn-delete" (click)="delete(r.id)">DELETE</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+<div class="table-container">
+  <table class="res-table">
+    <thead>
+      <tr>
+        <th>Customer</th>
+        <th>Restaurant</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Table</th>
+        <th>Guests</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of reservations()">
+
+        <td data-label="Customer"><strong>{{ getCustomerName(r.customerId) }}</strong></td>
+        <td data-label="Restaurant">{{ getRestaurantName(r.restaurantId) }}</td>
+
         <td>
+          <button data-label="Table" class="btn-success" *ngIf="r.statusId == 1">Pending</button>
+          <button data-label="Table" class="btn-success" *ngIf="r.statusId == 2">Confirmed</button>
+          <button data-label="Table" class="btn-delete" *ngIf="r.statusId == 3">Canceled</button>
+        </td>
+
+        <td data-label="Date">{{ r.date | date:'mediumDate' }}</td>
+
+        <td data-label="Table">{{ r.tableNumber }}</td>
+        <td data-label="Guests">{{ r.guestCount }}</td>
+        <td class="actions-cell">
           <button class="btn-cancel" (click)="cancel(r.id)">CANCEL</button>
           <button class="btn-delete" (click)="delete(r.id)">DELETE</button>
         </td>

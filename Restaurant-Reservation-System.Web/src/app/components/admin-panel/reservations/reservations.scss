@@ -84,3 +84,16 @@ table {
 
   &:hover { background: rgba(200, 100, 100, 0.1); }
 }
+
+.btn-success {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid rgba(126, 201, 154, 0.3);
+  color: rgba(126, 201, 154, 0.7);
+  font-size: 8px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover { background: rgba(126, 201, 154, 0.1); }
+}

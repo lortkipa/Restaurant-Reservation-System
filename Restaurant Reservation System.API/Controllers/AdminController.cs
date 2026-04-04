@@ -43,7 +43,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             var users = await _userService.GetAllAsync();
             return Ok(users);
         }
-        //[Authorize]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("GetAllCustomers")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAllCustomers()
         {
@@ -53,6 +53,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             var users = await _userService.GetAllCostumersAsync();
             return Ok(users);
         }
+        //[Authorize(Roles = "Admin")]
         [HttpGet("GetUserById/{id:int}")]
         public async Task<ActionResult<UserDTO>> GetUserById(int id)
         {
@@ -166,6 +167,7 @@ namespace Restaurant_Reservation_System.API.Controllers
                 Message = "Role assigned"
             });
         }
+        //[Authorize(Roles = "Admin")]
         [HttpGet("GetRoles/{id:int}")]
         public async Task<ActionResult<IEnumerable<RoleDTO>>> GetUserRoles(int id)
         {
