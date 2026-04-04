@@ -1,0 +1,49 @@
+<div class="auth-overlay open">
+  <div class="auth-box">
+
+    <div class="auth-top">
+      <h2 class="auth-title">Contact <em>Us</em></h2>
+      <p class="auth-sub">Contact Us about any topic you wish!</p>
+    </div>
+
+    <form class="auth-form-wrap" #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
+
+      <div class="afield">
+        <div class="afield-row">
+          <div>
+            <label>First Name</label>
+            <input class="finput" name="firstName" placeholder="John" type="text" [(ngModel)]="contactData.firstName"
+              >
+          </div>
+          <div>
+            <label>Last Name</label>
+            <input class="finput" name="lastName" placeholder="Doe" type="text" [(ngModel)]="contactData.lastName"
+              >
+          </div>
+        </div>
+      </div>
+
+      <div class="afield">
+        <div class="afield-row full">
+          <div>
+            <label>Email</label>
+            <input class="Emailfinput" name="email" placeholder="you@example.com" type="email"
+              [(ngModel)]="contactData.email">
+          </div>
+        </div>
+      </div>
+
+      <div class="afield">
+        <div class="afield-row full">
+          <div>
+            <label>Message</label>
+            <textarea class="ftextarea" name="message" placeholder="How can we help you?"
+              [(ngModel)]="contactData.message" ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <button class="auth-btn" [disabled]="!myForm.form.valid" type="submit">Send Message</button>
+    </form>
+  </div>
+</div>

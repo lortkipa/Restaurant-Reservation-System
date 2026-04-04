@@ -10,6 +10,7 @@ import { AdminPanelRestaurants } from './components/admin-panel/admin-panel-rest
 import { About } from './components/about/about';
 import { AdminPanelMenus } from './components/admin-panel/admin-panel-menus/admin-panel-menus';
 import { AdminPanelUsers } from './components/admin-panel/admin-panel-users/admin-panel-users';
+import { Contact } from './components/contact/contact';
 
 
 export const routes: Routes = [
@@ -55,5 +56,9 @@ export const routes: Routes = [
     {
         path: 'about',
         component: About
+    },
+    {
+        path: 'contact',
+        component: Contact 
     }
 ];

@@ -1,0 +1,186 @@
+/* Overlay stays the same */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 11, 9, 0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+/* Box width unchanged */
+.auth-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Top - less vertical padding */
+.auth-top {
+  padding: 20px 40px 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.auth-title {
+  font: 28px "Cormorant", serif;
+  color: var(--cream);
+}
+.auth-title em {
+  color: var(--gold);
+}
+.auth-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Form */
+.auth-form-wrap {
+  padding: 16px 40px;
+}
+.afield {
+  margin-bottom: 8px;
+}
+.afield label {
+  font-size: 8px;
+  color: rgba(245, 239, 228, 0.35);
+  display: block;
+}
+.afield input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(200, 169, 106, 0.15);
+  color: var(--cream);
+  padding: 8px 16px;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+.afield input:focus {
+  border-color: var(--gold);
+}
+
+/* ── Validation styles ── */
+.afield input.input-error {
+  border-color: #c0392b;
+  background: rgba(192, 57, 43, 0.06);
+}
+
+.field-error {
+  display: block;
+  font-size: 9px;
+  color: #e05a4e;
+  margin-top: 3px;
+}
+
+.required-star {
+  color: #e05a4e;
+  margin-left: 2px;
+}
+
+.afield-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.afield-row.full {
+  grid-template-columns: 1fr;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 10px 0;
+  background: var(--gold);
+  border: none;
+  color: var(--bg);
+  font-size: 11px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+.auth-btn:hover {
+  background: var(--gold2);
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.auth-switch a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.finput,
+.fselect {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(200, 169, 106, 0.15);
+    color: var(--cream);
+    padding: 10px 12px;
+    font-family: "Mulish", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    border-radius: 0;
+    appearance: none;
+}
+
+.Emailfinput {
+    background: rgba(255, 255, 255, 0.04);
+    border: 10px solid rgba(200, 169, 106, 0.15);
+    color: var(--cream);
+    padding: 18px 20px;
+    font-family: "Mulish", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+    max-width: 500px;
+    width: 100%;
+    border-radius: 0;
+    appearance: none;
+}
+.finput::placeholder {
+    color: rgba(245, 239, 228, 0.2);
+}
+
+.finput:focus,
+.fselect:focus {
+    border-color: var(--gold);
+}
+
+.fselect option {
+    background: #1c1710;
+}
+.ftextarea {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(200, 169, 106, 0.15);
+    color: var(--cream);
+    padding: 12px;
+    font-family: "Mulish", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    min-height: 120px;
+    border-radius: 0;
+    box-sizing: border-box;
+    resize: vertical; 
+}
+
+.ftextarea:focus {
+    border-color: var(--gold);
+}
+
+.ftextarea::placeholder {
+    color: rgba(245, 239, 228, 0.2);
+}
