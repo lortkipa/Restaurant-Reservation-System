@@ -68,8 +68,7 @@ export class Profile {
       next: (data: ReservationModel[]) => {
         console.log(data)
         this.reservations = data
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-          .slice(0, 3);
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         console.log(this.reservations)
       },
       error: (err) => console.log('Error loading reservations:', err)

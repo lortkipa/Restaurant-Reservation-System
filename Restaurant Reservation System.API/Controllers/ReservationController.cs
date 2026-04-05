@@ -86,7 +86,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             }
 
             // 🔹 CREATE (Customer)
-            [Authorize]
+            [Authorize(Roles = "Admin")]
             [HttpPost("Add")]
             public async Task<ActionResult<ReservationDTO>> MakeReservation(CreateReservationDTO reservation)
             {
@@ -96,7 +96,7 @@ namespace Restaurant_Reservation_System.API.Controllers
                 reservation.CustomerId = userId.Value; // force correct user
 
                 var model = await _reservationService.MakeReservation(reservation);
-                if (model == null) return BadRequest("model is null");
+                if (model == null) return BadRequest(model);
 
                 return Ok(model);
             }
