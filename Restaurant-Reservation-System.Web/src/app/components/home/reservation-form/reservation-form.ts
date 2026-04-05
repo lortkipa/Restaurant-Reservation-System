@@ -91,13 +91,25 @@ export class ReservationForm {
   }
 
   submitReservation(form: any) {
+    let formTitle = "Reservation Failed"
+
     if (form.invalid) {
       this.alert.error('adfa', "Date is empty");
-      let formTitle = "Reservation Failed"
       if (!this.selectedDate) {
         this.alert.error(formTitle, "Date is empty");
         return;
       }
+    }
+
+    const selected = new Date(this.selectedDate);
+    const today = new Date();
+
+    selected.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    if (selected < today) {
+      this.alert.error(formTitle, "Date cannot be in the past");
+      return;
     }
 
     this.alert.confirm("Are You Sure?").then((res) => {
@@ -119,7 +131,6 @@ export class ReservationForm {
           },
           error: (err) => {
             this.alert.error("Reservation Failed", err.error);
-            console.log(err.error.message);
           }
         })
       }

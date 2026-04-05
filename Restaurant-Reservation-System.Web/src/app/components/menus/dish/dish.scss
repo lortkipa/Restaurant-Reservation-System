@@ -37,10 +37,11 @@
     transition: transform 0.35s ease;
 }
 
-.dish-card:hover {
+.dish-card-available:hover {
     background: #1a1710;
 }
-.dish-card:hover::before {
+
+.dish-card-available:hover::before {
     transform: scaleX(1);
 }
 
@@ -79,11 +80,20 @@
     flex: 1;
 }
 
-.dish-price {
+.dish-price-available {
     font-family: "Cormorant", serif;
     font-size: 22px;
     font-weight: 300;
     color: var(--gold);
+    flex-shrink: 0;
+    letter-spacing: -0.5px;
+}
+
+.dish-price {
+    font-family: "Cormorant", serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: gray;
     flex-shrink: 0;
     letter-spacing: -0.5px;
 }
@@ -161,9 +171,9 @@
     border-left: 3px solid var(--gold);
 }
 
-.dish-card.featured::before {
-    display: none;
-}
+// .dish-card.featured::before {
+//     display: none;
+// }
 
 .featured-badge {
     font-size: 8px;

@@ -63,14 +63,15 @@
 //     });
 //   }
 // }import { Component, signal, WritableSignal, OnInit } from '@angular/core';
-import { Component, signal, WritableSignal, OnInit } from '@angular/core'; 
+import { Component, signal, WritableSignal, OnInit } from '@angular/core';
 import { ReservationService } from '../../../services/reservation-service';
 import { CommonModule } from '@angular/common';
 import { ReservationModel } from '../../../models/reservation-model';
 import { AlertService } from '../../../services/alert-service';
 import { LocalStorageService } from '../../../services/local-storage-service';
-import { UserService } from '../../../services/user-service'; 
-import { RestaurantService } from '../../../services/restaurant-service'; 
+import { UserService } from '../../../services/user-service';
+import { RestaurantService } from '../../../services/restaurant-service';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -79,10 +80,10 @@ import { RestaurantService } from '../../../services/restaurant-service';
   templateUrl: './reservations.html',
   styleUrl: './reservations.scss',
 })
-export class Reservations implements OnInit { 
+export class Reservations implements OnInit {
   reservations: WritableSignal<ReservationModel[]> = signal([]);
-  users = signal<any[]>([]); 
-  restaurants = signal<any[]>([]); 
+  users = signal<any[]>([]);
+  restaurants = signal<any[]>([]);
   token: string = ''
 
   constructor(
@@ -90,7 +91,8 @@ export class Reservations implements OnInit {
     private userService: UserService,
     private restaurantService: RestaurantService,
     private alert: AlertService,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private router: Router
   ) {
     this.token = this.localStorage.getItem('token') ?? '';
   }
@@ -112,7 +114,7 @@ export class Reservations implements OnInit {
     this.restaurantService.getAll().subscribe(data => this.restaurants.set(data));
   }
 
- 
+
   getCustomerName(id: number): string {
     const user = this.users().find(u => u.id === id);
     return user ? user.username : `User #${id}`;
@@ -131,8 +133,9 @@ export class Reservations implements OnInit {
       this.reservationService.cancel(this.token, id).subscribe({
         next: () => {
           this.alert.success("Reservation Canceled", '').then(() => {
-            const updated = this.reservations().filter(r => r.id !== id);
-            this.reservations.set(updated);
+            this.router.navigate(['/admin-panel/reservations']).then(() => {
+              window.location.reload();
+            });
           });
         },
         error: (err) => this.alert.error("Reservation Not Canceled", err.error?.message)
@@ -147,8 +150,9 @@ export class Reservations implements OnInit {
       this.reservationService.delete(this.token, id).subscribe({
         next: () => {
           this.alert.success("Reservation Removed", '').then(() => {
-            const updated = this.reservations().filter(r => r.id !== id);
-            this.reservations.set(updated);
+            this.router.navigate(['/admin-panel/reservations']).then(() => {
+              window.location.reload();
+            });
           });
         },
         error: (err) => this.alert.error("Reservation Not Removed", err.error?.message)

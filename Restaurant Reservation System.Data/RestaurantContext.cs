@@ -72,13 +72,45 @@ namespace Restaurant_Reservation_System.Data
                     Id = 1,
                     FirstName = "Nikoloz",
                     LastName = "Lortkipanidze",
-                    Phone = "577711705",
+                    Phone = "577711701",
                     Address = "Near Lisi Lake"
+                },
+                new Person
+                {
+                    Id = 2,
+                    FirstName = "Temo",
+                    LastName = "Totoshvili",
+                    Phone = "577711702",
+                    Address = "Address #2"
+                },
+                new Person
+                {
+                    Id = 3,
+                    FirstName = "Davit",
+                    LastName = "Papava",
+                    Phone = "577711703",
+                    Address = "Address #3"
+                },
+                new Person
+                {
+                    Id = 4,
+                    FirstName = "Demetre",
+                    LastName = "Kvirikashvili",
+                    Phone = "577711704",
+                    Address = "Address #4"
+                },
+                new Person
+                {
+                    Id = 5,
+                    FirstName = "Saba",
+                    LastName = "Dolidze",
+                    Phone = "577711705",
+                    Address = "Address #5"
                 }
             );
             using (var sha256 = SHA256.Create())
             {
-                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes("Nikoloz123"));
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes("admin"));
                 string hashedPassword = Convert.ToBase64String(hashedBytes);
                 modelBuilder.Entity<User>().HasData(
                     new User
@@ -89,6 +121,42 @@ namespace Restaurant_Reservation_System.Data
                         PasswordHash = hashedPassword,
                         Email = "nikusha191208@gmail.com",
                         RegistrationDate = new DateTime(2026, 3, 20)
+                    },
+                    new User
+                    {
+                        Id = 2,
+                        PersonId = 2,
+                        Username = "Temo_totoshvili",
+                        PasswordHash = hashedPassword,
+                        Email = "totoshvili@gmail.com",
+                        RegistrationDate = new DateTime(2026, 3, 20)
+                    },
+                    new User
+                    {
+                        Id = 3,
+                        PersonId = 3,
+                        Username = "DatoPapava",
+                        PasswordHash = hashedPassword,
+                        Email = "papava@gmail.com",
+                        RegistrationDate = new DateTime(2026, 3, 20)
+                    },
+                    new User
+                    {
+                        Id = 4,
+                        PersonId = 4,
+                        Username = "Kvirrik",
+                        PasswordHash = hashedPassword,
+                        Email = "kvirrik@gmail.com",
+                        RegistrationDate = new DateTime(2026, 3, 20)
+                    },
+                    new User
+                    {
+                        Id = 5,
+                        PersonId = 5,
+                        Username = "SabaDolidze",
+                        PasswordHash = hashedPassword,
+                        Email = "SabaDolidze@gmail.com",
+                        RegistrationDate = new DateTime(2026, 3, 20)
                     }
                 );
             }
@@ -98,6 +166,30 @@ namespace Restaurant_Reservation_System.Data
                     Id = 1,
                     RoleId = 1,
                     UserId = 1
+                },
+                new RoleUser
+                {
+                    Id = 2,
+                    RoleId = 1,
+                    UserId = 2
+                },
+                new RoleUser
+                {
+                    Id = 3,
+                    RoleId = 1,
+                    UserId = 3
+                },
+                new RoleUser
+                {
+                    Id = 4,
+                    RoleId = 1,
+                    UserId = 4
+                },
+                new RoleUser
+                {
+                    Id = 5,
+                    RoleId = 1,
+                    UserId = 5
                 }
             );
             modelBuilder.Entity<ReservationStatus>().HasData(

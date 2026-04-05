@@ -28,7 +28,6 @@ export class Login {
       let formTitle = "Login Failed"
       if (!this.loginModel.username) { this.alert.error(formTitle, "Username is empty"); return; }
       if (!this.loginModel.password) { this.alert.error(formTitle, "Password is empty"); return; }
-      console.log()
 
       return;
     }
