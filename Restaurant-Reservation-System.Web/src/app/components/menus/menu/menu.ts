@@ -12,4 +12,10 @@ import { CommonModule } from '@angular/common';
 })
 export class Menu {
   @Input() menuDish !: MenuDishModel
+
+  totalPrice(): number {
+    return this.menuDish?.dishes
+      ?.filter(dish => dish.isAvaiable) // only include available dishes
+      .reduce((sum, dish) => sum + (dish.price || 0), 0) || 0;
+  }
 }

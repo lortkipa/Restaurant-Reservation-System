@@ -26,18 +26,18 @@
   </div>
 
   <div class="form-overlay" *ngIf="showMenuForm()">
-  <div class="form-card">
-    <h3>{{ dishEditMode() ? 'EDIT MENU' : 'ADD MENU' }}</h3>
-    <div class="form-grid" style="grid-template-columns: 1fr">
-      <input [(ngModel)]="menuForm().name" placeholder="Menu Name" />
-      <!-- <input [(ngModel)]="dishForm().price" type="number" placeholder="Price" /> -->
-    </div>
-    <div class="form-actions">
-      <button class="btn-gold" (click)="saveMenu()">SAVE</button>
-      <button class="btn-ghost" (click)="showDishForm.set(false)" (click)="toggleAddMenu()">CANCEL</button>
+    <div class="form-card">
+      <h3>{{ dishEditMode() ? 'EDIT MENU' : 'ADD MENU' }}</h3>
+      <div class="form-grid" style="grid-template-columns: 1fr">
+        <input [(ngModel)]="menuForm().name" placeholder="Menu Name" />
+        <!-- <input [(ngModel)]="dishForm().price" type="number" placeholder="Price" /> -->
+      </div>
+      <div class="form-actions">
+        <button class="btn-gold" (click)="saveMenu()">SAVE</button>
+        <button class="btn-ghost" (click)="showDishForm.set(false)" (click)="toggleAddMenu()">CANCEL</button>
+      </div>
     </div>
   </div>
-</div>
 
   <div class="menus-row">
     <div class="menu-chip" *ngFor="let menuDish of selectedMenuDishes()"
@@ -60,8 +60,10 @@
     <div class="form-grid">
       <input [(ngModel)]="dishForm().name" placeholder="Dish Name" />
       <input [(ngModel)]="dishForm().price" type="number" placeholder="Price" />
-      <!-- <input type="checkbox" [(ngModel)]="dishForm().isAvaiable" /> -->
-      <!-- <textarea placeholder="Description"></textarea> -->
+      <label class="checkbox-wrap">
+        <input type="checkbox" [(ngModel)]="dishForm().isAvaiable" />
+        <span>Available</span>
+      </label>
     </div>
     <div class="form-actions">
       <button class="btn-gold" (click)="saveDish()">SAVE</button>
@@ -93,21 +95,19 @@
       </thead> -->
       <tbody>
         <tr *ngFor="let dish of selectedDishes()">
-          <div>
-            <td class="dish-name-cell">{{dish.name}}</td>
-            <!-- <td class="td-desc">Fresh Atlantic tuna with herb crust and ponzu sauce</td> -->
-            <td class="dish-price text-right"></td>
-            <td class="text-right">
-              <span class="status-tag available">{{dish.isAvaiable ? 'AVAILABLE' : 'UNAVAILABLE'}}</span>
-            </td>
-            <td class="text-right">
-              <div class="dish-actions">
-                <button class="action-link" (click)="openEditDish(dish)">Edit</button>
-                <button class="action-link del" (click)="removeDish(dish.id)">Delete</button>
-              </div>
-            </td>
-          </div>
-
+          <td class="dish-name-cell">{{dish.name}}</td>
+          <td class="td-desc">${{dish.price}}</td>
+          <td class="dish-price text-right"></td>
+          <td class="text-right">
+            <span class="btn-success" *ngIf="dish.isAvaiable">AVAILABLE</span>
+            <span class="btn-delete" *ngIf="!dish.isAvaiable">UNAVAILABLE</span>
+          </td>
+          <td class="text-right">
+            <div class="dish-actions">
+              <button class="btn-success" (click)="openEditDish(dish)">Edit</button>
+              <button class="btn-delete" (click)="removeDish(dish.id)">Delete</button>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

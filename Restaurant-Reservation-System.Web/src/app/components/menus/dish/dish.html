@@ -1,6 +1,6 @@
 <div class="dish-card">
   <div class="dish-top">
-    <div class="dish-name">{{dish.name}}</div>
+    <div class="dish-name" [ngClass]="!dish.isAvaiable ? 'crossed-line' : ''">{{dish.name}}</div>
     <div class="dish-price">${{dish.price}}</div>
   </div>
   <!-- <div class="dish-desc">Campari, sweet vermouth, Prosecco — stirred over ice, orange peel</div> -->

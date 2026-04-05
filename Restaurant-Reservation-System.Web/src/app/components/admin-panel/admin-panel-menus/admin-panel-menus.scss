@@ -1095,12 +1095,7 @@
 // ============================================================
 // DISHES PANEL (Editable table)
 // ============================================================
-.dishes-container {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  animation: fadeIn 0.4s ease-out;
-  margin-bottom: 40px;
-}
+
 
 .dishes-header {
   padding: 20px 24px;
@@ -1342,7 +1337,7 @@
     gap: 12px;
     margin-bottom: 24px;
 
-    input {
+    input:not([type='checkbox']) {
       background: rgba(245, 239, 228, 0.05);
       border: 1px solid rgba(200, 169, 106, 0.2);
       color: #f5efe4;
@@ -1353,6 +1348,55 @@
 
       &::placeholder { color: rgba(245, 239, 228, 0.3); }
       &:focus { border-color: #c8a96a; }
+    }
+  }
+
+  // Checkbox sits below the grid, full width
+  .checkbox-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #f5efe4;
+    font-size: 13px;
+    margin-bottom: 24px;
+    cursor: pointer;
+
+    input[type='checkbox'] {
+      // Hide the native checkbox
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      border: 1px solid rgba(200, 169, 106, 0.4);
+      background: rgba(245, 239, 228, 0.05);
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s, background 0.2s;
+
+      // Gold checkmark when checked
+      &:checked {
+        background: #c8a96a;
+        border-color: #c8a96a;
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: 4px;
+          top: 1px;
+          width: 5px;
+          height: 9px;
+          border: 2px solid #0d0b09;
+          border-top: none;
+          border-left: none;
+          transform: rotate(45deg);
+        }
+      }
+
+      &:focus-visible {
+        outline: 2px solid rgba(200, 169, 106, 0.5);
+        outline-offset: 2px;
+      }
     }
   }
 
@@ -1449,4 +1493,29 @@
 
     &:hover { background: rgba(200, 100, 100, 0.1); }
   }
+}
+.btn-delete {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid rgba(200, 100, 100, 0.3);
+  color: rgba(200, 100, 100, 0.7);
+  font-size: 8px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover { background: rgba(200, 100, 100, 0.1); }
+}
+
+.btn-success {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid rgba(126, 201, 154, 0.3);
+  color: rgba(126, 201, 154, 0.7);
+  font-size: 8px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover { background: rgba(126, 201, 154, 0.1); }
 }

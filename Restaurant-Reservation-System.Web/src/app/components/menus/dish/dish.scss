@@ -273,3 +273,8 @@
 .search-input:focus {
     border-color: var(--gold);
 }
+
+.crossed-line {
+    text-decoration: line-through;
+    color: gray;
+}
