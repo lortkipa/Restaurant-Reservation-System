@@ -70,6 +70,7 @@ namespace Restaurant_Reservation_System.API
                     context.Request.Headers.ContainsKey("Authorization"))
                 {
                     var authHeader = context.Request.Headers["Authorization"].ToString();
+                    Console.WriteLine("TOKEN HEADER: " + authHeader);
                     if (authHeader.StartsWith("Bearer "))
                     {
                         context.Token = authHeader.Substring("Bearer ".Length).Trim();
@@ -107,8 +108,6 @@ namespace Restaurant_Reservation_System.API
             var app = builder.Build();
 
             app.UseCors("AllowAngular");
-
-            app.UseHttpsRedirection();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

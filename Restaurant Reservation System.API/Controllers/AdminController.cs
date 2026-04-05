@@ -26,7 +26,6 @@ namespace Restaurant_Reservation_System.API.Controllers
             _roleUserService = roleUserService;
             _context = context;
         }
-
         private async Task<bool> IsAdmin(int adminId)
         {
             var roles = await _userService.GetRolesById(adminId);
@@ -43,7 +42,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             var users = await _userService.GetAllAsync();
             return Ok(users);
         }
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAllCustomers")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAllCustomers()
         {
@@ -53,7 +52,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             var users = await _userService.GetAllCostumersAsync();
             return Ok(users);
         }
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetUserById/{id:int}")]
         public async Task<ActionResult<UserDTO>> GetUserById(int id)
         {
@@ -66,7 +65,7 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok(user);
         }
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateUserProfile/{id:int}")]
         public async Task<ActionResult<bool>> UpdateUserProfile(int id, UpdateUserDTO model)
         {
@@ -86,7 +85,7 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok(result);
         }
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteUserProfile/{id:int}")]
         public async Task<ActionResult> DeleteUserProfile(int id)
         {
@@ -103,7 +102,7 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok();
         }
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("RemoveRole/{id:int}/{roleId:int}")]
         public async Task<ActionResult<AuthResponseDTO>> RemoveRole(int id, int roleId)
         {

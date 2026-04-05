@@ -15,26 +15,26 @@ export class UserService {
 
   GetAll(token: string): Observable<UserModel[]> {
     return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllUsers`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     )
   }
 
   GetAllCustomers(token: string) : Observable<UserModel[]> {
     return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllCustomers`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     )
   }
 
   UpdateUserProfile(token: string, id:number, data: UpdateUserModel) : Observable<boolean> {
     return this.http.put<boolean>(`${this.globals.apiUrl}/Admin/UpdateUserProfile/${id}`,
       data,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 
   removeUserProfile(token: string, id:number) : Observable<boolean> {
     return this.http.delete<boolean>(`${this.globals.apiUrl}/Admin/DeleteUserProfile/${id}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 
@@ -65,14 +65,14 @@ export class UserService {
   getRoles(token: string): Observable<RoleModel[]> {
     return this.http.get<RoleModel[]>(
       `${this.globals.apiUrl}/User/GetRolesById`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 
   getProfile(token: string): Observable<UserPersonModel> {
     return this.http.get<UserPersonModel>(
       `${this.globals.apiUrl}/User/GetProfile`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 
@@ -80,7 +80,7 @@ export class UserService {
     return this.http.put<AuthResponseModel>(
       `${this.globals.apiUrl}/User/UpdateProfile`,
       data,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 
@@ -88,14 +88,14 @@ export class UserService {
     return this.http.put<AuthResponseModel>(
       `${this.globals.apiUrl}/User/UpdatePersonalInfo`,
       data,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 
   deleteProfile(token: string): Observable<AuthResponseModel> {
     return this.http.delete<AuthResponseModel>(
       `${this.globals.apiUrl}/User/DeleteProfile`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 }

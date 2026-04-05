@@ -37,7 +37,7 @@ export class RestaurantService {
     return this.http.post(
       `${this.globals.apiUrl}/Restaurant/Add`,
       data,
-      this.getAuthHeaders(token)
+      this.getAuthHeaders(token.replace(/^"|"$/g, ''))
     );
   }
 
@@ -46,14 +46,14 @@ export class RestaurantService {
     return this.http.put(
       `${this.globals.apiUrl}/Restaurant/Update/${id}`,
       data,
-      this.getAuthHeaders(token)
+      this.getAuthHeaders(token.replace(/^"|"$/g, ''))
     );
   }
 
   delete(token: string, id: number): Observable<any> {
     return this.http.delete(
       `${this.globals.apiUrl}/Restaurant/Remove/${id}`,
-      this.getAuthHeaders(token)
+      this.getAuthHeaders(token.replace(/^"|"$/g, ''))
     );
   }
 }
