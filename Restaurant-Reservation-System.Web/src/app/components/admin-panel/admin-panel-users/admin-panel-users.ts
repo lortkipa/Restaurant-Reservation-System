@@ -46,9 +46,16 @@ export class AdminPanelUsers {
   })
 
   ngOnInit(): void {
-    const token = localStorage.getItem('token')
-    this.userService.GetAll(token != null ? token : '').subscribe((data) =>
+    const _token = localStorage.getItem('token')
+
+    this.token.set(_token == null ? ' ' : _token)
+    this.userService.GetAll(this.token() != null ? this.token() : '').subscribe((data) => {
       this.users.set(data)
+      this.userCount.set(data.length)
+      this.userService.GetAllCustomers(this.token() != null ? this.token() : '').subscribe((data) => {
+        this.customerCount.set(data.length)
+      })
+    }
     )
   }
 
@@ -121,17 +128,24 @@ export class AdminPanelUsers {
     });
   }
 
+  userCount = signal<number>(0)
   getAllUsers(): void {
     const token = localStorage.getItem('token')
-    this.userService.GetAll(token != null ? token : '').subscribe((data) =>
+    this.userService.GetAll(token != null ? token : '').subscribe((data) => {
       this.users.set(data)
+      this.userCount.set(data.length)
+    }
     )
   }
 
-  getAllCustomers(): void {
-    const token = localStorage.getItem('token')
-    this.userService.GetAllCustomers(token != null ? token : '').subscribe((data) =>
+  token = signal<string>(' ')
+
+  customerCount = signal<number>(0)
+  getAllCustomers() {
+    this.userService.GetAllCustomers(this.token() != null ? this.token() : '').subscribe((data) => {
       this.users.set(data)
+      this.customerCount.set(data.length)
+    }
     )
   }
 
@@ -146,16 +160,35 @@ export class AdminPanelUsers {
   }
 
   openEditUser(user: UserModel) {
-    if (user.username == this.selectedUser()?.username) {
-      if (this.editMode())
-        this.selectedUser.set(null)
-    } else {
-      this.selectedUser.set(user)
-    }
-    this.editMode.set(true)
-    this.username.set(user.username)
-    this.email.set(user.email)
-    this.password.set('')
+    this.userService.getProfile(this.token()).subscribe((data) => {
+      console.log(data.user.id + " " + user.id)
+      if (data.user.id == user.id) {
+        this.alert.error("Cannot Edit Yourself", "")
+        return;
+      }
+
+      // First, check roles
+      this.getUserRoles(user.id).subscribe((roles) => {
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].name === "Admin") {
+            this.alert.error("Cannot Edit Admin", "");
+            return; // exit if admin
+          }
+        }
+
+        // Only runs if user is NOT admin
+        if (user.username === this.selectedUser()?.username) {
+          if (this.editMode()) this.selectedUser.set(null);
+        } else {
+          this.selectedUser.set(user);
+        }
+
+        this.editMode.set(true);
+        this.username.set(user.username);
+        this.email.set(user.email);
+        this.password.set('');
+      });
+    })
   }
 
   closeModal() {

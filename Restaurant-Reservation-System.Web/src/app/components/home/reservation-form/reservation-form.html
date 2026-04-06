@@ -85,16 +85,21 @@
         </div>
 
         <div class="frow">
-          <div class="fgroup"><label class="flabel">Date</label>
-            <input class="finput" id="fDate" type="date" name="selectedDate" [(ngModel)]="selectedDate" required>
-          </div>
-        </div>
+  <div class="fgroup">
+    <label class="flabel">Date</label>
+    <input class="finput" type="date" name="selectedDate" [(ngModel)]="selectedDate" required>
+  </div>
+
+  <div class="fgroup">
+    <label class="flabel">Time</label>
+    <input class="finput" type="time" name="selectedTime" [(ngModel)]="selectedTime" required>
+  </div>
+</div>
         <div class="frow">
           <div class="fgroup">
             <label class="flabel">Guests</label>
             <div class="sel-wrap">
-              <select class="fselect" name="selectedGuests" [(ngModel)]="selectedGuests" required
-                (ngModelChange)="updateTableCount()">
+              <select class="fselect" name="selectedGuests" [(ngModel)]="selectedGuests" required>
                 <option *ngFor="let _ of [].constructor(selectedRestaurant.seatsPerTable); let i = index"
                   [value]="i + 1">
                   {{ i + 1 }} Guest{{ i + 1 > 1 ? 's' : '' }}
@@ -106,8 +111,8 @@
             <label class="flabel">Table</label>
             <div class="sel-wrap">
               <select class="fselect" name="selectedTables" [(ngModel)]="selectedTables" required>
-                <option *ngFor="let n of getTablesArray()" [value]="n">
-                  {{ n }} Table{{ n > 1 ? 's' : '' }}
+                <option *ngFor="let n of [].constructor(selectedRestaurant.totalTables); let i = index">
+                  {{ i + 1 }}
                 </option>
               </select>
             </div>

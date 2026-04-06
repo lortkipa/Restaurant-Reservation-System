@@ -66,7 +66,7 @@ namespace Restaurant_Reservation_System.Service
             //    .Any(ru => ru.Role.Name == "Customer");
 
 
-            var available = await AreSeatsAvailable(reservation.RestaurantId, reservation.Date, reservation.GuestCount);
+            var available = await AreSeatsAvailable(reservation.RestaurantId, reservation.Date, reservation.TableNumber);
 
             if (!available) return null;
 
@@ -84,18 +84,21 @@ namespace Restaurant_Reservation_System.Service
             reserv.StatusId = (int)ReservationStatuses.Canceled;
             await _repo.UpdateAsync(reserv);
         }
-        public async Task<bool> AreSeatsAvailable(int restaurantId, DateTime date, int requestedSeats)
+        public async Task<bool> AreSeatsAvailable(int restaurantId, DateTime date, int tableNumber)
         {
             var restaurant = _context.Set<Restaurant>().FirstOrDefault(r => r.Id == restaurantId);
-            if (restaurant == null) return await Task.FromResult(false);
+            if (restaurant == null) return false;
 
-            int totalSeats = restaurant.TotalTables * restaurant.SeatsPerTable;
+            var requestedStart = date;
+            var requestedEnd = date.AddHours(2);
 
-            int reservedSeats = _context.Set<Reservation>()
-                .Where(r => r.RestaurantId == restaurantId && r.Date.Date == date.Date && r.StatusId != (int)ReservationStatuses.Canceled)
-                .Sum(r => r.GuestCount);
+            bool overlaps = !_context.Set<Reservation>()
+                .Any(r => r.RestaurantId == restaurantId &&
+                          r.StatusId != (int)ReservationStatuses.Canceled &&
+                          r.TableNumber == tableNumber && 
+                          !(requestedEnd <= r.Date || requestedStart >= r.Date.AddHours(2)));
 
-            return await Task.FromResult((totalSeats - reservedSeats) >= requestedSeats);
+            return overlaps;
         }
         public async Task<IEnumerable<ReservationDTO>> GetReservationsByCustomer(int customerId)
         {

@@ -96,4 +96,26 @@ table {
   transition: all 0.2s;
 
   &:hover { background: rgba(126, 201, 154, 0.1); }
+}.finput,
+.fselect {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(200, 169, 106, 0.15);
+    color: var(--cream);
+    padding: 10px 12px;
+    font-family: "Mulish", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    border-radius: 0;
+    appearance: none;
+}
+.finput::placeholder {
+    color: rgba(245, 239, 228, 0.2);
+}
+
+.finput:focus,
+.fselect:focus {
+    border-color: var(--gold);
 }

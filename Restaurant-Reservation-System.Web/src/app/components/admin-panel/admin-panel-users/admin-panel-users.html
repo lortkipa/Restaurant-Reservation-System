@@ -14,9 +14,9 @@
     </div>
     <div class="role-filter">
         <button class="rf-btn" [ngClass]="filterBy() == 'all' ? 'active' : ''" (click)="getAllUsers()"
-            (click)="setFilterBy('all')">All</button>
+            (click)="setFilterBy('all')">All ({{userCount()}})</button>
         <button class="rf-btn" [ngClass]="filterBy() == 'customers' ? 'active' : ''" (click)="getAllCustomers()"
-            (click)="setFilterBy('customers')">Customers</button>
+            (click)="setFilterBy('customers')">Customers ({{customerCount()}})</button>
     </div>
 
     <!-- PANEL -->
@@ -135,8 +135,8 @@
             <span class="info-value">{{ selectedUser()?.email }}</span>
         </div>
         <div class="info-row">
-            <span class="info-label">Password</span>
-            <span class="info-value" style="letter-spacing:3px">••••••••</span>
+            <span class="info-label">Joined</span>
+            <span class="info-value">{{selectedUser()?.registrationDate | date:'MMM d, y'}}</span>
         </div>
     </div>
 

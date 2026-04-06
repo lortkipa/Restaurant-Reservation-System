@@ -229,8 +229,8 @@ namespace Restaurant_Reservation_System.Data
                  Location = "Tbilisi, 30 Zurab Kvlividze St",
                  Description = "Modern Georgian cuisine with creative twists and a cozy, artsy atmosphere.",
                  Email = "shavilomi@example.com",
-                 TotalTables = 15,
-                 SeatsPerTable = 4
+                 TotalTables = 4,
+                 SeatsPerTable = 2
              },
              new Restaurant
              {
@@ -240,7 +240,7 @@ namespace Restaurant_Reservation_System.Data
                  Description = "Historic recipes from a 19th-century cookbook served in an elegant setting.",
                  Email = "barbarestan@example.com",
                  TotalTables = 12,
-                 SeatsPerTable = 4
+                 SeatsPerTable = 3
              },
              new Restaurant
              {
@@ -250,7 +250,7 @@ namespace Restaurant_Reservation_System.Data
                  Description = "Charming garden restaurant known for traditional dishes and romantic vibes.",
                  Email = "ketoandkote@example.com",
                  TotalTables = 10,
-                 SeatsPerTable = 4
+                 SeatsPerTable = 5
              },
              new Restaurant
              {
@@ -260,7 +260,7 @@ namespace Restaurant_Reservation_System.Data
                  Description = "Famous for authentic lobio and rustic Georgian comfort food.",
                  Email = "salobie@example.com",
                  TotalTables = 8,
-                 SeatsPerTable = 4
+                 SeatsPerTable = 2
              },
              new Restaurant
              {
@@ -269,7 +269,7 @@ namespace Restaurant_Reservation_System.Data
                  Location = "Batumi, 26 May 6 St",
                  Description = "Casual spot popular for Adjarian khachapuri and local favorites.",
                  Email = "machakhela@example.com",
-                 TotalTables = 14,
+                 TotalTables = 3,
                  SeatsPerTable = 4
              },
              new Restaurant

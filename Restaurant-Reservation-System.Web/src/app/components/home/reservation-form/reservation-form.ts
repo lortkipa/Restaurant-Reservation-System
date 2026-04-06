@@ -33,6 +33,7 @@ export class ReservationForm {
     seatsPerTable: 1
   };
   selectedDate: string = '';
+  selectedTime: string = ''
   selectedGuests: number = 1;
   customGuestCount: number | null = null;
   selectedTables: number = 1;
@@ -62,7 +63,7 @@ export class ReservationForm {
   selectRestaurant(index: number) {
     this.selectedRestaurantIndex = index;
     this.selectedRestaurant = this.restaurants[index];
-    this.updateTableCount();
+    //this.updateTableCount();
   }
   updateTableCount() {
     let guestCount = this.selectedGuests
@@ -83,9 +84,6 @@ export class ReservationForm {
   }
 
   getTablesArray(): number[] {
-    if (!this.selectedRestaurant || !this.selectedRestaurant.totalTables) {
-      return [1, 2, 3, 4, 5];
-    }
     let total = Number(this.selectedRestaurant.totalTables);
     return Array.from({ length: total }, (_, i) => i + 1);
   }
@@ -101,13 +99,12 @@ export class ReservationForm {
       }
     }
 
-    const selected = new Date(this.selectedDate);
-    const today = new Date();
+    const localDate = new Date(`${this.selectedDate}T${this.selectedTime}`);
+    const date = new Date(
+      localDate.getTime() - localDate.getTimezoneOffset() * 60000
+    );
 
-    selected.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
-
-    if (selected < today) {
+    if (localDate < new Date()) {
       this.alert.error(formTitle, "Date cannot be in the past");
       return;
     }
@@ -118,7 +115,7 @@ export class ReservationForm {
           customerId: 0,
           restaurantId: this.selectedRestaurant.id,
           statusId: 2,
-          date: this.selectedDate,
+          date: date.toISOString(),
           tableNumber: Number(this.selectedTables),
           guestCount: Number(this.selectedGuests)
         }).subscribe({

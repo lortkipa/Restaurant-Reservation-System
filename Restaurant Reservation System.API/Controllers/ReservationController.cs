@@ -85,15 +85,14 @@ namespace Restaurant_Reservation_System.API.Controllers
                 return Ok(reserv);
             }
 
-            // 🔹 CREATE (Customer)
-            [Authorize(Roles = "Admin")]
+            [Authorize]
             [HttpPost("Add")]
             public async Task<ActionResult<ReservationDTO>> MakeReservation(CreateReservationDTO reservation)
             {
                 var userId = GetUserId();
-                if (userId == null) return Unauthorized();
+                if (userId == null) return Unauthorized("User Not Logged In");
 
-                reservation.CustomerId = userId.Value; // force correct user
+                reservation.CustomerId = userId.Value;
 
                 var model = await _reservationService.MakeReservation(reservation);
                 if (model == null) return BadRequest(model);
@@ -101,7 +100,6 @@ namespace Restaurant_Reservation_System.API.Controllers
                 return Ok(model);
             }
 
-            // 🔹 ADMIN ONLY
             [Authorize(Roles = "Admin")]
             [HttpPut("UpdateStatus/{id:int}")]
             public async Task<ActionResult> UpdateReservation(int id, ReservationStatuses statusId)

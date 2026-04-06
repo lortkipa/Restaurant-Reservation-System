@@ -65,30 +65,19 @@
         <div class="form-grid">
           <div class="field">
             <label>First Name</label>
-            <input type="text" placeholder="Jean"
-              [(ngModel)]="userPerson().person.firstName"
-              name="firstName"
-              required>
+            <input type="text" placeholder="Jean" [(ngModel)]="userPerson().person.firstName" name="firstName" required>
           </div>
           <div class="field">
             <label>Last Name</label>
-            <input type="text" placeholder="Dupont"
-              [(ngModel)]="userPerson().person.lastName"
-              name="lastName"
-              required>
+            <input type="text" placeholder="Dupont" [(ngModel)]="userPerson().person.lastName" name="lastName" required>
           </div>
           <div class="field">
             <label>Phone</label>
-            <input type="tel" placeholder="577 711 704"
-              [(ngModel)]="userPerson().person.phone"
-              name="phone"
-              required>
+            <input type="tel" placeholder="577 711 704" [(ngModel)]="userPerson().person.phone" name="phone" required>
           </div>
           <div class="field">
             <label>Address</label>
-            <input type="text" placeholder="Street, City"
-              [(ngModel)]="userPerson().person.address"
-              name="address"
+            <input type="text" placeholder="Street, City" [(ngModel)]="userPerson().person.address" name="address"
               required>
           </div>
         </div>
@@ -137,7 +126,8 @@
           </div>
           <div class="field full">
             <label>New Password</label>
-            <input type="password" [(ngModel)]="password" name="password" placeholder="Leave blank to keep current" required>
+            <input type="password" [(ngModel)]="password" name="password" placeholder="Leave blank to keep current"
+              required>
           </div>
         </div>
         <div class="form-actions">
@@ -173,46 +163,58 @@
     </div> -->
 
     <div class="panel reveal d4 restaurants-panel">
-  <div class="panel-head">
-    <span class="panel-title">Recent Reservations</span>
-  </div>
-  
-  <div class="panel-body" id="reservations-list">
-    <div *ngIf="reservations.length === 0" style="color:var(--muted); font-size:12px; padding:15px 0;">
-      No recent reservations found.
-    </div>
-
-    <div *ngFor="let res of reservations"
-      style="display:flex;align-items:flex-start;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(200,169,106,.07);gap:12px">
-      
-      <div>
-        <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:3px">
-          Table #{{ res.tableNumber }}
-          <span style="color:var(--gold)"> • {{ res.date | date:'MMM d, y' }}</span>
-        </div>
-        <div style="font-size:10px;color:var(--muted);letter-spacing:.5px">
-          {{ res.guestCount }} Guests
-        </div>
+      <div class="panel-head">
+        <span class="panel-title">Recent Reservations</span>
       </div>
 
-      <button *ngIf="res.statusId !== 3" 
-          (click)="cancelReservation(res.id)"
-          style="background:none; border:1px solid rgba(255,82,82,0.4); color:#ff5252; font-size:9px; padding:4px 10px; cursor:pointer; text-transform:uppercase; transition: 0.3s; margin-right: 8px;"
-          onmouseover="this.style.background='rgba(255,82,82,0.1)'" 
-          onmouseout="this.style.background='none'">
-    Cancel
-  </button>
+      <div class="panel-body" id="reservations-list">
+        <div *ngIf="reservations.length === 0" style="color:var(--muted); font-size:12px; padding:15px 0;">
+          No recent reservations found.
+        </div>
 
-      <span [style.color]="getStatusColor(res.statusId)"
-            [style.border-color]="getStatusColor(res.statusId) + '26'"
-            [style.background]="getStatusColor(res.statusId) + '11'"
-            style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border:1px solid;white-space:nowrap;flex-shrink:0">
-        {{ getStatusLabel(res.statusId) }}
-      </span>
-      
+        <!-- Reservation rows -->
+        <div *ngFor="let res of reservations; let i = index"
+          style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(200,169,106,.07);gap:12px">
+
+          <!-- Column 1: Restaurant Name -->
+          <div style="flex:2; font-size:13px; color:var(--cream); font-weight:500;">
+            {{ resNames()[i] }}
+          </div>
+
+          <!-- Column 2: Table Number -->
+          <div style=" font-size:13px; color:var(--cream); text-align:center;">
+            Table #{{ res.tableNumber }}
+          </div>
+
+          <!-- Column 3: Date & Time -->
+          <div style="flex:2; font-size:13px; color:var(--gold); text-align:center;">
+            {{ res.date | date:'HH:mm MMM d, y' }}
+          </div>
+
+          <!-- Column 4: Guest Count -->
+          <!-- <div style="flex:1; font-size:10px; color:var(--muted); text-align:center;">
+            {{ res.guestCount }} Guests
+          </div> -->
+
+          <!-- Column 5: Actions (Cancel/Delete) -->
+          <div style="flex:1; text-align:center; display:flex; justify-content:center; gap:6px;">
+            <button [style.visibility]="res.statusId !== 3 ? 'visible' : 'hidden'" (click)="cancelReservation(res.id)"
+              style="background:none; border:1px solid rgba(255,82,82,0.4); color:#ff5252; font-size:9px; padding:4px 10px; cursor:pointer; text-transform:uppercase; transition: 0.3s; margin-right: 8px;"
+              onmouseover="this.style.background='rgba(255,82,82,0.1)'" onmouseout="this.style.background='none'">
+              Cancel
+            </button>
+
+            <span [style.color]="getStatusColor(res.statusId)"
+              [style.border-color]="getStatusColor(res.statusId) + '26'"
+              [style.background]="getStatusColor(res.statusId) + '11'"
+              style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border:1px solid;white-space:nowrap;flex-shrink:0">
+              {{ getStatusLabel(res.statusId) }}
+            </span>
+          </div>
+
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
     <!-- ── Danger zone ── -->
     <div class="panel panel-full reveal d5">

@@ -21,7 +21,7 @@ namespace Restaurant_Reservation_System.Data.Configurations
                 .IsRequired();
             builder.Property(r => r.Date)
                 .IsRequired()
-                .HasColumnType("date");
+                .HasColumnType("datetime");
             builder.Property(r => r.TableNumber)
                 .IsRequired();
             builder.Property(r => r.GuestCount)

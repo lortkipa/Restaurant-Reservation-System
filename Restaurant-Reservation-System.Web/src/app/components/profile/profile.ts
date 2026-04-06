@@ -9,6 +9,8 @@ import { UserPersonModel } from '../../models/user-model';
 import { RoleModel } from '../../models/role-model';
 import { ReservationService } from '../../services/reservation-service';
 import { ReservationModel } from '../../models/reservation-model';
+import { RestaurantService } from '../../services/restaurant-service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -38,6 +40,7 @@ export class Profile {
     private router: Router,
     private alert: AlertService,
     private reservationService: ReservationService,
+    private restaurantService : RestaurantService
   ) {
     this.token.set(this.localStorage.getItem('token') || '');
 
@@ -60,20 +63,31 @@ export class Profile {
     });
   }
 
+  resNames = signal<string[]>([])
   loadUserReservations() {
-    let currentToken = this.token();
-    if (!currentToken) return;
-    this.userService.GetAll(currentToken).subscribe((d) => console.log(d))
-    this.reservationService.getMyReservations(currentToken).subscribe({
-      next: (data: ReservationModel[]) => {
-        console.log(data)
-        this.reservations = data
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        console.log(this.reservations)
-      },
-      error: (err) => console.log('Error loading reservations:', err)
-    });
-  }
+  const currentToken = this.token();
+  if (!currentToken) return;
+
+  this.reservationService.getMyReservations(currentToken).subscribe({
+    next: (data: ReservationModel[]) => {
+      // Sort reservations by date ascending
+      this.reservations = data
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+      // Create an array of observables for each restaurant fetch
+      const restaurantRequests = this.reservations.map(r =>
+        this.restaurantService.getById(r.restaurantId)
+      );
+
+      // Use forkJoin to run all requests in parallel and preserve order
+      forkJoin(restaurantRequests).subscribe(restaurants => {
+        // restaurants array matches reservations array order
+        this.resNames.set(restaurants.map(res => res.name));
+      });
+    },
+    error: (err) => console.log('Error loading reservations:', err)
+  });
+}
 
   cancelReservation(id: number) {
   let currentToken = this.token(); 
