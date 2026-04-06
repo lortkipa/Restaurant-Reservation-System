@@ -117,6 +117,28 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmailJSConfigs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ServiceId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    TemplateId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    PublicKey = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmailJSConfigs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmailJSConfigs_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reservations",
                 columns: table => new
                 {
@@ -203,7 +225,14 @@ namespace Restaurant_Reservation_System.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Persons",
                 columns: new[] { "Id", "Address", "FirstName", "LastName", "Phone" },
-                values: new object[] { 1, "Near Lisi Lake", "Nikoloz", "Lortkipanidze", "577711705" });
+                values: new object[,]
+                {
+                    { 1, "Near Lisi Lake", "Nikoloz", "Lortkipanidze", "577711701" },
+                    { 2, "Address #2", "Temo", "Totoshvili", "577711702" },
+                    { 3, "Address #3", "Davit", "Papava", "577711703" },
+                    { 4, "Address #4", "Demetre", "Kvirikashvili", "577711704" },
+                    { 5, "Address #5", "Saba", "Dolidze", "577711705" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Restaurants",
@@ -239,14 +268,110 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Menus",
+                columns: new[] { "Id", "Name", "RestaurantId" },
+                values: new object[,]
+                {
+                    { 1, "Main Dishes", 1 },
+                    { 2, "Drinks", 1 },
+                    { 3, "Traditional Meals", 2 },
+                    { 4, "Wine & Drinks", 2 },
+                    { 5, "Garden Specials", 3 },
+                    { 6, "Desserts", 3 },
+                    { 7, "Lobio & Beans", 4 },
+                    { 8, "Extras", 4 },
+                    { 9, "Khachapuri", 5 },
+                    { 10, "Drinks", 5 },
+                    { 11, "Georgian Classics", 6 },
+                    { 12, "Drinks", 6 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "PasswordHash", "PersonId", "RegistrationDate", "Username" },
-                values: new object[] { 1, "nikusha191208@gmail.com", "DB6jdy9/yKY9HsyyDejZahTFEMLmN/FVlAbA+9RuHew=", 1, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "NikolozLortki" });
+                values: new object[,]
+                {
+                    { 1, "nikusha191208@gmail.com", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 1, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "NikolozLortki" },
+                    { 2, "totoshvili@gmail.com", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 2, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Temo_totoshvili" },
+                    { 3, "papava@gmail.com", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 3, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "DatoPapava" },
+                    { 4, "kvirrik@gmail.com", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 4, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kvirrik" },
+                    { 5, "SabaDolidze@gmail.com", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 5, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "SabaDolidze" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EmailJSConfigs",
+                columns: new[] { "Id", "PublicKey", "ServiceId", "TemplateId", "UserId" },
+                values: new object[] { 1, "90LyXpeSeVnNPQeFJ", "service_kqw395h", "template_75iei9r", 1 });
+
+            migrationBuilder.InsertData(
+                table: "MenuItems",
+                columns: new[] { "Id", "IsAvaiable", "MenuId", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, true, 1, "Chashushuli", 18.5m },
+                    { 2, true, 1, "Ojakhuri", 16.0m },
+                    { 3, true, 2, "Red Wine", 12.0m },
+                    { 4, true, 2, "Craft Beer", 8.5m },
+                    { 5, true, 3, "Kharcho", 20.0m },
+                    { 6, true, 3, "Chkmeruli", 19.5m },
+                    { 7, true, 4, "White Wine", 13.0m },
+                    { 8, true, 4, "Mineral Water", 3.0m },
+                    { 9, true, 5, "Mtsvadi", 17.0m },
+                    { 10, true, 5, "Badrijani Nigvzit", 11.0m },
+                    { 11, true, 6, "Churchkhela", 6.0m },
+                    { 12, true, 6, "Honey Cake", 7.5m },
+                    { 13, true, 7, "Lobio (Clay Pot)", 9.0m },
+                    { 14, true, 7, "Lobio with Mchadi", 11.0m },
+                    { 15, true, 8, "Pickled Vegetables", 5.5m },
+                    { 16, true, 8, "Cornbread (Mchadi)", 3.5m },
+                    { 17, true, 9, "Adjarian Khachapuri", 14.0m },
+                    { 18, true, 9, "Imeretian Khachapuri", 12.0m },
+                    { 19, true, 10, "Lemonade", 4.0m },
+                    { 20, true, 10, "Beer", 6.5m },
+                    { 21, true, 11, "Khinkali (10 pcs)", 13.0m },
+                    { 22, true, 11, "Chakapuli", 18.0m },
+                    { 23, true, 12, "Red Wine", 11.0m },
+                    { 24, true, 12, "Cola", 3.0m }
+                });
 
             migrationBuilder.InsertData(
                 table: "RoleUsers",
                 columns: new[] { "Id", "RoleId", "UserId" },
-                values: new object[] { 1, 1, 1 });
+                values: new object[,]
+                {
+                    { 1, 1, 1 },
+                    { 2, 1, 2 },
+                    { 3, 1, 3 },
+                    { 4, 1, 4 },
+                    { 5, 1, 5 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailJSConfigs_PublicKey",
+                table: "EmailJSConfigs",
+                column: "PublicKey",
+                unique: true,
+                filter: "[PublicKey] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailJSConfigs_ServiceId",
+                table: "EmailJSConfigs",
+                column: "ServiceId",
+                unique: true,
+                filter: "[ServiceId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailJSConfigs_TemplateId",
+                table: "EmailJSConfigs",
+                column: "TemplateId",
+                unique: true,
+                filter: "[TemplateId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailJSConfigs_UserId",
+                table: "EmailJSConfigs",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuItems_MenuId",
@@ -311,6 +436,9 @@ namespace Restaurant_Reservation_System.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "EmailJSConfigs");
+
             migrationBuilder.DropTable(
                 name: "MenuItems");
 

@@ -12,8 +12,8 @@ using Restaurant_Reservation_System.Data;
 namespace Restaurant_Reservation_System.Data.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20260329125218_mig_v1")]
-    partial class mig_v1
+    [Migration("20260406101257_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,59 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.EmailJS", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PublicKey")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ServiceId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TemplateId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PublicKey")
+                        .IsUnique()
+                        .HasFilter("[PublicKey] IS NOT NULL");
+
+                    b.HasIndex("ServiceId")
+                        .IsUnique()
+                        .HasFilter("[ServiceId] IS NOT NULL");
+
+                    b.HasIndex("TemplateId")
+                        .IsUnique()
+                        .HasFilter("[TemplateId] IS NOT NULL");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("EmailJSConfigs", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            PublicKey = "90LyXpeSeVnNPQeFJ",
+                            ServiceId = "service_kqw395h",
+                            TemplateId = "template_75iei9r",
+                            UserId = 1
+                        });
+                });
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.Menu", b =>
                 {
@@ -46,6 +99,80 @@ namespace Restaurant_Reservation_System.Data.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Menus", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Main Dishes",
+                            RestaurantId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Drinks",
+                            RestaurantId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Traditional Meals",
+                            RestaurantId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Wine & Drinks",
+                            RestaurantId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Garden Specials",
+                            RestaurantId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Desserts",
+                            RestaurantId = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Lobio & Beans",
+                            RestaurantId = 4
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Extras",
+                            RestaurantId = 4
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Khachapuri",
+                            RestaurantId = 5
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Drinks",
+                            RestaurantId = 5
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Georgian Classics",
+                            RestaurantId = 6
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Drinks",
+                            RestaurantId = 6
+                        });
                 });
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.MenuItem", b =>
@@ -75,6 +202,200 @@ namespace Restaurant_Reservation_System.Data.Migrations
                     b.HasIndex("MenuId");
 
                     b.ToTable("MenuItems", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsAvaiable = true,
+                            MenuId = 1,
+                            Name = "Chashushuli",
+                            Price = 18.5m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsAvaiable = true,
+                            MenuId = 1,
+                            Name = "Ojakhuri",
+                            Price = 16.0m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsAvaiable = true,
+                            MenuId = 2,
+                            Name = "Red Wine",
+                            Price = 12.0m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsAvaiable = true,
+                            MenuId = 2,
+                            Name = "Craft Beer",
+                            Price = 8.5m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsAvaiable = true,
+                            MenuId = 3,
+                            Name = "Kharcho",
+                            Price = 20.0m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsAvaiable = true,
+                            MenuId = 3,
+                            Name = "Chkmeruli",
+                            Price = 19.5m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsAvaiable = true,
+                            MenuId = 4,
+                            Name = "White Wine",
+                            Price = 13.0m
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IsAvaiable = true,
+                            MenuId = 4,
+                            Name = "Mineral Water",
+                            Price = 3.0m
+                        },
+                        new
+                        {
+                            Id = 9,
+                            IsAvaiable = true,
+                            MenuId = 5,
+                            Name = "Mtsvadi",
+                            Price = 17.0m
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IsAvaiable = true,
+                            MenuId = 5,
+                            Name = "Badrijani Nigvzit",
+                            Price = 11.0m
+                        },
+                        new
+                        {
+                            Id = 11,
+                            IsAvaiable = true,
+                            MenuId = 6,
+                            Name = "Churchkhela",
+                            Price = 6.0m
+                        },
+                        new
+                        {
+                            Id = 12,
+                            IsAvaiable = true,
+                            MenuId = 6,
+                            Name = "Honey Cake",
+                            Price = 7.5m
+                        },
+                        new
+                        {
+                            Id = 13,
+                            IsAvaiable = true,
+                            MenuId = 7,
+                            Name = "Lobio (Clay Pot)",
+                            Price = 9.0m
+                        },
+                        new
+                        {
+                            Id = 14,
+                            IsAvaiable = true,
+                            MenuId = 7,
+                            Name = "Lobio with Mchadi",
+                            Price = 11.0m
+                        },
+                        new
+                        {
+                            Id = 15,
+                            IsAvaiable = true,
+                            MenuId = 8,
+                            Name = "Pickled Vegetables",
+                            Price = 5.5m
+                        },
+                        new
+                        {
+                            Id = 16,
+                            IsAvaiable = true,
+                            MenuId = 8,
+                            Name = "Cornbread (Mchadi)",
+                            Price = 3.5m
+                        },
+                        new
+                        {
+                            Id = 17,
+                            IsAvaiable = true,
+                            MenuId = 9,
+                            Name = "Adjarian Khachapuri",
+                            Price = 14.0m
+                        },
+                        new
+                        {
+                            Id = 18,
+                            IsAvaiable = true,
+                            MenuId = 9,
+                            Name = "Imeretian Khachapuri",
+                            Price = 12.0m
+                        },
+                        new
+                        {
+                            Id = 19,
+                            IsAvaiable = true,
+                            MenuId = 10,
+                            Name = "Lemonade",
+                            Price = 4.0m
+                        },
+                        new
+                        {
+                            Id = 20,
+                            IsAvaiable = true,
+                            MenuId = 10,
+                            Name = "Beer",
+                            Price = 6.5m
+                        },
+                        new
+                        {
+                            Id = 21,
+                            IsAvaiable = true,
+                            MenuId = 11,
+                            Name = "Khinkali (10 pcs)",
+                            Price = 13.0m
+                        },
+                        new
+                        {
+                            Id = 22,
+                            IsAvaiable = true,
+                            MenuId = 11,
+                            Name = "Chakapuli",
+                            Price = 18.0m
+                        },
+                        new
+                        {
+                            Id = 23,
+                            IsAvaiable = true,
+                            MenuId = 12,
+                            Name = "Red Wine",
+                            Price = 11.0m
+                        },
+                        new
+                        {
+                            Id = 24,
+                            IsAvaiable = true,
+                            MenuId = 12,
+                            Name = "Cola",
+                            Price = 3.0m
+                        });
                 });
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.Person", b =>
@@ -119,6 +440,38 @@ namespace Restaurant_Reservation_System.Data.Migrations
                             Address = "Near Lisi Lake",
                             FirstName = "Nikoloz",
                             LastName = "Lortkipanidze",
+                            Phone = "577711701"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Address #2",
+                            FirstName = "Temo",
+                            LastName = "Totoshvili",
+                            Phone = "577711702"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Address #3",
+                            FirstName = "Davit",
+                            LastName = "Papava",
+                            Phone = "577711703"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Address #4",
+                            FirstName = "Demetre",
+                            LastName = "Kvirikashvili",
+                            Phone = "577711704"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "Address #5",
+                            FirstName = "Saba",
+                            LastName = "Dolidze",
                             Phone = "577711705"
                         });
                 });
@@ -371,6 +724,30 @@ namespace Restaurant_Reservation_System.Data.Migrations
                             Id = 1,
                             RoleId = 1,
                             UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RoleId = 1,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RoleId = 1,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            RoleId = 1,
+                            UserId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            RoleId = 1,
+                            UserId = 5
                         });
                 });
 
@@ -414,11 +791,58 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         {
                             Id = 1,
                             Email = "nikusha191208@gmail.com",
-                            PasswordHash = "DB6jdy9/yKY9HsyyDejZahTFEMLmN/FVlAbA+9RuHew=",
+                            PasswordHash = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
                             PersonId = 1,
                             RegistrationDate = new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Username = "NikolozLortki"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "totoshvili@gmail.com",
+                            PasswordHash = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
+                            PersonId = 2,
+                            RegistrationDate = new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Username = "Temo_totoshvili"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "papava@gmail.com",
+                            PasswordHash = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
+                            PersonId = 3,
+                            RegistrationDate = new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Username = "DatoPapava"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Email = "kvirrik@gmail.com",
+                            PasswordHash = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
+                            PersonId = 4,
+                            RegistrationDate = new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Username = "Kvirrik"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Email = "SabaDolidze@gmail.com",
+                            PasswordHash = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
+                            PersonId = 5,
+                            RegistrationDate = new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Username = "SabaDolidze"
                         });
+                });
+
+            modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.EmailJS", b =>
+                {
+                    b.HasOne("Restaurant_Reservation_System.Data.Entities.User", "User")
+                        .WithOne("EmailJS")
+                        .HasForeignKey("Restaurant_Reservation_System.Data.Entities.EmailJS", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.Menu", b =>
@@ -529,6 +953,9 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.User", b =>
                 {
+                    b.Navigation("EmailJS")
+                        .IsRequired();
+
                     b.Navigation("Reservations");
 
                     b.Navigation("RoleUsers");

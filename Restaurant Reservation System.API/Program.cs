@@ -93,6 +93,7 @@ namespace Restaurant_Reservation_System.API
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
             builder.Services.AddScoped<IMenuRepository, MenuRepository>();
             builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+            builder.Services.AddScoped<IEmailJSRepository, EmailJSRepository>();
 
             // Add services to the container
             builder.Services.AddScoped<IPersonService, PersonService>();
@@ -101,6 +102,7 @@ namespace Restaurant_Reservation_System.API
             builder.Services.AddScoped<IReservationService, ReservationService>();
             builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+            builder.Services.AddScoped<IEmailJSService, EmailJSService>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

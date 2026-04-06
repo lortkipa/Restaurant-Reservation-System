@@ -42,6 +42,11 @@ namespace Restaurant_Reservation_System.Data.Configurations
                 .WithOne(r => r.User)
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+            // User => EmailJS
+            builder.HasOne(e => e.EmailJS)
+                .WithOne(u => u.User)
+                .HasForeignKey<EmailJS>(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

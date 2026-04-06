@@ -23,6 +23,7 @@ namespace Restaurant_Reservation_System.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<RoleUser> RoleUsers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<EmailJS> EmailJS { get; set; }
 
         public RestaurantContext()
         {
@@ -50,6 +51,7 @@ namespace Restaurant_Reservation_System.Data
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new RoleUserConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new EmailJSConfiguration());
 
             // seeding
             modelBuilder.Entity<Role>().HasData(
@@ -160,6 +162,16 @@ namespace Restaurant_Reservation_System.Data
                     }
                 );
             }
+            modelBuilder.Entity<EmailJS>().HasData(
+                new EmailJS
+                {
+                    Id = 1,
+                    UserId = 1,
+                    ServiceId = "service_kqw395h",
+                    TemplateId = "template_75iei9r",
+                    PublicKey = "90LyXpeSeVnNPQeFJ"
+                }
+            );
             modelBuilder.Entity<RoleUser>().HasData(
                 new RoleUser
                 {

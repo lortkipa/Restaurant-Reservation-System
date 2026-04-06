@@ -22,6 +22,59 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.EmailJS", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PublicKey")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ServiceId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TemplateId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PublicKey")
+                        .IsUnique()
+                        .HasFilter("[PublicKey] IS NOT NULL");
+
+                    b.HasIndex("ServiceId")
+                        .IsUnique()
+                        .HasFilter("[ServiceId] IS NOT NULL");
+
+                    b.HasIndex("TemplateId")
+                        .IsUnique()
+                        .HasFilter("[TemplateId] IS NOT NULL");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("EmailJSConfigs", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            PublicKey = "90LyXpeSeVnNPQeFJ",
+                            ServiceId = "service_kqw395h",
+                            TemplateId = "template_75iei9r",
+                            UserId = 1
+                        });
+                });
+
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.Menu", b =>
                 {
                     b.Property<int>("Id")
@@ -778,6 +831,17 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.EmailJS", b =>
+                {
+                    b.HasOne("Restaurant_Reservation_System.Data.Entities.User", "User")
+                        .WithOne("EmailJS")
+                        .HasForeignKey("Restaurant_Reservation_System.Data.Entities.EmailJS", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.Menu", b =>
                 {
                     b.HasOne("Restaurant_Reservation_System.Data.Entities.Restaurant", "Restaurant")
@@ -886,6 +950,9 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.User", b =>
                 {
+                    b.Navigation("EmailJS")
+                        .IsRequired();
+
                     b.Navigation("Reservations");
 
                     b.Navigation("RoleUsers");

@@ -31,5 +31,7 @@ namespace Restaurant_Reservation_System.Data.Entities
         public Person? Person { get; set; }
         // User => RoleUsers
         public ICollection<RoleUser> RoleUsers { get; set; } = new List<RoleUser>();
+        // EmailJS => User
+        public EmailJS EmailJS { get; set; } = null!;
     }
 }

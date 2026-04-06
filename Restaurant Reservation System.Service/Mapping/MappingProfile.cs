@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Restaurant_Reservation_System.Data.Entities;
+using Restaurant_Reservation_System.Service.DTOs.EmailJS;
 using Restaurant_Reservation_System.Service.DTOs.Menu;
 using Restaurant_Reservation_System.Service.DTOs.Person;
 using Restaurant_Reservation_System.Service.DTOs.Reservation;
@@ -71,6 +72,11 @@ namespace Restaurant_Reservation_System.Service.Mapping
             CreateMap<Restaurant, RestaurantDTO>().ReverseMap();
             CreateMap<CreateRestaurantDTO, Restaurant>();
             CreateMap<UpdateRestaurantDTO, Restaurant>();
+
+            // EmailJS
+            CreateMap<EmailJS, EmailJSDTO>().ReverseMap();
+            CreateMap<CreateEmailJSDTO, EmailJS>();
+            CreateMap<UpdateEmailJSDTO, EmailJS>();
         }
     }
 }
