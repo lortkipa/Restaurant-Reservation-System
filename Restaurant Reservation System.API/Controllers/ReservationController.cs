@@ -39,7 +39,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             }
 
             // 🔹 ADMIN ONLY
-            [Authorize(Roles = "Admin")]
+            [Authorize(Roles = "Admin,Worker")]
             [HttpGet("GetAll")]
             public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetAllReservations()
             {
@@ -65,7 +65,7 @@ namespace Restaurant_Reservation_System.API.Controllers
                 return Ok(reserv);
             }
 
-            [Authorize(Roles = "Admin")]
+            [Authorize(Roles = "Admin,Worker")]
             [HttpGet("GetReservationsByDate/{date:DateTime}")]
             public async Task<IActionResult> GetReservationsByDate(DateTime date)
             {
@@ -100,7 +100,7 @@ namespace Restaurant_Reservation_System.API.Controllers
                 return Ok(model);
             }
 
-            [Authorize(Roles = "Admin")]
+            [Authorize(Roles = "Admin,Worker")]
             [HttpPut("UpdateStatus/{id:int}")]
             public async Task<ActionResult> UpdateReservation(int id, ReservationStatuses statusId)
             {

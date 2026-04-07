@@ -11,6 +11,8 @@ import { About } from './components/about/about';
 import { AdminPanelMenus } from './components/admin-panel/admin-panel-menus/admin-panel-menus';
 import { AdminPanelUsers } from './components/admin-panel/admin-panel-users/admin-panel-users';
 import { Contact } from './components/contact/contact';
+import { WorkerPanel } from './components/worker-panel/worker-panel';
+import { WorkerPanelUsers } from './components/worker-panel/worker-panel-users/worker-panel-users';
 
 
 export const routes: Routes = [
@@ -51,6 +53,14 @@ export const routes: Routes = [
             { path: 'restaurants', component: AdminPanelRestaurants },
             { path: 'menus', component: AdminPanelMenus },
             { path: 'users', component: AdminPanelUsers }
+        ]
+    },
+    {
+        path: 'worker-panel',
+        component: WorkerPanel,
+        children: [
+            { path: 'reservations', component: Reservations },
+            { path: 'users', component: WorkerPanelUsers }
         ]
     },
     {

@@ -24,6 +24,10 @@
         <span class="btn-admin-icon">◈</span>
         Admin Panel
       </a>
+      <a routerLink="/worker-panel" class="btn-admin" id="admin-btn" *ngIf="!isAdmin() && isWorker()">
+        <span class="btn-admin-icon">◈</span>
+        Worker Panel
+      </a>
       <button class="btn-logout" (click)="logout()">
         ⏻ Sign Out
       </button>

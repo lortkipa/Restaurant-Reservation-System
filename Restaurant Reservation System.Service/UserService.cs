@@ -139,6 +139,24 @@ namespace Restaurant_Reservation_System.Service
             await _userRepo.UpdateAsync(user);
             return true;
         }
+        public async Task<bool> UpdateWithoutPasswordAsync(int id, UpdateUserDTO model)
+        {
+            if (model == null)
+                return false;
+
+            User user = await _userRepo.GetByIdAsync(id);
+            if (user == null)
+                return false;
+            string passwordHash = user.PasswordHash;
+
+            user = _mapper.Map(model, user);
+            user.PasswordHash = passwordHash;
+
+            // user.PasswordHash = await _passwordHasher.HashPassword(model.Password);
+
+            await _userRepo.UpdateAsync(user);
+            return true;
+        }
         public async Task<bool> DeleteAsync(int id)
         {
             var user = await _userRepo.GetByIdAsync(id);

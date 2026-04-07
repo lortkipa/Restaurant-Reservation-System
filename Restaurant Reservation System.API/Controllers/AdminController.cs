@@ -32,7 +32,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             return roles.Any(r => r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Worker")]
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
@@ -42,7 +42,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             var users = await _userService.GetAllAsync();
             return Ok(users);
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Worker")]
         [HttpGet("GetAllCustomers")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAllCustomers()
         {
@@ -79,7 +79,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             if (user == null)
                 return NotFound("User not found");
 
-            var result = await _userService.UpdateAsync(id, model);
+            var result = await _userService.UpdateWithoutPasswordAsync(id, model);
             if (!result)
                 return BadRequest("Update failed");
 

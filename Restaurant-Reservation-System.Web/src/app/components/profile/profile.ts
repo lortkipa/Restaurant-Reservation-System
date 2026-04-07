@@ -22,6 +22,7 @@ import { forkJoin } from 'rxjs';
 export class Profile {
   token = signal<string>('');
   isAdmin = signal(false);
+  isWorker = signal(false);
   userName = signal('');
   editAccount = signal(false);
   editPersonal = signal(false);
@@ -49,6 +50,7 @@ export class Profile {
       if (currentToken) {
         this.userService.getRoles(currentToken).subscribe((roles: RoleModel[]) => {
           this.isAdmin.set(roles.some(r => r.name === 'Admin'));
+          this.isWorker.set(roles.some(r => r.name === 'Worker'));
         });
 
         this.userService.getProfile(currentToken).subscribe({

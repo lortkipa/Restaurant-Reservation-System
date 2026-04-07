@@ -21,6 +21,7 @@ namespace Restaurant_Reservation_System.Service.Interfaces
         Task<AuthResponseDTO> RegisterAsync(RegisterUserDTO model);
         Task<AuthResponseDTO> LoginAsync(LoginUserDTO model);
         Task<bool> UpdateAsync(int id, UpdateUserDTO model);
+        Task<bool> UpdateWithoutPasswordAsync(int id, UpdateUserDTO model);
         Task<bool> DeleteAsync(int id);
     }
 }

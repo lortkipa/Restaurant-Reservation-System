@@ -13,7 +13,7 @@
   <aside class="sidebar" [class.open]="isSidebarOpen()">
     <div class="sidebar-brand">
       <span class="brand-name">{{ globals.appName }}</span>
-      <span class="brand-sub">ADMIN PANEL</span>
+      <span class="brand-sub">WORKER PANEL</span>
     </div>
 
     <nav class="sidebar-nav">
@@ -28,7 +28,7 @@
         ○ Users
       </a>
 
-      <div class="nav-section-label">DINING</div>
+      <!-- <div class="nav-section-label">DINING</div>
       <a routerLink="restaurants" routerLinkActive="active" class="nav-item"
         [ngClass]="{'nav-button-pressed': show() === 'restaurants'}" (click)="switchShow('restaurants')">
         ◈ Restaurants
@@ -36,7 +36,7 @@
       <a routerLink="menus" routerLinkActive="active" class="nav-item"
         [ngClass]="{'nav-button-pressed': show() === 'menus'}" (click)="switchShow('menus')">
         ◍ Menus
-      </a>
+      </a> -->
 
       <div class="nav-section-label">BOOKINGS</div>
       <a routerLink="reservations" routerLinkActive="active" class="nav-item"

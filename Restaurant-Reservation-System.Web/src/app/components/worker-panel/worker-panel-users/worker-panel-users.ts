@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { UserService } from '../../../services/user-service';
 import { UserModel } from '../../../models/user-model';
 import { FormsModule } from '@angular/forms';
@@ -11,13 +11,12 @@ import { map, Observable } from 'rxjs';
 import { RoleModel, Roles } from '../../../models/role-model';
 
 @Component({
-  selector: 'app-admin-panel-users',
-  imports: [CommonModule, FormsModule],
-  templateUrl: './admin-panel-users.html',
-  styleUrl: './admin-panel-users.scss',
+  selector: 'app-worker-panel-users',
+  imports: [FormsModule, CommonModule],
+  templateUrl: './worker-panel-users.html',
+  styleUrl: './worker-panel-users.scss',
 })
-
-export class AdminPanelUsers {
+export class WorkerPanelUsers {
   constructor(
     private userService: UserService,
     private localStorage: LocalStorageService,
@@ -180,12 +179,16 @@ export class AdminPanelUsers {
 
       // First, check roles
       this.getUserRoles(user.id).subscribe((roles) => {
-        // for (let i = 0; i < roles.length; i++) {
-        //   if (roles[i].name === "Admin") {
-        //     this.alert.error("Cannot Edit Admin", "");
-        //     return; // exit if admin
-        //   }
-        // }
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].name === "Admin") {
+            this.alert.error("Cannot Edit Admin As Worker", "");
+            return; // exit if admin
+          }
+           if (roles[i].name === "Worker") {
+            this.alert.error("Cannot Edit Worker", "");
+            return; // exit if admin
+          }
+        }
 
         // Only runs if user is NOT admin
         if (user.username === this.selectedUser()?.username) {
@@ -257,5 +260,4 @@ export class AdminPanelUsers {
       });
     })
   }
-
 }
