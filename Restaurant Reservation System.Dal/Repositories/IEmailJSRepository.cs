@@ -1,4 +1,5 @@
-﻿using Restaurant_Reservation_System.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Restaurant_Reservation_System.Data;
 using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Data.Infrastructure;
 using System;
@@ -21,7 +22,8 @@ namespace Restaurant_Reservation_System.Dal.Repositories
 
         public async Task<EmailJS> GetByUserIdAsync(int id)
         {
-            var emailJS = await _context.EmailJS.FindAsync(id);
+            var emailJS = await _context.EmailJS
+                .FirstOrDefaultAsync(x => x.UserId == id);
             if (emailJS == null)
             { 
                 emailJS = new EmailJS

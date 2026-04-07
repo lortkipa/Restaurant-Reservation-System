@@ -7,6 +7,7 @@ using Restaurant_Reservation_System.Data;
 using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Service;
 using Restaurant_Reservation_System.Service.DTOs;
+using Restaurant_Reservation_System.Service.DTOs.EmailJS;
 using Restaurant_Reservation_System.Service.DTOs.Person;
 using Restaurant_Reservation_System.Service.DTOs.Role;
 using Restaurant_Reservation_System.Service.DTOs.User;
@@ -24,9 +25,11 @@ namespace Restaurant_Reservation_System.API.Controllers
         public readonly IPersonService _personalService;
         private readonly RestaurantContext _context;
         private readonly IConfiguration _config;
+        private readonly IEmailJSService _emailJSService;
 
-        public UserController(IConfiguration config, IUserService service, IPersonService personService, RestaurantContext context)
+        public UserController(IEmailJSService emailJSService, IConfiguration config, IUserService service, IPersonService personService, RestaurantContext context)
         {
+            _emailJSService = emailJSService;
             _service = service;
             _personalService = personService;
             _context = context;
@@ -76,6 +79,23 @@ namespace Restaurant_Reservation_System.API.Controllers
             {
                 AuthResponseDTO res = await _service.RegisterAsync(model);
                 if (res.Status == false) return BadRequest(res);
+
+                //_emailJSService.CreateAsync(new CreateEmailJSDTO
+                //{
+                //    UserId = 
+                //});
+
+                var user = await _service.GetByUsernameAsync(model.Username);
+                if (user == null) return BadRequest(user);
+
+                await _emailJSService.CreateAsync(new CreateEmailJSDTO
+                {
+                    UserId = user.Id,
+                    ServiceId = null,
+                    TemplateId = null,
+                    PublicKey = null
+                });
+
                 return Ok(res);
             }
             return BadRequest(

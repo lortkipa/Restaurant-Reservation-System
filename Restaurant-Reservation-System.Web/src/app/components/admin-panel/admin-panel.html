@@ -27,6 +27,10 @@
         [ngClass]="{'nav-button-pressed': show() === 'users'}" (click)="switchShow('users')">
         ○ Users
       </a>
+       <a routerLink="schedules" routerLinkActive="active" class="nav-item"
+        [ngClass]="{'nav-button-pressed': show() === 'schedules'}" (click)="switchShow('schedules')">
+        🗓 Schedules
+      </a>
 
       <div class="nav-section-label">DINING</div>
       <a routerLink="restaurants" routerLinkActive="active" class="nav-item"
@@ -42,6 +46,12 @@
       <a routerLink="reservations" routerLinkActive="active" class="nav-item"
         [ngClass]="{'nav-button-pressed': show() === 'reservations'}" (click)="switchShow('reservations')">
         ◷ Reservations
+      </a>
+
+       <div class="nav-section-label">SETTINGS</div>
+      <a routerLink="email-js" routerLinkActive="active" class="nav-item"
+        [ngClass]="{'nav-button-pressed': show() === 'email-js'}" (click)="switchShow('email-js')">
+        ✉ EmailJS
       </a>
     </nav>
 

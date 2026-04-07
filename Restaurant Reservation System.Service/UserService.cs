@@ -22,9 +22,11 @@ namespace Restaurant_Reservation_System.Service
         private readonly IRoleUserRepository _roleUserRepo;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IMapper _mapper;
+        private readonly IEmailJSRepository _emailJSRepo;
 
-        public UserService(IUserRepository userRepo, IPersonRepository personRepo, IReservationRepository reservationRepo, IRoleUserRepository roleUserRepo, IPasswordHasher passwordHaser, IMapper mapper)
+        public UserService(IEmailJSRepository emailJSRepository, IUserRepository userRepo, IPersonRepository personRepo, IReservationRepository reservationRepo, IRoleUserRepository roleUserRepo, IPasswordHasher passwordHaser, IMapper mapper)
         {
+            _emailJSRepo = emailJSRepository;
             _userRepo = userRepo;
             _personRepo = personRepo;
             _roleUserRepo = roleUserRepo;
@@ -37,6 +39,20 @@ namespace Restaurant_Reservation_System.Service
         {
             var users = await _userRepo.GetAllAsync();
             return _mapper.Map<IEnumerable<UserDTO>>(users);
+        }
+        public async Task<IEnumerable<UserDTO>> GetAllAdminsAsync()
+        {
+            IEnumerable<User> _admins = await _userRepo.GetAllWorkersAsync();
+            IEnumerable<UserDTO> admins = _mapper.Map<IEnumerable<UserDTO>>(_admins);
+
+            return admins;
+        }
+        public async Task<IEnumerable<UserDTO>> GetAllWorkersAsync()
+        {
+            IEnumerable<User> _workers = await _userRepo.GetAllWorkersAsync();
+            IEnumerable<UserDTO> workers = _mapper.Map<IEnumerable<UserDTO>>(_workers);
+
+            return workers;
         }
         public async Task<IEnumerable<CustomerDTO>> GetAllCostumersAsync()
         {
@@ -103,6 +119,14 @@ namespace Restaurant_Reservation_System.Service
             user.PersonId = person.Id;
             user.PasswordHash = await _passwordHasher.HashPassword(model.Password);
             await _userRepo.AddAsync(user);
+
+            await _emailJSRepo.AddAsync(new EmailJS
+            {
+                UserId = user.Id,
+                ServiceId = null,
+                TemplateId = null,
+                PublicKey = null
+            });
 
             RoleUser roleUser = new RoleUser
             {

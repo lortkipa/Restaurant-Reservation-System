@@ -1,0 +1,141 @@
+<div class="page-header">
+    <div>
+        <h1 class="page-title">EmailJS Settings</h1>
+    </div>
+</div>
+
+<div class="content" *ngIf="!isSettingSet()">
+    <div class="panel">
+        <div class="ph"><span class="pt">How to get your EmailJS keys</span></div>
+        <div class="pb">
+            <div class="how-to">
+                <div class="ht-title">Setup Guide</div>
+                <div class="ht-steps">
+                    <div class="ht-step">Go to <a href="https://www.emailjs.com" target="_blank">emailjs.com</a> and
+                        create a free account. Free tier allows 200 emails/month.</div>
+                    <div class="ht-step">In the dashboard, go to <strong style="color:var(--cream)">Email
+                            Services</strong> → Add a new service (Gmail, Outlook, etc.). Copy the
+                        <code>Service ID</code>.
+                    </div>
+                    <div class="ht-step">Go to <strong style="color:var(--cream)">Email Templates</strong> → Create New
+                        Template. Design your email using the template variables listed below. Copy the
+                        <code>Template ID</code>.
+                    </div>
+                    <div class="ht-step">Go to <strong style="color:var(--cream)">Account → General</strong>. Copy your
+                        <code>Public Key</code>.
+                    </div>
+                    <div class="ht-step">Paste all three keys into the form below and click <strong
+                            style="color:var(--cream)">Save Changes</strong>. Use the Test panel to verify everything
+                        works.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="ph"><span class="pt">Template Variables</span></div>
+        <div class="pb">
+            <p style="font-size:12px;color:var(--muted);font-weight:300;margin-bottom:16px;line-height:1.7">
+                When building your EmailJS template, use these variable names exactly. They match what the contact form
+                sends.
+            </p>
+            <table class="vars-table">
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Contains</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code [innerText]="'{{firstName}}'"></code></td>
+                        <td class="desc">First name of the sender</td>
+                        <td class="desc">Jean</td>
+                    </tr>
+                    <tr>
+                        <td><code [innerText]="'{{lastName}}'"></code></td>
+                        <td class="desc">Last name of the sender</td>
+                        <td class="desc">Dupont</td>
+                    </tr>
+                    <tr>
+                        <td><code [innerText]="'{{email}}'"></code></td>
+                        <td class="desc">Sender's email address</td>
+                        <td class="desc">jean@example.com</td>
+                    </tr>
+                    <tr>
+                        <td><code [innerText]="'{{message}}'"></code></td>
+                        <td class="desc">The contact message body</td>
+                        <td class="desc">Hello, I'd like to book...</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Minimal template example -->
+            <div style="margin-top:20px;padding:16px;background:var(--surface2);border:1px solid var(--border)">
+                <div
+                    style="font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">
+                    Example Template Body</div>
+                <pre style="font-size:11px;color:var(--muted);font-family:monospace;line-height:1.8;white-space:pre-wrap"
+                    [innerText]="templateExample">
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="panel reveal d2">
+        <div class="panel-head">
+            <span class="panel-title">Account Details</span>
+            <!-- <div>
+            <button class="panel-edit-btn" (click)="toggleEditMode()" (click)="clear()">Clear</button>
+            <button class="panel-edit-btn" (click)="toggleEditMode()" style="margin-left: 8px;">Edit</button>
+        </div> -->
+            <button class="panel-edit-btn" (click)="toggleEditMode()">Edit</button>
+
+        </div>
+
+        <!-- Read-only view -->
+        <div class="panel-body" *ngIf="!editMode()">
+            <div class="info-row">
+                <span class="info-label">Service Id</span>
+                <span class="info-value">{{serviceId() || '—'}}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Template Id</span>
+                <span class="info-value">{{templateId() || '—'}}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Public Key</span>
+                <span class="info-value">{{publicKey() || '—'}}</span>
+            </div>
+        </div>
+
+        <form class="panel-body" #myForm="ngForm" *ngIf="editMode()">
+            <div class="form-grid" style="margin-top: 16px;">
+                <div class="field full">
+                    <label>Service Id</label>
+                    <input type="text" name="serviceId" [(ngModel)]="serviceId">
+                </div>
+                <div class="field full">
+                    <label>Template Id</label>
+                    <input type="text" name="templateId" [(ngModel)]="templateId">
+                </div>
+                <div class="field full">
+                    <label>Public Key</label>
+                    <input type="text" name="publicKey" [(ngModel)]="publicKey">
+                </div>
+                <!-- <div class="field full">
+                <label>New Password</label>
+                <input type="password" [(ngModel)]="password" name="password" placeholder="Leave blank to keep current"
+                    required>
+            </div> -->
+            </div>
+            <div class="form-actions">
+                <div style="display:flex;gap:10px">
+                    <button class="btn-cancel" type="button" (click)="toggleEditMode()">Cancel</button>
+                    <button class="btn-save" type="submit" (click)="submitInfo()">Save Changes</button>
+                </div>
+            </div>
+        </form>
+    </div>

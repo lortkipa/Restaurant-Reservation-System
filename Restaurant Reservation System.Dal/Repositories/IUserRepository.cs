@@ -10,6 +10,8 @@ namespace Restaurant_Reservation_System.Dal.Repositories
 {
     public interface IUserRepository : IBaseRepository<User>
     {
+        Task<IEnumerable<User>> GetAllAdminsAsync();
+        Task<IEnumerable<User>> GetAllWorkersAsync();
         Task<IEnumerable<User>> GetAllCostumersAsync();
         Task<User> GetByEmailAsync(string email);
         Task<User> GetByUsernameAsync(string username);
@@ -23,6 +25,24 @@ namespace Restaurant_Reservation_System.Dal.Repositories
             _context = context;
         }
 
+        public async Task<IEnumerable<User>> GetAllAdminsAsync()
+        {
+            return await _context.Users
+               .Where(u => _context.RoleUsers
+               .Any(ru => ru.UserId == u.Id &&
+               _context.Roles
+               .Any(r => r.Id == ru.RoleId && r.Name == "Admin")))
+               .ToListAsync();
+        }
+        public async Task<IEnumerable<User>> GetAllWorkersAsync()
+        {
+            return await _context.Users
+               .Where(u => _context.RoleUsers
+               .Any(ru => ru.UserId == u.Id &&
+               _context.Roles
+               .Any(r => r.Id == ru.RoleId && r.Name == "Worker")))
+               .ToListAsync();
+        }
         public async Task<IEnumerable<User>> GetAllCostumersAsync()
         {
             return await _context.Users

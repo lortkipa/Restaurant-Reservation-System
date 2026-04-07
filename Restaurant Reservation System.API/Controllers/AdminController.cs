@@ -36,19 +36,27 @@ namespace Restaurant_Reservation_System.API.Controllers
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
-            //if (!await IsAdmin(adminId))
-            //    return Forbid("Logged in user is not Admin");
-
             var users = await _userService.GetAllAsync();
+            return Ok(users);
+        }
+        [Authorize(Roles = "Admin,Worker")]
+        [HttpGet("GetAllAdmins")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllAdmins()
+        {
+            var users = await _userService.GetAllAdminsAsync();
+            return Ok(users);
+        }
+        [Authorize(Roles = "Admin,Worker")]
+        [HttpGet("GetAllWorkers")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllWorkers()
+        {
+            var users = await _userService.GetAllWorkersAsync();
             return Ok(users);
         }
         [Authorize(Roles = "Admin,Worker")]
         [HttpGet("GetAllCustomers")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAllCustomers()
         {
-            //if (!await IsAdmin(adminId))
-            //    return Forbid("Logged in user is not Admin");
-
             var users = await _userService.GetAllCostumersAsync();
             return Ok(users);
         }
@@ -102,7 +110,7 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             return Ok();
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("RemoveRole/{id:int}/{roleId:int}")]
         public async Task<ActionResult<AuthResponseDTO>> RemoveRole(int id, int roleId)
         {

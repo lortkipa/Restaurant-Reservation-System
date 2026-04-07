@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Restaurant_Reservation_System.Data;
 using Restaurant_Reservation_System.Service.DTOs.EmailJS;
 using Restaurant_Reservation_System.Service.Interfaces;
 using System.Security.Claims;
@@ -11,13 +14,20 @@ namespace Restaurant_Reservation_System.API.Controllers
     [ApiController]
     public class EmailJSController : ControllerBase
     {
+        private readonly RestaurantContext _context;
         private readonly IEmailJSService _service;
 
-        public EmailJSController(IEmailJSService service)
+        public EmailJSController(IEmailJSService service, RestaurantContext context)
         {
+            _context = context;
             _service = service;
         }
-
+        [AllowAnonymous()]
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<EmailJSDTO[]>> GetAll()
+        {
+            return Ok(await _service.GetAll());
+        }
         [Authorize(Roles = "Admin")]
         [HttpGet("Get")]
         public async Task<ActionResult<EmailJSDTO>> Get()
@@ -48,10 +58,17 @@ namespace Restaurant_Reservation_System.API.Controllers
 
             int userId = int.Parse(userIdClaim.Value);
 
+            var emailJs = await _service.GetByUserIdAsync(userId);
+
+            if (emailJs == null)
+                return NotFound("EmailJS config not found");
+
             if (!ModelState.IsValid)
                 return BadRequest(false);
 
-            return Ok(await _service.UpdateAsync(userId, model));
+            model.UserId = emailJs.UserId;
+            var res = await _service.UpdateAsync(emailJs.Id, model);
+            return Ok(res);
         }
     }
 }

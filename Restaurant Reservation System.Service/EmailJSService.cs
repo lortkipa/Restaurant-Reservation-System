@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Restaurant_Reservation_System.Dal.Repositories;
+using Restaurant_Reservation_System.Data.Entities;
 using Restaurant_Reservation_System.Service.DTOs.EmailJS;
 using Restaurant_Reservation_System.Service.Interfaces;
 using System;
@@ -19,10 +20,21 @@ namespace Restaurant_Reservation_System.Service
             _mapper = mapper;
         }
 
+        public async Task<EmailJSDTO[]> GetAll()
+        {
+            var emails = await _repo.GetAllAsync();
+            return _mapper.Map<EmailJSDTO[]>(emails);
+        }
         public async Task<EmailJSDTO> GetByUserIdAsync(int id)
         {
             var person = await _repo.GetByUserIdAsync(id);
             return _mapper.Map<EmailJSDTO>(person);
+        }
+        public async Task<bool> CreateAsync(CreateEmailJSDTO model)
+        {
+            var emailJS = _mapper.Map<EmailJS>(model);
+            await _repo.AddAsync(emailJS);
+            return true;
         }
         public async Task<bool> UpdateAsync(int id, UpdateEmailJSDTO model)
         {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restaurant_Reservation_System.Data;
 
@@ -11,9 +12,11 @@ using Restaurant_Reservation_System.Data;
 namespace Restaurant_Reservation_System.Data.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20260407140103_v3")]
+    partial class v3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,26 +75,6 @@ namespace Restaurant_Reservation_System.Data.Migrations
                             ServiceId = "service_kqw395h",
                             TemplateId = "template_75iei9r",
                             UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            UserId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            UserId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            UserId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            UserId = 5
                         });
                 });
 

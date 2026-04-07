@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthResponseModel } from '../models/auth-response-model';
 import { GoldLine } from '../components/gold-line/gold-line';
 import { LoginModel, RegisterModel, UpdatePersonModel, UpdateUserModel, UserModel, UserPersonModel } from '../models/user-model';
-import {  RoleModel, Roles } from '../models/role-model';
+import { RoleModel, Roles } from '../models/role-model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,34 +19,40 @@ export class UserService {
     )
   }
 
-  GetAllCustomers(token: string) : Observable<UserModel[]> {
+  getAllWorkers(token: string): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllWorkers`,
+      { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
+    )
+  }
+
+  GetAllCustomers(token: string): Observable<UserModel[]> {
     return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllCustomers`,
       { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     )
   }
 
-  UpdateUserProfile(token: string, id:number, data: UpdateUserModel) : Observable<boolean> {
+  UpdateUserProfile(token: string, id: number, data: UpdateUserModel): Observable<boolean> {
     return this.http.put<boolean>(`${this.globals.apiUrl}/Admin/UpdateUserProfile/${id}`,
       data,
       { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 
-  removeUserProfile(token: string, id:number) : Observable<boolean> {
+  removeUserProfile(token: string, id: number): Observable<boolean> {
     return this.http.delete<boolean>(`${this.globals.apiUrl}/Admin/DeleteUserProfile/${id}`,
       { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 
-  setUserRole(id:number, roleId:Roles) : Observable<AuthResponseModel> {
+  setUserRole(id: number, roleId: Roles): Observable<AuthResponseModel> {
     return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}/Admin/SetRole/${id}/${roleId}`, {})
   }
 
-  removeUserRole(id:number, roleId:Roles) : Observable<AuthResponseModel> {
+  removeUserRole(id: number, roleId: Roles): Observable<AuthResponseModel> {
     return this.http.delete<AuthResponseModel>(`${this.globals.apiUrl}/Admin/RemoveRole/${id}/${roleId}`)
   }
 
-  getUserRoles(id:number) : Observable<RoleModel[]> {
+  getUserRoles(id: number): Observable<RoleModel[]> {
     return this.http.get<RoleModel[]>(`${this.globals.apiUrl}/Admin/GetRoles/${id}`)
   }
 

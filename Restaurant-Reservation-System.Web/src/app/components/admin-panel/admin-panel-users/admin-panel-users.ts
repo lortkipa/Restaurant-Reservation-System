@@ -180,12 +180,12 @@ export class AdminPanelUsers {
 
       // First, check roles
       this.getUserRoles(user.id).subscribe((roles) => {
-        // for (let i = 0; i < roles.length; i++) {
-        //   if (roles[i].name === "Admin") {
-        //     this.alert.error("Cannot Edit Admin", "");
-        //     return; // exit if admin
-        //   }
-        // }
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].name === "Admin") {
+            this.alert.error("Cannot Edit Admin", "");
+            return; // exit if admin
+          }
+        }
 
         // Only runs if user is NOT admin
         if (user.username === this.selectedUser()?.username) {

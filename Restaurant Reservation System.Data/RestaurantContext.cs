@@ -170,6 +170,38 @@ namespace Restaurant_Reservation_System.Data
                     ServiceId = "service_kqw395h",
                     TemplateId = "template_75iei9r",
                     PublicKey = "90LyXpeSeVnNPQeFJ"
+                },
+                new EmailJS
+                {
+                    Id = 2,
+                    UserId = 2,
+                    ServiceId = null,
+                    TemplateId = null,
+                    PublicKey = null
+                },
+                new EmailJS
+                {
+                    Id = 3,
+                    UserId = 3,
+                    ServiceId = null,
+                    TemplateId = null,
+                    PublicKey = null
+                },
+                new EmailJS
+                {
+                    Id = 4,
+                    UserId = 4,
+                    ServiceId = null,
+                    TemplateId = null,
+                    PublicKey = null
+                },
+                new EmailJS
+                {
+                    Id = 5,
+                    UserId = 5,
+                    ServiceId = null,
+                    TemplateId = null,
+                    PublicKey = null
                 }
             );
             modelBuilder.Entity<RoleUser>().HasData(

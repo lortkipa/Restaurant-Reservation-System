@@ -1,23 +1,21 @@
-
-import { Component, signal, WritableSignal, OnInit } from '@angular/core';
-import { ReservationService } from '../../../services/reservation-service';
 import { CommonModule } from '@angular/common';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { ReservationModel } from '../../../models/reservation-model';
-import { AlertService } from '../../../services/alert-service';
-import { LocalStorageService } from '../../../services/local-storage-service';
-import { UserService } from '../../../services/user-service';
+import { ReservationService } from '../../../services/reservation-service';
 import { RestaurantService } from '../../../services/restaurant-service';
+import { UserService } from '../../../services/user-service';
+import { LocalStorageService } from '../../../services/local-storage-service';
+import { AlertService } from '../../../services/alert-service';
 import { Router } from '@angular/router';
 
 @Component({
-  standalone: true,
-  selector: 'app-reservations',
+  selector: 'app-worker-panel-reservations',
   imports: [CommonModule],
-  templateUrl: './reservations.html',
-  styleUrl: './reservations.scss',
+  templateUrl: './worker-panel-reservations.html',
+  styleUrl: './worker-panel-reservations.scss',
 })
-export class Reservations implements OnInit {
-  reservations: WritableSignal<ReservationModel[]> = signal([]);
+export class WorkerPanelReservations {
+   reservations: WritableSignal<ReservationModel[]> = signal([]);
   users = signal<any[]>([]);
   restaurants = signal<any[]>([]);
   token: string = ''
@@ -80,19 +78,6 @@ export class Reservations implements OnInit {
   }
 
   delete(id: number) {
-    this.alert.confirm("Are You Sure?").then((res) => {
-      if (!res.isConfirmed) return;
-
-      this.reservationService.delete(this.token, id).subscribe({
-        next: () => {
-          this.alert.success("Reservation Removed", '').then(() => {
-            this.router.navigate(['/admin-panel/reservations']).then(() => {
-              window.location.reload();
-            });
-          });
-        },
-        error: (err) => this.alert.error("Reservation Not Removed", err.error?.message)
-      });
-    });
+    this.alert.error("Cannot Delete Reservation", "Only Admin Can")
   }
 }
