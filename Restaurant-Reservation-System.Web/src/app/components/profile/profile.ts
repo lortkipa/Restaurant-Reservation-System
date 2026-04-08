@@ -41,7 +41,7 @@ export class Profile {
     private router: Router,
     private alert: AlertService,
     private reservationService: ReservationService,
-    private restaurantService : RestaurantService
+    private restaurantService: RestaurantService
   ) {
     this.token.set(this.localStorage.getItem('token') || '');
 
@@ -67,52 +67,52 @@ export class Profile {
 
   resNames = signal<string[]>([])
   loadUserReservations() {
-  const currentToken = this.token();
-  if (!currentToken) return;
+    const currentToken = this.token();
+    if (!currentToken) return;
 
-  this.reservationService.getMyReservations(currentToken).subscribe({
-    next: (data: ReservationModel[]) => {
-      // Sort reservations by date ascending
-      this.reservations = data
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    this.reservationService.getMyReservations(currentToken).subscribe({
+      next: (data: ReservationModel[]) => {
+        // Sort reservations by date ascending
+        this.reservations = data
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-      // Create an array of observables for each restaurant fetch
-      const restaurantRequests = this.reservations.map(r =>
-        this.restaurantService.getById(r.restaurantId)
-      );
+        // Create an array of observables for each restaurant fetch
+        const restaurantRequests = this.reservations.map(r =>
+          this.restaurantService.getById(r.restaurantId)
+        );
 
-      // Use forkJoin to run all requests in parallel and preserve order
-      forkJoin(restaurantRequests).subscribe(restaurants => {
-        // restaurants array matches reservations array order
-        this.resNames.set(restaurants.map(res => res.name));
-      });
-    },
-    error: (err) => console.log('Error loading reservations:', err)
-  });
-}
+        // Use forkJoin to run all requests in parallel and preserve order
+        forkJoin(restaurantRequests).subscribe(restaurants => {
+          // restaurants array matches reservations array order
+          this.resNames.set(restaurants.map(res => res.name));
+        });
+      },
+      error: (err) => console.log('Error loading reservations:', err)
+    });
+  }
 
   cancelReservation(id: number) {
-  let currentToken = this.token(); 
-  if (!currentToken) return;
+    let currentToken = this.token();
+    if (!currentToken) return;
 
-  this.alert.confirm("Are you sure you want to cancel this reservation?").then((result) => {
-    if (result.isConfirmed) {
-      this.reservationService.cancel(currentToken, id).subscribe({
-        next: () => {
-          this.alert.success("Reservation Canceled Successfully", "").then(() => {
-            this.router.navigate(['/profile']).then(() => {
-            window.location.reload();
-          });
-          });
-        },
-        error: (err) => {
-          this.alert.error("Cancellation Failed", err.error.message || "Something went wrong");
-          console.error(err);
-        }
-      });
-    }
-  });
-}
+    this.alert.confirm("Are you sure you want to cancel this reservation?").then((result) => {
+      if (result.isConfirmed) {
+        this.reservationService.cancel(currentToken, id).subscribe({
+          next: () => {
+            this.alert.success("Reservation Canceled Successfully", "").then(() => {
+              this.router.navigate(['/profile']).then(() => {
+                window.location.reload();
+              });
+            });
+          },
+          error: (err) => {
+            this.alert.error("Cancellation Failed", err.error.message || "Something went wrong");
+            console.error(err);
+          }
+        });
+      }
+    });
+  }
 
   getStatusLabel(statusId: number): string {
     let labels: Record<number, string> = { 1: 'Pending', 2: 'Confirmed', 3: 'Canceled' };
@@ -194,4 +194,42 @@ export class Profile {
       });
     });
   }
+
+  previewUrl: string | null = null;
+
+ updateProfilePicutre() {
+  this.alert.getPicture("Select Profile Picture").then((result) => {
+
+    if (result.isDismissed) return; // Cancel
+
+    if (result.isDenied) {
+      // Remove picture
+      this.userService.updateProfilePicture(this.token(), null).subscribe({
+        next: () => this.alert.success("Profile Picture Removed", '').then(() => {
+          this.router.navigate(['/profile']).then(() => window.location.reload());
+        }),
+        error: err => this.alert.error("Update Failed", err.error.message)
+      });
+      return;
+    }
+
+    if (result.isConfirmed) {
+      const file = result.value as File; // ← THIS IS THE SELECTED FILE
+
+      // Safety check
+      if (!file) {
+        this.alert.error('No Picture Chosen', '');
+        return;
+      }
+
+      // Send the selected file to your backend
+      this.userService.updateProfilePicture(this.token(), file).subscribe({
+        next: () => this.alert.success("Profile Picture Updated", '').then(() => {
+          this.router.navigate(['/profile']).then(() => window.location.reload());
+        }),
+        error: err => this.alert.error("Update Failed", err.error.message)
+      });
+    }
+  });
+}
 }

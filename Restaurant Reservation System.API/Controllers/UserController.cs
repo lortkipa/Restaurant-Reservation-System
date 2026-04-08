@@ -274,28 +274,54 @@ namespace Restaurant_Reservation_System.API.Controllers
 
         [Authorize]
         [HttpPost("UpdateProfilePicture")]
-        public async Task<IActionResult> UpdateProfilePicture(IFormFile? file)
+        public async Task<ActionResult<AuthResponseDTO>> UpdateProfilePicture(IFormFile? file)
         {
             try
             {
                 var userIdClaim = User.Claims.FirstOrDefault(c =>
-                       c.Type == ClaimTypes.NameIdentifier ||
-                       c.Type == "http://schemas.xmlsoap.org/ws/2005/identity/claims/nameidentifier");
+                        c.Type == ClaimTypes.NameIdentifier ||
+                        c.Type == "http://schemas.xmlsoap.org/ws/2005/identity/claims/nameidentifier");
                 if (userIdClaim == null)
-                    return Unauthorized("Invalid token");
+                    return Unauthorized(new AuthResponseDTO
+                    {
+                        Status = false,
+                        Message = "User Not Logged In"
+                    });
                 int userId = int.Parse(userIdClaim.Value);
+                if (file == null)
+                {
+                    var res = await _service.UpdatePictureAsync(userId, null);
+                    if (!res)
+                        return BadRequest(new AuthResponseDTO
+                        {
+                            Status = false,
+                            Message = "Profile Picture Not Updated"
+                        });
+                } else 
+                {
+                    string? imagePath = await _imageService.SaveImageAsync(file, "users", _env.WebRootPath);
+                    var res = await _service.UpdatePictureAsync(userId, imagePath);
+                    if (!res)
+                        return BadRequest(new AuthResponseDTO
+                        {
+                            Status = false,
+                            Message = "Profile Picture Not Updated"
+                        }); ;
+                }
 
-                string? imagePath = await _imageService.SaveImageAsync(file, "users", _env.WebRootPath);
-                var res =  await _service.UpdatePictureAsync(userId, imagePath);
-
-                if (!res)
-                    return BadRequest("Profile Picture Not Updated");
-
-                return Ok("Profile Picture Updated");
+                return Ok(new AuthResponseDTO
+                {
+                    Status = true,
+                    Message = "Profile Picture Updated"
+                });
             } 
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
             }
         }
     }

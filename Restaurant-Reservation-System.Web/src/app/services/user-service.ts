@@ -104,4 +104,22 @@ export class UserService {
       { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
+
+  updateProfilePicture(token: string, data: File | null): Observable<string> {
+    const formData = new FormData();
+
+    if (data) {
+      formData.append('file', data);
+    }
+
+    return this.http.post<string>(
+      `${this.globals.apiUrl}/User/UpdateProfilePicture`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token.replace(/^"|"$/g, '')}`
+        }
+      }
+    );
+  }
 }

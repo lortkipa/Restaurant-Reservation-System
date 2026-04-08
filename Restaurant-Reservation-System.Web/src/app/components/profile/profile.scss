@@ -958,4 +958,44 @@
   object-fit: cover;    /* ensures image fills the avatar and crops excess */
   display: block;
   border: 2px solid var(--gold);
+}.avatar-wrapper {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  cursor: pointer;
+}
+
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+
+  border-radius: 50%;
+
+  background: rgba(0,0,0,0.55);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+
+  transition: 0.25s ease;
+
+  font-size: 10px;
+  color: white;
+  font-weight: 500;
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+}
+
+.avatar-wrapper:hover .avatar-overlay {
+  opacity: 1;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }

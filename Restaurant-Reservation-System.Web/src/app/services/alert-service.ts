@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class AlertService {
-  
+
   success(title: string, text: string) {
     return Swal.fire({
       title: title,
@@ -36,4 +36,23 @@ export class AlertService {
     })
   }
 
+  getPicture(text: string) {
+    return Swal.fire({
+      title: text,
+      input: 'file',
+
+      inputAttributes: {
+        accept: '.png,.jpg,.jpeg,.webp',
+        'aria-label': 'Upload your profile picture'
+      },
+
+      confirmButtonText: 'Upload',
+
+      showDenyButton: true,
+      denyButtonText: 'Remove Picture',
+
+      showCancelButton: true,
+      cancelButtonText: 'Cancel'
+    });
+  }
 }
