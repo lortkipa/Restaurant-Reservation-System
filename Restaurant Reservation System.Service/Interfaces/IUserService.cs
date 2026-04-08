@@ -25,5 +25,7 @@ namespace Restaurant_Reservation_System.Service.Interfaces
         Task<bool> UpdateAsync(int id, UpdateUserDTO model);
         Task<bool> UpdateWithoutPasswordAsync(int id, UpdateUserDTO model);
         Task<bool> DeleteAsync(int id);
+
+        Task<bool> UpdatePictureAsync(int userId, string? imagePath);
     }
 }

@@ -951,4 +951,11 @@
       }
     }
   }
+}.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;   /* make it circular like the avatar */
+  object-fit: cover;    /* ensures image fills the avatar and crops excess */
+  display: block;
+  border: 2px solid var(--gold);
 }

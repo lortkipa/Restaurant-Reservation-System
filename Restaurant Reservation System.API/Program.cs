@@ -103,6 +103,7 @@ namespace Restaurant_Reservation_System.API
             builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddScoped<IRestaurantService, RestaurantService>();
             builder.Services.AddScoped<IEmailJSService, EmailJSService>();
+            builder.Services.AddScoped<IImageService, ImageService>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -119,6 +120,7 @@ namespace Restaurant_Reservation_System.API
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();

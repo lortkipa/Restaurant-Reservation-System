@@ -21,4 +21,9 @@
     <ProjectReference Include="..\Restaurant Reservation System.Service\Restaurant Reservation System.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\dishes\" />
+    <Folder Include="wwwroot\uploads\users\" />
+  </ItemGroup>
+
 </Project>

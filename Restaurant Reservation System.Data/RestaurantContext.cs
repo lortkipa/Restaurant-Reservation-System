@@ -122,7 +122,8 @@ namespace Restaurant_Reservation_System.Data
                         Username = "NikolozLortki",
                         PasswordHash = hashedPassword,
                         Email = "nikusha191208@gmail.com",
-                        RegistrationDate = new DateTime(2026, 3, 20)
+                        RegistrationDate = new DateTime(2026, 3, 20),
+                        ImageUrl = "uploads/users/nikoloz-lortkipanidze.jpg"
                     },
                     new User
                     {
@@ -131,7 +132,8 @@ namespace Restaurant_Reservation_System.Data
                         Username = "Temo_totoshvili",
                         PasswordHash = hashedPassword,
                         Email = "totoshvili@gmail.com",
-                        RegistrationDate = new DateTime(2026, 3, 20)
+                        RegistrationDate = new DateTime(2026, 3, 20),
+                        ImageUrl = null,
                     },
                     new User
                     {
@@ -140,7 +142,8 @@ namespace Restaurant_Reservation_System.Data
                         Username = "DatoPapava",
                         PasswordHash = hashedPassword,
                         Email = "papava@gmail.com",
-                        RegistrationDate = new DateTime(2026, 3, 20)
+                        RegistrationDate = new DateTime(2026, 3, 20),
+                        ImageUrl = null,
                     },
                     new User
                     {
@@ -149,7 +152,8 @@ namespace Restaurant_Reservation_System.Data
                         Username = "Kvirrik",
                         PasswordHash = hashedPassword,
                         Email = "kvirrik@gmail.com",
-                        RegistrationDate = new DateTime(2026, 3, 20)
+                        RegistrationDate = new DateTime(2026, 3, 20),
+                        ImageUrl = null,
                     },
                     new User
                     {
@@ -158,7 +162,8 @@ namespace Restaurant_Reservation_System.Data
                         Username = "SabaDolidze",
                         PasswordHash = hashedPassword,
                         Email = "SabaDolidze@gmail.com",
-                        RegistrationDate = new DateTime(2026, 3, 20)
+                        RegistrationDate = new DateTime(2026, 3, 20),
+                        ImageUrl = null,
                     }
                 );
             }

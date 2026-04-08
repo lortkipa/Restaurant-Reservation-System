@@ -190,5 +190,12 @@ namespace Restaurant_Reservation_System.Service
             await _userRepo.DeleteAsync(id);
             return true;
         }
+        public async Task<bool> UpdatePictureAsync(int userId, string? imagePath)
+        {
+            var user = await _userRepo.GetByIdAsync(userId);
+            user.ImageUrl = imagePath;
+            await _userRepo.UpdateAsync(user);
+            return true;
+        }
     }
 }

@@ -26,9 +26,13 @@ namespace Restaurant_Reservation_System.API.Controllers
         private readonly RestaurantContext _context;
         private readonly IConfiguration _config;
         private readonly IEmailJSService _emailJSService;
+        private readonly IImageService _imageService;
+        private readonly IWebHostEnvironment _env;
 
-        public UserController(IEmailJSService emailJSService, IConfiguration config, IUserService service, IPersonService personService, RestaurantContext context)
+        public UserController(IWebHostEnvironment env, IImageService imgService, IEmailJSService emailJSService, IConfiguration config, IUserService service, IPersonService personService, RestaurantContext context)
         {
+            _env = env;
+            _imageService = imgService;
             _emailJSService = emailJSService;
             _service = service;
             _personalService = personService;
@@ -266,6 +270,33 @@ namespace Restaurant_Reservation_System.API.Controllers
                 Status = true,
                 Message = "Deleted successfully"
             });
+        }
+
+        [Authorize]
+        [HttpPost("UpdateProfilePicture")]
+        public async Task<IActionResult> UpdateProfilePicture(IFormFile? file)
+        {
+            try
+            {
+                var userIdClaim = User.Claims.FirstOrDefault(c =>
+                       c.Type == ClaimTypes.NameIdentifier ||
+                       c.Type == "http://schemas.xmlsoap.org/ws/2005/identity/claims/nameidentifier");
+                if (userIdClaim == null)
+                    return Unauthorized("Invalid token");
+                int userId = int.Parse(userIdClaim.Value);
+
+                string? imagePath = await _imageService.SaveImageAsync(file, "users", _env.WebRootPath);
+                var res =  await _service.UpdatePictureAsync(userId, imagePath);
+
+                if (!res)
+                    return BadRequest("Profile Picture Not Updated");
+
+                return Ok("Profile Picture Updated");
+            } 
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

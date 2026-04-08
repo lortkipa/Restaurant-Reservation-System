@@ -24,6 +24,7 @@ namespace Restaurant_Reservation_System.Data.Entities
         public string Email { get; set; } = null!;
         [Required]
         public DateTime RegistrationDate { get; set; }
+        public string? ImageUrl { get; set; }
 
         // User => Reservations
         public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();

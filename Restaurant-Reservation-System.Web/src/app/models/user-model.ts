@@ -18,6 +18,7 @@ export interface UserModel {
     username: string;
     email: string;
     registrationDate: Date;
+    imageUrl: string|null;
 }
 
 export interface UpdateUserModel {

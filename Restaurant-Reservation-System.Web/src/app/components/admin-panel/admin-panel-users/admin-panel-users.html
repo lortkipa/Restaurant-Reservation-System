@@ -41,7 +41,8 @@
                         <!-- USER -->
                         <td>
                             <div style="display:flex;align-items:center;gap:10px">
-                                <div style="
+                                <div *ngIf="user.imageUrl == null"
+                                 style="
                   width:28px;
                   height:28px;
                   border-radius:50%;
@@ -55,6 +56,16 @@
                 ">
                                     {{ user.username.charAt(0) }}
                                 </div>
+                                 <img *ngIf="user.imageUrl != null"
+           [src]="'https://localhost:7067/' + user.imageUrl"
+           alt="User Avatar"
+           style="
+             width:28px;
+             height:28px;
+             border-radius:50%;
+             object-fit:cover;
+             display:block;
+           ">
 
                                 <strong style="font-weight:500">
                                     {{ user.username }}
@@ -143,18 +154,17 @@
     <form class="panel-body" *ngIf="editMode()" #myForm="ngForm" (ngSubmit)="updateUserDetails(myForm)">
         <td *ngIf="(getUserRoles(user.id) | async) as roles">
             <span class="badge" style="cursor: pointer;" [ngClass]="roles.some(r => r.name === 'Admin') ? 'b-red' : ''"
-                (click)="addRole(user.id, 'Admin', roles)"
-                (click)="removeRole(user.id, 'Admin', roles)">
+                (click)="addRole(user.id, 'Admin', roles)" (click)="removeRole(user.id, 'Admin', roles)">
                 Admin
             </span>
-            <span class="badge" style="cursor: pointer;" [ngClass]="roles.some(r => r.name === 'Worker') ? 'b-amber' : ''"
-                (click)="addRole(user.id, 'Worker', roles)"
-                (click)="removeRole(user.id, 'Worker', roles)">
+            <span class="badge" style="cursor: pointer;"
+                [ngClass]="roles.some(r => r.name === 'Worker') ? 'b-amber' : ''"
+                (click)="addRole(user.id, 'Worker', roles)" (click)="removeRole(user.id, 'Worker', roles)">
                 Worker
             </span>
-            <span class="badge" style="cursor: pointer;" [ngClass]="roles.some(r => r.name === 'Customer') ? 'b-green' : ''"
-                (click)="addRole(user.id, 'Customer', roles)"
-                (click)="removeRole(user.id, 'Customer', roles)">
+            <span class="badge" style="cursor: pointer;"
+                [ngClass]="roles.some(r => r.name === 'Customer') ? 'b-green' : ''"
+                (click)="addRole(user.id, 'Customer', roles)" (click)="removeRole(user.id, 'Customer', roles)">
                 Customer
             </span>
         </td>

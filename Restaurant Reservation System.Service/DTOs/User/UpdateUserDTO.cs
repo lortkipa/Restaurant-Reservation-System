@@ -10,6 +10,7 @@ namespace Restaurant_Reservation_System.Service.DTOs.User
         public string Username { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
+        public string? ImageUrl { get; set; }
         // public DateTime RegistrationDate { get; set; }
     }
 }

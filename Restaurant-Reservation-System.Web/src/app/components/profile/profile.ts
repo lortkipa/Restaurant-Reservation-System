@@ -31,7 +31,7 @@ export class Profile {
   reservations: ReservationModel[] = [];
 
   userPerson = signal<UserPersonModel>({
-    user: { id: 0, username: '', email: '', registrationDate: new Date() },
+    user: { id: 0, username: '', email: '', registrationDate: new Date(), imageUrl: null },
     person: { id: 0, firstName: '', lastName: '', phone: '', address: '' }
   });
 

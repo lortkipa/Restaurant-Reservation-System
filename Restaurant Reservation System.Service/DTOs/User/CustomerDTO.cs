@@ -14,6 +14,7 @@ namespace Restaurant_Reservation_System.Service.DTOs.User
         public string Email { get; set; } = null!;
         // public string PasswordHash { get; set; } = null!;
         public DateTime RegistrationDate { get; set; }
+        public string? ImageUrl { get; set; }
         public ICollection<ReservationDTO> Reservations { get; set; } = new List<ReservationDTO>();
     }
 }

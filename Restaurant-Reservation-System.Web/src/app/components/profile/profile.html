@@ -4,9 +4,12 @@
   <!-- ── Page header ── -->
   <div class="page-header reveal">
     <div class="header-left">
-      <div class="avatar" id="avatar">
+      <div class="avatar" id="avatar" *ngIf="userPerson().user.imageUrl == null">
         <span id="avatar-initials">{{ userName().slice(0,2) }}</span>
         <div class="avatar-dot"></div>
+      </div>
+      <div class="avatar" id="avatar" *ngIf="userPerson().user.imageUrl != null">
+        <img class="avatar-img" [src]="'https://localhost:7067/' + userPerson().user.imageUrl" alt="User Avatar">
       </div>
       <div class="header-info">
         <div class="header-name" id="header-name">{{ userName() }}</div>
