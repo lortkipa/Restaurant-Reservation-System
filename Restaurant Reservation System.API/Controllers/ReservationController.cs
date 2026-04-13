@@ -133,8 +133,8 @@ namespace Restaurant_Reservation_System.API.Controllers
                 var reserv = await _reservationService.GetReservationByIdAsync(id);
                 if (reserv == null) return NotFound();
 
-                if (!User.IsInRole("Admin") && reserv.CustomerId != userId)
-                    return Forbid();
+                //if (!User.IsInRole("Admin") && reserv.CustomerId != userId)
+                //    return Forbid();
 
                 await _reservationService.CancelReservation(id);
 

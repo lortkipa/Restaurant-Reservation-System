@@ -7,15 +7,24 @@ import { UserService } from '../../../services/user-service';
 import { LocalStorageService } from '../../../services/local-storage-service';
 import { AlertService } from '../../../services/alert-service';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-worker-panel-reservations',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './worker-panel-reservations.html',
   styleUrl: './worker-panel-reservations.scss',
 })
 export class WorkerPanelReservations {
-   reservations: WritableSignal<ReservationModel[]> = signal([]);
+  selectedDate = signal<string>('');
+
+  formatDate(date: any): string {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+  }
+
+
+  reservations: WritableSignal<ReservationModel[]> = signal([]);
   users = signal<any[]>([]);
   restaurants = signal<any[]>([]);
   token: string = ''
@@ -67,7 +76,7 @@ export class WorkerPanelReservations {
       this.reservationService.cancel(this.token, id).subscribe({
         next: () => {
           this.alert.success("Reservation Canceled", '').then(() => {
-            this.router.navigate(['/admin-panel/reservations']).then(() => {
+            this.router.navigate(['/worker-panel/reservations']).then(() => {
               window.location.reload();
             });
           });

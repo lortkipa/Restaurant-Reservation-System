@@ -15,6 +15,7 @@ import { WorkerPanel } from './components/worker-panel/worker-panel';
 import { WorkerPanelUsers } from './components/worker-panel/worker-panel-users/worker-panel-users';
 import { WorkerPanelReservations } from './components/worker-panel/worker-panel-reservations/worker-panel-reservations';
 import { AdminPanelEmailjs } from './components/admin-panel/admin-panel-emailjs/admin-panel-emailjs';
+import { Error } from './components/error/error';
 
 
 export const routes: Routes = [
@@ -73,5 +74,14 @@ export const routes: Routes = [
     {
         path: 'contact',
         component: Contact 
+    },
+
+    {
+        path: 'error',
+        component: Error
+    },
+    {
+        path: '**',
+        component: Error
     }
 ];

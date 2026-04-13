@@ -97,10 +97,12 @@ export class AdminPanelMenus {
       this.selectedRestaurantName.set(name)
 
       this.menuService.GetMenusWithDishes(id).subscribe({
-        next: (data) => {if (this.selectedRestaurantId() === id) {
-          this.selectedMenuDishes.set(data);
-        }},
-        error: () => {this.selectedMenuDishes.set([])}
+        next: (data) => {
+          if (this.selectedRestaurantId() === id) {
+            this.selectedMenuDishes.set(data);
+          }
+        },
+        error: () => { this.selectedMenuDishes.set([]) }
       });
     }
   }

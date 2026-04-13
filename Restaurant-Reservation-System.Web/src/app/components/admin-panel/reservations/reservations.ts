@@ -8,15 +8,22 @@ import { LocalStorageService } from '../../../services/local-storage-service';
 import { UserService } from '../../../services/user-service';
 import { RestaurantService } from '../../../services/restaurant-service';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'app-reservations',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './reservations.html',
   styleUrl: './reservations.scss',
 })
 export class Reservations implements OnInit {
+  selectedDate = signal<string>('');
+
+  formatDate(date: any): string {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+  }
   reservations: WritableSignal<ReservationModel[]> = signal([]);
   users = signal<any[]>([]);
   restaurants = signal<any[]>([]);

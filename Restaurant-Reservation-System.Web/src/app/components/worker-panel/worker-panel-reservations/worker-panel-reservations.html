@@ -4,7 +4,7 @@
   </div>
   <div class="filter-date">
     <label for="filterDate" class="page-sub">Filter by Date:</label>
-     <input class="finput" type="date" name="selectedDate" required>
+    <input class="finput" type="date" [(ngModel)]="selectedDate">
   </div>
 </div>
 
@@ -51,7 +51,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let r of reservations()">
+      <tr *ngFor="let r of reservations().filter(r => 
+  !selectedDate() || formatDate(r.date) === selectedDate()
+)">
 
         <td data-label="Customer"><strong>{{ getCustomerName(r.customerId) }}</strong></td>
         <td data-label="Restaurant">{{ getRestaurantName(r.restaurantId) }}</td>
@@ -67,7 +69,7 @@
         <td data-label="Table">{{ r.tableNumber }}</td>
         <td data-label="Guests">{{ r.guestCount }}</td>
         <td class="actions-cell">
-          <button class="btn-cancel" (click)="cancel(r.id)">CANCEL</button>
+          <button class="btn-cancel" (click)="cancel(r.id)" *ngIf="r.statusId != 3">CANCEL</button>
           <button class="btn-delete" (click)="delete(r.id)">DELETE</button>
         </td>
       </tr>

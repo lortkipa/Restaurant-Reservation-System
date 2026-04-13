@@ -134,3 +134,9 @@ nav.scrolled {
   background-color: var(--gold);    /* gold fill on hover */
   color: var(--bg);                 /* text changes to dark */
 }
+
+#navLoginBtn {
+  @media (max-width: 500px) {
+    display: none;
+  }
+}
