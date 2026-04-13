@@ -12,8 +12,8 @@ using Restaurant_Reservation_System.Data;
 namespace Restaurant_Reservation_System.Data.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20260407140103_v3")]
-    partial class v3
+    [Migration("20260413132933_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,26 @@ namespace Restaurant_Reservation_System.Data.Migrations
                             ServiceId = "service_kqw395h",
                             TemplateId = "template_75iei9r",
                             UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            UserId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            UserId = 5
                         });
                 });
 
@@ -764,6 +784,9 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         .HasMaxLength(254)
                         .HasColumnType("nvarchar(254)");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -791,6 +814,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         {
                             Id = 1,
                             Email = "nikusha191208@gmail.com",
+                            ImageUrl = "uploads/users/nikoloz-lortkipanidze.jpg",
                             PasswordHash = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
                             PersonId = 1,
                             RegistrationDate = new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),

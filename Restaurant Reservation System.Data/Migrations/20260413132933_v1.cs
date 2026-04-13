@@ -83,7 +83,8 @@ namespace Restaurant_Reservation_System.Data.Migrations
                     Username = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: false),
-                    RegistrationDate = table.Column<DateTime>(type: "date", nullable: false)
+                    RegistrationDate = table.Column<DateTime>(type: "date", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -147,7 +148,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     RestaurantId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "date", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime", nullable: false),
                     TableNumber = table.Column<int>(type: "int", nullable: false),
                     GuestCount = table.Column<int>(type: "int", nullable: false)
                 },
@@ -239,11 +240,11 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 columns: new[] { "Id", "Description", "Email", "Location", "Name", "SeatsPerTable", "TotalTables" },
                 values: new object[,]
                 {
-                    { 1, "Modern Georgian cuisine with creative twists and a cozy, artsy atmosphere.", "shavilomi@example.com", "Tbilisi, 30 Zurab Kvlividze St", "Shavi Lomi", 4, 15 },
-                    { 2, "Historic recipes from a 19th-century cookbook served in an elegant setting.", "barbarestan@example.com", "Tbilisi, 132 Davit Aghmashenebeli Ave", "Barbarestan", 4, 12 },
-                    { 3, "Charming garden restaurant known for traditional dishes and romantic vibes.", "ketoandkote@example.com", "Tbilisi, 3 Mikheil Zandukeli St", "Keto and Kote", 4, 10 },
-                    { 4, "Famous for authentic lobio and rustic Georgian comfort food.", "salobie@example.com", "Mtskheta, 1 Samtavro St", "Salobie Bia", 4, 8 },
-                    { 5, "Casual spot popular for Adjarian khachapuri and local favorites.", "machakhela@example.com", "Batumi, 26 May 6 St", "Machakhela", 4, 14 },
+                    { 1, "Modern Georgian cuisine with creative twists and a cozy, artsy atmosphere.", "shavilomi@example.com", "Tbilisi, 30 Zurab Kvlividze St", "Shavi Lomi", 2, 4 },
+                    { 2, "Historic recipes from a 19th-century cookbook served in an elegant setting.", "barbarestan@example.com", "Tbilisi, 132 Davit Aghmashenebeli Ave", "Barbarestan", 3, 12 },
+                    { 3, "Charming garden restaurant known for traditional dishes and romantic vibes.", "ketoandkote@example.com", "Tbilisi, 3 Mikheil Zandukeli St", "Keto and Kote", 5, 10 },
+                    { 4, "Famous for authentic lobio and rustic Georgian comfort food.", "salobie@example.com", "Mtskheta, 1 Samtavro St", "Salobie Bia", 2, 8 },
+                    { 5, "Casual spot popular for Adjarian khachapuri and local favorites.", "machakhela@example.com", "Batumi, 26 May 6 St", "Machakhela", 4, 3 },
                     { 6, "Cozy restaurant offering classic Georgian meals in a warm setting.", "heartofbatumi@example.com", "Batumi, 11 Gen. Mazniashvili St", "Heart of Batumi", 4, 12 }
                 });
 
@@ -288,20 +289,27 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Email", "PasswordHash", "PersonId", "RegistrationDate", "Username" },
+                columns: new[] { "Id", "Email", "ImageUrl", "PasswordHash", "PersonId", "RegistrationDate", "Username" },
                 values: new object[,]
                 {
-                    { 1, "nikusha191208@gmail.com", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 1, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "NikolozLortki" },
-                    { 2, "totoshvili@gmail.com", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 2, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Temo_totoshvili" },
-                    { 3, "papava@gmail.com", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 3, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "DatoPapava" },
-                    { 4, "kvirrik@gmail.com", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 4, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kvirrik" },
-                    { 5, "SabaDolidze@gmail.com", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 5, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "SabaDolidze" }
+                    { 1, "nikusha191208@gmail.com", "uploads/users/nikoloz-lortkipanidze.jpg", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 1, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "NikolozLortki" },
+                    { 2, "totoshvili@gmail.com", null, "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 2, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Temo_totoshvili" },
+                    { 3, "papava@gmail.com", null, "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 3, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "DatoPapava" },
+                    { 4, "kvirrik@gmail.com", null, "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 4, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kvirrik" },
+                    { 5, "SabaDolidze@gmail.com", null, "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 5, new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "SabaDolidze" }
                 });
 
             migrationBuilder.InsertData(
                 table: "EmailJSConfigs",
                 columns: new[] { "Id", "PublicKey", "ServiceId", "TemplateId", "UserId" },
-                values: new object[] { 1, "90LyXpeSeVnNPQeFJ", "service_kqw395h", "template_75iei9r", 1 });
+                values: new object[,]
+                {
+                    { 1, "90LyXpeSeVnNPQeFJ", "service_kqw395h", "template_75iei9r", 1 },
+                    { 2, null, null, null, 2 },
+                    { 3, null, null, null, 3 },
+                    { 4, null, null, null, 4 },
+                    { 5, null, null, null, 5 }
+                });
 
             migrationBuilder.InsertData(
                 table: "MenuItems",

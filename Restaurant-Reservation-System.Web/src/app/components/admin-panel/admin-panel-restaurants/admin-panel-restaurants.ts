@@ -33,7 +33,18 @@ export class AdminPanelRestaurants {
   constructor(
     private restaurantService: RestaurantService,
     private alert: AlertService
-  ) {}
+  ) { }
+
+  private isDuplicateName(name: string): boolean {
+    const normalized = name.trim().toLowerCase();
+
+    return this.restaurants().some(r => {
+      // ignore current item when editing
+      if (this.editMode() && r.id === this.selectedId()) return false;
+
+      return r.name.trim().toLowerCase() === normalized;
+    });
+  }
 
   ngOnInit() {
     this.load();
@@ -72,13 +83,19 @@ export class AdminPanelRestaurants {
   save() {
     const payload = this.form();
 
-    if (!payload.name || !payload.location) {
-      this.alert.error("Validation", "Name and location required");
-      return;
-    }
+    if (!payload.name) { this.alert.error("Validation", "Name required"); return; }
+    if (!payload.location) { this.alert.error("Validation", "Location required"); return; }
+    if (!payload.email) { this.alert.error("Validation", "Email required"); return; }
+    if (!payload.description) { this.alert.error("Validation", "Description required"); return; }
 
     if (payload.totalTables <= 0 || payload.seatsPerTable <= 0) {
       this.alert.error("Validation", "Tables must be greater than 0");
+      return;
+    }
+
+    // ✅ DUPLICATE CHECK HERE
+    if (this.isDuplicateName(payload.name)) {
+      this.alert.error("Duplicate Name", "Restaurant with this name already exists");
       return;
     }
 
@@ -94,7 +111,7 @@ export class AdminPanelRestaurants {
               this.resetForm();
             });
           },
-          error: (err) => this.alert.error("Update Failed", err.error?.message)
+          error: () => this.alert.error("Update Failed", "Something went wrong")
         });
       } else {
         this.restaurantService.add(this.token, payload).subscribe({
@@ -105,7 +122,7 @@ export class AdminPanelRestaurants {
               this.resetForm();
             });
           },
-          error: (err) => this.alert.error("Add Failed", err.error?.message)
+          error: () => this.alert.error("Add Failed", "Something went wrong")
         });
       }
     });

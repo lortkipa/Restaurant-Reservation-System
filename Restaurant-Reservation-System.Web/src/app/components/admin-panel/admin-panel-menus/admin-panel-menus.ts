@@ -39,6 +39,34 @@ export class AdminPanelMenus {
     private router: Router
   ) { }
 
+  private isDuplicateMenuName(name: string): boolean {
+    const normalized = name.trim().toLowerCase();
+
+    const menus = this.selectedMenuDishes(); // menus for selected restaurant
+    if (!menus) return false;
+
+    return menus.some(m => {
+      // ignore current menu when editing
+      if (this.menuEditMode() && m.id === this.selectedMenuId()) return false;
+
+      return m.name.trim().toLowerCase() === normalized;
+    });
+  }
+
+  private isDuplicateDishName(name: string): boolean {
+    const normalized = name.trim().toLowerCase();
+
+    const dishes = this.selectedDishes();
+    if (!dishes) return false;
+
+    return dishes.some(d => {
+      // ignore current dish when editing
+      if (this.dishEditMode() && d.id === this.selectedDishId()) return false;
+
+      return d.name.trim().toLowerCase() === normalized;
+    });
+  }
+
   ngOnInit() {
     this.load();
   }
@@ -68,10 +96,11 @@ export class AdminPanelMenus {
       this.selectedRestaurantId.set(id);
       this.selectedRestaurantName.set(name)
 
-      this.menuService.GetMenusWithDishes(id).subscribe((data) => {
-        if (this.selectedRestaurantId() === id) {
+      this.menuService.GetMenusWithDishes(id).subscribe({
+        next: (data) => {if (this.selectedRestaurantId() === id) {
           this.selectedMenuDishes.set(data);
-        }
+        }},
+        error: () => {this.selectedMenuDishes.set([])}
       });
     }
   }
@@ -153,6 +182,11 @@ export class AdminPanelMenus {
     const newMenu = this.menuForm()
     if (!newMenu.name) { this.alert.error("Failed to Add Menu", "Name is Empty"); return; }
 
+    if (this.isDuplicateMenuName(newMenu.name)) {
+      this.alert.error("Duplicate Menu", "Menu with this name already exists");
+      return;
+    }
+
     newMenu.restaurantId = this.selectedRestaurantId()
 
     console.log("menu: " + this.menuEditMode())
@@ -165,7 +199,7 @@ export class AdminPanelMenus {
             this.alert.success("Menu Updated", '').then(() => this.load()).then(() => {
               this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
             })
-        })
+          })
       } else {
         this.menuService.AddMenu(newMenu).subscribe({
           next: () => {
@@ -185,6 +219,11 @@ export class AdminPanelMenus {
     if (!newDish.name) { this.alert.error("Failed to Add Dish", "Name is Empty"); return; }
     if (newDish.price == 0) { this.alert.error("Failed to Add Dish", "Price is 0"); return; }
     if (newDish.price < 0) { this.alert.error("Failed to Add Dish", "Price is Less Then 0"); return; }
+
+    if (this.isDuplicateDishName(newDish.name)) {
+      this.alert.error("Duplicate Dish", "Dish with this name already exists");
+      return;
+    }
 
     if (this.dishEditMode()) {
       this.alert.confirm("Are You Sure?").then((res) => {

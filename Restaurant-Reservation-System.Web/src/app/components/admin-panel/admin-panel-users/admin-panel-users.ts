@@ -99,8 +99,6 @@ export class AdminPanelUsers {
       else
         roleId = Roles.Customer
 
-      console.log(roleId)
-
       this.userService.setUserRole(id, roleId).subscribe({
         next: () => this.alert.success("Role Added", '').then(() => {
           this.router.navigate(['/admin-panel/users']).then(() => window.location.reload());
@@ -245,17 +243,36 @@ export class AdminPanelUsers {
     });
   }
 
-  deleteUser(id: number) {
-    this.alert.confirm("Are You Sure?").then((res) => {
-      if (!res.isConfirmed) return;
+  deleteUser(user: UserModel) {
+    this.userService.getProfile(this.token()).subscribe((data) => {
+      // prevent deleting yourself
+      if (data.user.id === user.id) {
+        this.alert.error("Cannot Delete Yourself", "");
+        return;
+      }
 
-      this.userService.removeUserProfile(this.localStorage.getItem('token'), id).subscribe({
-        next: () => this.alert.success("Account Deleted", '').then(() => {
-          this.router.navigate(['/admin-panel/users']).then(() => window.location.reload());
-        }),
-        error: err => this.alert.error("Account Not Deleted", '')
+      // check roles
+      this.getUserRoles(user.id).subscribe((roles) => {
+        const isAdmin = roles.some(r => r.name === 'Admin');
+
+        if (isAdmin) {
+          this.alert.error("Cannot Delete Admin", "");
+          return;
+        }
+
+        // proceed only if safe
+        this.alert.confirm("Are You Sure?").then((res) => {
+          if (!res.isConfirmed) return;
+
+          this.userService.removeUserProfile(this.localStorage.getItem('token'), user.id).subscribe({
+            next: () => this.alert.success("Account Deleted", '').then(() => {
+              this.router.navigate(['/admin-panel/users']).then(() => window.location.reload());
+            }),
+            error: err => this.alert.error("Account Not Deleted", '')
+          });
+        });
       });
-    })
+    });
   }
 
 }

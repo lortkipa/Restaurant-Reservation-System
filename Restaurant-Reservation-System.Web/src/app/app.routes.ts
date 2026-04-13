@@ -13,7 +13,6 @@ import { AdminPanelUsers } from './components/admin-panel/admin-panel-users/admi
 import { Contact } from './components/contact/contact';
 import { WorkerPanel } from './components/worker-panel/worker-panel';
 import { WorkerPanelUsers } from './components/worker-panel/worker-panel-users/worker-panel-users';
-import { AdminPanelSchedule } from './components/admin-panel/admin-panel-schedule/admin-panel-schedule';
 import { WorkerPanelReservations } from './components/worker-panel/worker-panel-reservations/worker-panel-reservations';
 import { AdminPanelEmailjs } from './components/admin-panel/admin-panel-emailjs/admin-panel-emailjs';
 
@@ -56,7 +55,6 @@ export const routes: Routes = [
             { path: 'restaurants', component: AdminPanelRestaurants },
             { path: 'menus', component: AdminPanelMenus },
             { path: 'users', component: AdminPanelUsers },
-            { path: 'schedules', component: AdminPanelSchedule },
             { path: 'email-js', component: AdminPanelEmailjs }
         ]
     },

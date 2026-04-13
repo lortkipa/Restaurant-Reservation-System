@@ -102,7 +102,7 @@ export class WorkerPanelUsers {
 
       this.userService.setUserRole(id, roleId).subscribe({
         next: () => this.alert.success("Role Added", '').then(() => {
-          this.router.navigate(['/admin-panel/users']).then(() => window.location.reload());
+          this.router.navigate(['/worker-panel/users']).then(() => window.location.reload());
         }),
         error: err => this.alert.error("Role Not Added", err.error.message)
       });
@@ -131,7 +131,7 @@ export class WorkerPanelUsers {
       // Call backend to remove role
       this.userService.removeUserRole(id, roleId).subscribe({
         next: () => this.alert.success("Role Removed", '').then(() => {
-          this.router.navigate(['/admin-panel/users']).then(() => window.location.reload());
+          this.router.navigate(['/worker-panel/users']).then(() => window.location.reload());
         }),
         error: err => this.alert.error("Role Not Removed", err.error.message)
       });
@@ -184,7 +184,8 @@ export class WorkerPanelUsers {
             this.alert.error("Cannot Edit Admin As Worker", "");
             return; // exit if admin
           }
-           if (roles[i].name === "Worker") {
+
+          if (roles[i].name === "Worker") {
             this.alert.error("Cannot Edit Worker", "");
             return; // exit if admin
           }
@@ -241,23 +242,66 @@ export class WorkerPanelUsers {
         }
       ).subscribe({
         next: () => this.alert.success("Account Info Updated", '').then(() => {
-          this.router.navigate(['/admin-panel/users']).then(() => window.location.reload());
+          this.router.navigate(['/worker-panel/users']).then(() => window.location.reload());
         }),
         error: err => this.alert.error("Update Failed", err.error.message)
       });
     });
   }
 
-  deleteUser(id: number) {
-    this.alert.confirm("Are You Sure?").then((res) => {
-      if (!res.isConfirmed) return;
+  deleteUser(user: UserModel) {
+    this.userService.getProfile(this.token()).subscribe((data) => {
+      const currentUserId = data.user.id;
 
-      this.userService.removeUserProfile(this.localStorage.getItem('token'), id).subscribe({
-        next: () => this.alert.success("Account Deleted", '').then(() => {
-          this.router.navigate(['/admin-panel/users']).then(() => window.location.reload());
-        }),
-        error: err => this.alert.error("Account Not Deleted", '')
+      this.getUserRoles(user.id).subscribe((roles) => {
+
+        const check = this.canWorkerModify(currentUserId, user, roles);
+
+        if (!check.allowed) {
+          this.alert.error(check.message || "Not allowed", "");
+          return;
+        }
+
+        // ✅ allowed → confirm delete
+        this.alert.confirm("Are You Sure?").then((res) => {
+          if (!res.isConfirmed) return;
+
+          this.userService.removeUserProfile(
+            this.localStorage.getItem('token'),
+            user.id
+          ).subscribe({
+            next: () => this.alert.success("Account Deleted", '').then(() => {
+              this.router.navigate(['/worker-panel/users']).then(() => window.location.reload());
+            }),
+            error: err => this.alert.error("Account Not Deleted", '')
+          });
+        });
+
       });
-    })
+    });
+  }
+
+  private canWorkerModify(currentUserId: number, targetUser: UserModel, roles: RoleModel[]): { allowed: boolean, message?: string } {
+
+    // ❌ cannot modify yourself
+    if (currentUserId === targetUser.id) {
+      return { allowed: false, message: "Cannot modify yourself" };
+    }
+
+    const isAdmin = roles.some(r => r.name === 'Admin');
+    const isWorker = roles.some(r => r.name === 'Worker');
+
+    // ❌ cannot touch admins
+    if (isAdmin) {
+      return { allowed: false, message: "Cannot modify Admin" };
+    }
+
+    // ❌ cannot touch workers
+    if (isWorker) {
+      return { allowed: false, message: "Cannot modify Worker" };
+    }
+
+    // ✅ only customers allowed
+    return { allowed: true };
   }
 }
