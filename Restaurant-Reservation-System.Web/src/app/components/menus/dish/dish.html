@@ -1,10 +1,19 @@
-<div class="dish-card" [ngClass]="dish.isAvaiable ? 'dish-card-available' : ''">
+<div class="dish-img-wrap">
+  <img class="dish-img"
+    *ngIf="dish.imageUrl; else noImg"
+    [src]="`https://localhost:7067/${dish.imageUrl}`"
+    alt="Champagne Billecart" loading="lazy">
+
+  <ng-template #noImg>
+  <div class="dish-img" style="background:#2a251d; display:flex; align-items:center; justify-content:center; color:rgba(245,239,228,0.25); font-size:12px; letter-spacing:2px; text-transform:uppercase;">
+    image not found
+  </div>
+</ng-template>
+</div>
+
+<div class="dish-body">
   <div class="dish-top">
     <div class="dish-name" [ngClass]="!dish.isAvaiable ? 'crossed-line' : ''">{{dish.name}}</div>
-    <div [ngClass]="dish.isAvaiable ? 'dish-price-available' : 'dish-price'">${{dish.price}}</div>
-  </div>
-  <!-- <div class="dish-desc">Campari, sweet vermouth, Prosecco — stirred over ice, orange peel</div> -->
-  <div class="dish-footer">
-    <!-- <div class="dish-tag tag-new">New</div> -->
+    <div class="dish-price" [ngClass]="!dish.isAvaiable ? 'crossed-line' : ''">${{dish.price}}</div>
   </div>
 </div>

@@ -1,14 +1,22 @@
-  <!-- Drinks Section -->
-  <section class="menu-section active">
-    <div class="section-header">
-      <div class="section-title-wrap">
-        <!-- <div class="section-icon">🍷</div> -->
-        <h2 class="section-name"><em>{{menuDish.name}} (${{totalPrice()}})</em></h2>
-        <!-- <p class="section-desc">Curated wines, classic cocktails, artisan spirits and house-made non-alcoholic pairings.</p> -->
-      </div>
+<!-- Drinks Section -->
+<!-- <section class="menu-section active">
+  <div class="section-header">
+    <div class="section-title-wrap">
+      <h2 class="section-name"><em>{{menuDish.name}} (${{totalPrice()}})</em></h2>
     </div>
+  </div>
 
-    <div class="dish-grid" *ngFor="let dish of menuDish.dishes">
-      <app-dish [dish]="dish"></app-dish>
-    </div>
-  </section>
+  <div class="dish-grid" *ngFor="let dish of menuDish.dishes">
+    <app-dish [dish]="dish"></app-dish>
+  </div>
+</section> -->
+<div class="section-header">
+  <div class="section-title-wrap">
+    <h2 class="section-name"><em>{{menuDish.name}} (${{totalPrice()}})</em></h2>
+  </div>
+</div>
+<div class="dish-grid">
+  <div class="dish-card" *ngFor="let dish of menuDish.dishes">
+    <app-dish [dish]="dish"></app-dish>
+  </div>
+</div>

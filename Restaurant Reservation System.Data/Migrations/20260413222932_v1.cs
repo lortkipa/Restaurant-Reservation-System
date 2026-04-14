@@ -210,7 +210,8 @@ namespace Restaurant_Reservation_System.Data.Migrations
                     MenuId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    IsAvaiable = table.Column<bool>(type: "bit", nullable: false)
+                    IsAvaiable = table.Column<bool>(type: "bit", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -313,33 +314,33 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "MenuItems",
-                columns: new[] { "Id", "IsAvaiable", "MenuId", "Name", "Price" },
+                columns: new[] { "Id", "ImageUrl", "IsAvaiable", "MenuId", "Name", "Price" },
                 values: new object[,]
                 {
-                    { 1, true, 1, "Chashushuli", 18.5m },
-                    { 2, true, 1, "Ojakhuri", 16.0m },
-                    { 3, true, 2, "Red Wine", 12.0m },
-                    { 4, true, 2, "Craft Beer", 8.5m },
-                    { 5, true, 3, "Kharcho", 20.0m },
-                    { 6, true, 3, "Chkmeruli", 19.5m },
-                    { 7, true, 4, "White Wine", 13.0m },
-                    { 8, true, 4, "Mineral Water", 3.0m },
-                    { 9, true, 5, "Mtsvadi", 17.0m },
-                    { 10, true, 5, "Badrijani Nigvzit", 11.0m },
-                    { 11, true, 6, "Churchkhela", 6.0m },
-                    { 12, true, 6, "Honey Cake", 7.5m },
-                    { 13, true, 7, "Lobio (Clay Pot)", 9.0m },
-                    { 14, true, 7, "Lobio with Mchadi", 11.0m },
-                    { 15, true, 8, "Pickled Vegetables", 5.5m },
-                    { 16, true, 8, "Cornbread (Mchadi)", 3.5m },
-                    { 17, true, 9, "Adjarian Khachapuri", 14.0m },
-                    { 18, true, 9, "Imeretian Khachapuri", 12.0m },
-                    { 19, true, 10, "Lemonade", 4.0m },
-                    { 20, true, 10, "Beer", 6.5m },
-                    { 21, true, 11, "Khinkali (10 pcs)", 13.0m },
-                    { 22, true, 11, "Chakapuli", 18.0m },
-                    { 23, true, 12, "Red Wine", 11.0m },
-                    { 24, true, 12, "Cola", 3.0m }
+                    { 1, null, true, 1, "Chashushuli", 18.5m },
+                    { 2, null, true, 1, "Ojakhuri", 16.0m },
+                    { 3, null, true, 2, "Red Wine", 12.0m },
+                    { 4, null, true, 2, "Craft Beer", 8.5m },
+                    { 5, null, true, 3, "Kharcho", 20.0m },
+                    { 6, null, true, 3, "Chkmeruli", 19.5m },
+                    { 7, null, true, 4, "White Wine", 13.0m },
+                    { 8, null, true, 4, "Mineral Water", 3.0m },
+                    { 9, null, true, 5, "Mtsvadi", 17.0m },
+                    { 10, null, true, 5, "Badrijani Nigvzit", 11.0m },
+                    { 11, null, true, 6, "Churchkhela", 6.0m },
+                    { 12, null, true, 6, "Honey Cake", 7.5m },
+                    { 13, null, true, 7, "Lobio (Clay Pot)", 9.0m },
+                    { 14, null, true, 7, "Lobio with Mchadi", 11.0m },
+                    { 15, null, true, 8, "Pickled Vegetables", 5.5m },
+                    { 16, null, true, 8, "Cornbread (Mchadi)", 3.5m },
+                    { 17, null, true, 9, "Adjarian Khachapuri", 14.0m },
+                    { 18, null, true, 9, "Imeretian Khachapuri", 12.0m },
+                    { 19, null, true, 10, "Lemonade", 4.0m },
+                    { 20, null, true, 10, "Beer", 6.5m },
+                    { 21, null, true, 11, "Khinkali (10 pcs)", 13.0m },
+                    { 22, null, true, 11, "Chakapuli", 18.0m },
+                    { 23, null, true, 12, "Red Wine", 11.0m },
+                    { 24, null, true, 12, "Cola", 3.0m }
                 });
 
             migrationBuilder.InsertData(

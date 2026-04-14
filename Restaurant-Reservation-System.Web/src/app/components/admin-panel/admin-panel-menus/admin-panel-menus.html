@@ -56,7 +56,28 @@
 <!-- ADD / EDIT DISH FORM -->
 <div class="form-overlay" *ngIf="showDishForm()">
   <div class="form-card">
+    
     <h3>{{ dishEditMode() ? 'EDIT DISH' : 'ADD DISH' }}</h3>
+
+    <div class="mfield" style="margin-bottom: 16px;">
+      <!-- <label>Dish Representation</label> -->
+      <div class="form-image-preview">
+        <img class="dishImg" *ngIf="dishForm().imageUrl != null  && !dishPicSelected()"
+          [src]="`https://localhost:7067/${dishForm().imageUrl}`"
+          [alt]="dishForm().name">
+          <img class="dishImg" *ngIf="dishPicSelected() && dishPicUrl()"
+          [src]="dishPicUrl()"
+          [alt]="dishForm().name">
+        <div class="no-image" *ngIf="dishForm().imageUrl == null || (!dishPicSelected() || !dishPicUrl())">
+          <!-- <span>?</span> -->
+          <small>No Image Selected</small>
+        </div>
+        <div class="upload-overlay" (click)="selectPic()"> 
+          <span>Change Image</span>
+        </div>
+      </div>
+    </div>
+
     <div class="form-grid">
       <input [(ngModel)]="dishForm().name" placeholder="Dish Name" />
       <input [(ngModel)]="dishForm().price" type="number" placeholder="Price" />
@@ -67,7 +88,7 @@
     </div>
     <div class="form-actions">
       <button class="btn-gold" (click)="saveDish()">SAVE</button>
-      <button class="btn-ghost" (click)="showDishForm.set(false)">CANCEL</button>
+      <button class="btn-ghost" (click)="showDishForm.set(false);">CANCEL</button>
     </div>
   </div>
 </div>
@@ -95,13 +116,24 @@
       </thead> -->
       <tbody>
         <tr *ngFor="let dish of selectedDishes()">
-          <td class="dish-name-cell">{{dish.name}}</td>
-          <td class="td-desc">${{dish.price}}</td>
-          <td class="dish-price text-right"></td>
+          <td style="width: 60px;">
+            <div class="dish-img-frame" *ngIf="dish.imageUrl">
+              <img [src]="`https://localhost:7067/${dish.imageUrl}`" [alt]="dish.name">
+            </div>
+          </td>
+
+          <td class="dish-name-cell">
+            {{dish.name}}
+            <!-- <div class="td-muted" style="font-size: 10px; margin-top: 2px;">Signature Dish</div> -->
+          </td>
+
+          <td class="dish-price">${{dish.price}}</td>
+
           <td class="text-right">
             <span class="btn-success" *ngIf="dish.isAvaiable">AVAILABLE</span>
             <span class="btn-delete" *ngIf="!dish.isAvaiable">UNAVAILABLE</span>
           </td>
+
           <td class="text-right">
             <div class="dish-actions">
               <button class="btn-success" (click)="openEditDish(dish)">Edit</button>

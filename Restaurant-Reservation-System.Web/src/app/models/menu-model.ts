@@ -8,13 +8,14 @@ export interface DishModel {
     id: number
     name: string,
     price: number,
-    isAvaiable: boolean
+    isAvaiable: boolean,
+    imageUrl: string|null
 }
 
 export interface CreateDishModel {
     name: string,
     price: number,
-    isAvaiable: boolean
+    isAvaiable: boolean,
 }
 
 export interface MenuDishModel {

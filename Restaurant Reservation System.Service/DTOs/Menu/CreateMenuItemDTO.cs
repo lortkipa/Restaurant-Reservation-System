@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Restaurant_Reservation_System.Service.DTOs.Menu
 {
-    public class CreateMenuDTO
+    public class CreateMenuItemDTO
     {
-        public int RestaurantId { get; set; }
         public string Name { get; set; } = null!;
+        public decimal Price { get; set; }
+        public bool IsAvaiable { get; set; }
     }
 }

@@ -8,6 +8,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { RestaurantModel } from '../../../models/restaurant-model';
 import { RestaurantService } from '../../../services/restaurant-service';
 import { Route, Router } from '@angular/router';
+import { single } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -17,6 +18,36 @@ import { Route, Router } from '@angular/router';
   styleUrl: './admin-panel-menus.scss',
 })
 export class AdminPanelMenus {
+  dishPicSelected = signal<boolean>(false)
+  dishPic = signal<File | null>(null)
+  dishPicUrl = signal<string | null>(null)
+  selectPic() {
+    this.alert.getPicture("Select Dish Image").then((res) => {
+      if (res.isDismissed) return;
+
+      this.dishPicSelected.set(true)
+
+      if (res.isDenied) {
+        this.dishPic.set(null)
+        return;
+      }
+
+      if (res.isConfirmed) {
+        const file = res.value as File;
+
+        if (!file) {
+          this.alert.error('No Picture Chosen', '');
+          return;
+        }
+
+        this.dishPic.set(file)
+
+        const pic = this.dishPic();
+        this.dishPicUrl.set(file ? URL.createObjectURL(file) : null);
+      }
+    })
+  }
+
   restaurants: WritableSignal<RestaurantModel[]> = signal([]);
   showForm = signal(false);
   editMode = signal(false);
@@ -134,10 +165,12 @@ export class AdminPanelMenus {
     restaurantId: 0,
     name: ''
   })
-  dishForm = signal<CreateDishModel>({
+  dishForm = signal<DishModel>({
+    id: 0,
     name: '',
     price: 0,
-    isAvaiable: true
+    isAvaiable: true,
+    imageUrl: null
   });
 
   openAddMenu() {
@@ -162,11 +195,14 @@ export class AdminPanelMenus {
 
   // Method to open Add Dish form
   openAddDish() {
+    this.dishPicSelected.set(false)
     this.dishEditMode.set(false);
     this.dishForm.set({
+      id: 0,
       name: '',
       price: 0,
-      isAvaiable: true
+      isAvaiable: true,
+      imageUrl: null
     });
     this.showDishForm.set(true);
   }
@@ -174,6 +210,7 @@ export class AdminPanelMenus {
   // Method to open Edit Dish form
   selectedDishId = signal<number>(0)
   openEditDish(dish: DishModel) {
+    this.dishPicSelected.set(false)
     this.dishEditMode.set(true);
     this.dishForm.set({ ...dish }); // copy to avoid mutating original
     this.showDishForm.set(true);
@@ -233,23 +270,33 @@ export class AdminPanelMenus {
 
         this.menuService.UpdateDish(this.selectedDishId(), this.dishForm()).subscribe({
           next: () => {
-            this.alert.success("Dish Updated", '').then(() => this.load()).then(() => {
-              this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
+            this.menuService.UpdateDishPicture(this.selectedDishId(), this.dishPic()).subscribe({
+              next: () => {
+                this.alert.success("Dish Updated", '').then(() => this.load()).then(() => {
+                  this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
+                })
+              },
+              error: (err) => { this.alert.error("Dish Not Updated", err.error.message) }
             })
           },
-          error: (err) => this.alert.error("Dish Not Updated", err.error.message)
+          error: (err) => { this.alert.error("Dish Not Updated", err.error.message) }
         })
       })
     } else {
       this.alert.confirm("Are You Sure?").then((res) => {
         if (!res.isConfirmed) return;
         this.menuService.AddDish(this.selectedMenuId(), this.dishForm()).subscribe({
-          next: () => {
-            this.alert.success("Dish Added", '').then(() => this.load()).then(() => {
-              this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
+          next: (data) => {
+            this.menuService.UpdateDishPicture(data.id, this.dishPic()).subscribe({
+              next: () => {
+                this.alert.success("Dish Added", '').then(() => this.load()).then(() => {
+                  this.router.navigate(['/admin-panel/menus']).then(() => { window.location.reload(); });
+                })
+              },
+              error: (err) => { this.alert.error("Dish Not Added", err.error.message) }
             })
           },
-          error: (err) => this.alert.error("Dish Not Failed", err.error.message)
+          error: (err) => this.alert.error("Dish Not Added", err.error.message)
         });
       })
     }

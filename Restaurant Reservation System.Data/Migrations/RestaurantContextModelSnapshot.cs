@@ -200,6 +200,9 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsAvaiable")
                         .HasColumnType("bit");
 

@@ -12,7 +12,7 @@ using Restaurant_Reservation_System.Data;
 namespace Restaurant_Reservation_System.Data.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20260413132933_v1")]
+    [Migration("20260413222932_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -202,6 +202,9 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAvaiable")
                         .HasColumnType("bit");

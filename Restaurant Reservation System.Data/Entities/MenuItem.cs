@@ -20,6 +20,8 @@ namespace Restaurant_Reservation_System.Data.Entities
         public decimal Price { get; set; }
         [Required]
         public bool IsAvaiable { get; set; }
+        //[Required]
+        public string? ImageUrl { get; set; }
 
         // MenuItems => Menu
         public Menu? Menu { get; set; }

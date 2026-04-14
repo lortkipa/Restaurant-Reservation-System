@@ -37,12 +37,25 @@ export class MenuService {
     return this.http.delete<boolean>(`${this.globals.apiUrl}/Menu/Remove/${id}`)
   }
 
-  AddDish(menuId: number, data: CreateDishModel) : Observable<AuthResponseModel> {
-    return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}/Menu/AddDish/${menuId}`, data)
+  AddDish(menuId: number, data: CreateDishModel) : Observable<DishModel> {
+    return this.http.post<DishModel>(`${this.globals.apiUrl}/Menu/AddDish/${menuId}`, data)
   }
 
   UpdateDish(dishId: number, data: CreateDishModel) : Observable<AuthResponseModel> {
     return this.http.put<AuthResponseModel>(`${this.globals.apiUrl}/Menu/UpdateDish/${dishId}`, data)
+  }
+
+  UpdateDishPicture(dishId: number, data: File | null): Observable<AuthResponseModel> {
+    const formData = new FormData();
+
+    if (data) {
+      formData.append('file', data);
+    }
+
+    return this.http.put<AuthResponseModel>(
+      `${this.globals.apiUrl}/Menu/UpdateDishPicture/${dishId}`,
+      formData
+    );
   }
 
   RemoveDish(dishId: number) : Observable<AuthResponseModel> {

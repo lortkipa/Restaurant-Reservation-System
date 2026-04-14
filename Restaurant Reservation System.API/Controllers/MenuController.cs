@@ -13,12 +13,16 @@ namespace Restaurant_Reservation_System.API.Controllers
     [Route("api/[controller]")]
     public class MenuController : ControllerBase
     {
+        IWebHostEnvironment _env;
+        private readonly IImageService _imgService;
         private readonly IMenuService _menuService;
         private readonly IMenuRepository _menuRepository;
         private readonly RestaurantContext _context;
 
-        public MenuController(IMenuService menuService, IMenuRepository menuRepository, RestaurantContext context)
+        public MenuController(IWebHostEnvironment env, IImageService imgService, IMenuService menuService, IMenuRepository menuRepository, RestaurantContext context)
         {
+            _env = env;
+            _imgService = imgService;
             _menuService = menuService;
             _menuRepository = menuRepository;
             _context = context;
@@ -83,7 +87,7 @@ namespace Restaurant_Reservation_System.API.Controllers
                     m.Name,
                     m.RestaurantId,
                     Dishes = m.MenuItems
-                        .Select(d => new { d.Id, d.Name, d.Price, d.IsAvaiable })
+                        .Select(d => new { d.Id, d.Name, d.Price, d.IsAvaiable, d.ImageUrl })
                 })
                 .ToListAsync();
 
@@ -101,7 +105,7 @@ namespace Restaurant_Reservation_System.API.Controllers
                     m.Name,
                     m.RestaurantId,
                     Dishes = m.MenuItems
-                        .Select(d => new { d.Id, d.Name, d.Price, d.IsAvaiable })
+                        .Select(d => new { d.Id, d.Name, d.Price, d.IsAvaiable, d.ImageUrl })
                 })
                 .ToListAsync();
 
@@ -122,7 +126,7 @@ namespace Restaurant_Reservation_System.API.Controllers
                     m.RestaurantId,
                     AvailableDishes = m.MenuItems
                         .Where(d => d.IsAvaiable)
-                        .Select(d => new { d.Id, d.Name, d.Price })
+                        .Select(d => new { d.Id, d.Name, d.Price, d.ImageUrl })
                 })
                 .ToListAsync();
 
@@ -131,26 +135,27 @@ namespace Restaurant_Reservation_System.API.Controllers
 
         // Admin only
         [HttpPost("AddDish/{id}")]
-        public async Task<ActionResult<AuthResponseDTO>> AddDishToMenu(int id, MenuItemDTO item)
+        public async Task<ActionResult> AddDishToMenu(int id, [FromBody] MenuItemDTO item) // Added [FromBody]
         {
-            var menu = await _context.Set<Menu>()
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var menu = await _context.Set<Menu>().FindAsync(id);
 
             if (menu == null)
-                return new AuthResponseDTO { Status = false, Message = "Invalid Dish Property" };
+                return NotFound("Invalid Menu");
 
             var dish = new MenuItem
             {
                 MenuId = id,
                 Name = item.Name,
                 Price = item.Price,
-                IsAvaiable = item.IsAvaiable
+                IsAvaiable = item.IsAvaiable,
+                ImageUrl = "" // Initialize as empty string or keep null, but don't overwrite later
             };
 
             _context.Set<MenuItem>().Add(dish);
             await _context.SaveChangesAsync();
 
-            return new AuthResponseDTO { Status = true, Message = "Dish Added Successfully" };
+            // Return the DTO or a simple object to avoid circular reference errors
+            return Ok(new { dish.Id, dish.Name, dish.Price });
         }
 
         // Admin only
@@ -166,11 +171,28 @@ namespace Restaurant_Reservation_System.API.Controllers
             dish.Name = item.Name;
             dish.Price = item.Price;
             dish.IsAvaiable = item.IsAvaiable;
+            dish.ImageUrl = null;
 
             await _context.SaveChangesAsync();
             return new AuthResponseDTO { Status = true, Message = "Dish Added Successfully" };
         }
+        [HttpPut("UpdateDishPicture/{menuItemId}")]
+        public async Task<ActionResult<AuthResponseDTO>> UpdateDishPicture(int menuItemId, IFormFile? file)
+        {
+            var dish = await _context.Set<MenuItem>()
+                .FirstOrDefaultAsync(d => d.Id == menuItemId);
 
+            if (dish == null)
+                return new AuthResponseDTO { Status = false, Message = "Dish Not Found" };
+
+            if (file == null)
+                dish.ImageUrl = null;
+            else
+                dish.ImageUrl = await _imgService.SaveImageAsync(file, "dishes", _env.WebRootPath);
+
+            await _context.SaveChangesAsync();
+            return new AuthResponseDTO { Status = true, Message = "Dish Added Successfully" };
+        }
         // Admin only
         [HttpPatch("SetAvailability/{menuItemId}")]
         public async Task<IActionResult> SetAvailability(int menuItemId, [FromBody] bool isAvailable)
