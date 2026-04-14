@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restaurant_Reservation_System.Data;
 
@@ -11,9 +12,11 @@ using Restaurant_Reservation_System.Data;
 namespace Restaurant_Reservation_System.Data.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20260414114457_v2")]
+    partial class v2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,76 +24,6 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.DeveloperInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("GithubLink")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("LinkedinLink")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PortfolioLink")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId")
-                        .IsUnique();
-
-                    b.ToTable("DeveloperInfos", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            GithubLink = "https://github.com/lortkipa",
-                            LinkedinLink = "https://www.linkedin.com/in/nikoloz-lortkipanidze-2b4263329/",
-                            PersonId = 1,
-                            Role = "Team Leader | Full Stack Developer"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            PersonId = 2,
-                            Role = "Full Stack Developer"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            PersonId = 3,
-                            Role = "Full Stack Developer"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            PersonId = 5,
-                            Role = "Front End Developer"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            PersonId = 4,
-                            Role = "Full Stack Developer"
-                        });
-                });
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.EmailJS", b =>
                 {
@@ -936,17 +869,6 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.DeveloperInfo", b =>
-                {
-                    b.HasOne("Restaurant_Reservation_System.Data.Entities.Person", "Person")
-                        .WithOne("DeveloperInfo")
-                        .HasForeignKey("Restaurant_Reservation_System.Data.Entities.DeveloperInfo", "PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Person");
-                });
-
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.EmailJS", b =>
                 {
                     b.HasOne("Restaurant_Reservation_System.Data.Entities.User", "User")
@@ -1044,8 +966,6 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.Person", b =>
                 {
-                    b.Navigation("DeveloperInfo");
-
                     b.Navigation("User");
                 });
 

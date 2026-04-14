@@ -12,7 +12,7 @@ using Restaurant_Reservation_System.Data;
 namespace Restaurant_Reservation_System.Data.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20260413222932_v1")]
+    [Migration("20260414114229_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -270,7 +270,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 6,
-                            IsAvaiable = true,
+                            IsAvaiable = false,
                             MenuId = 3,
                             Name = "Chkmeruli",
                             Price = 19.5m
@@ -278,7 +278,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 7,
-                            IsAvaiable = true,
+                            IsAvaiable = false,
                             MenuId = 4,
                             Name = "White Wine",
                             Price = 13.0m
@@ -302,7 +302,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 10,
-                            IsAvaiable = true,
+                            IsAvaiable = false,
                             MenuId = 5,
                             Name = "Badrijani Nigvzit",
                             Price = 11.0m

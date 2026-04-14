@@ -13,56 +13,28 @@
             </p>
         </div>
 
-        <div class="team-grid">
 
-            <!-- Featured -->
-            <div class="team-card featured reveal">
-                <div class="tc-avatar">NL</div>
-                <div>
-                    <div class="tc-name">Nikoloz Lortkipanidze</div>
-                    <div class="tc-role">Full Stack Developer</div>
-                    <!-- <p class="tc-bio">
-            Focused on building complete web solutions from front to back. Nikoloz leads the architecture of the platform, working with Angular, .NET, and modern databases to deliver a seamless reservation experience.
-          </p> -->
-                </div>
-            </div>
+<!-- TEAM -->
+<section class="section team">
+  <div class="section-inner">
 
-            <div class="team-card reveal d1">
-                <div class="tc-avatar">DK</div>
-                <div class="tc-name">Demetre Kvirikashvili</div>
-                <div class="tc-role">Frontend Developer</div>
-                <!-- <p class="tc-bio">
-          Specializes in crafting responsive and user-friendly interfaces. Demetre ensures that every interaction feels smooth, intuitive, and visually polished.
-        </p> -->
-            </div>
+    <div class="team-grid">
 
-            <div class="team-card reveal d2">
-                <div class="tc-avatar">SD</div>
-                <div class="tc-name">Saba Dolidze</div>
-                <div class="tc-role">Backend Developer</div>
-                <!-- <p class="tc-bio">
-          Works on server-side logic, APIs, and database structure. Saba focuses on performance, reliability, and clean architecture behind the scenes.
-        </p> -->
-            </div>
+      <div class="tc reveal" *ngFor="let dev of members()">
+        <div class="tc-av">{{ dev.person.firstName[0] }}{{ dev.person.lastName[0] }}</div>
+        <div class="tc-name">{{ dev.person.firstName }} {{ dev.person.lastName }}</div>
+        <div class="tc-role">{{ dev.role }}</div>
 
-            <div class="team-card reveal d3">
-                <div class="tc-avatar">DP</div>
-                <div class="tc-name">Davit Papava</div>
-                <div class="tc-role">Full Stack Developer</div>
-                <!-- <p class="tc-bio">
-          Bridges frontend and backend systems, ensuring everything works together perfectly. Davit contributes across the stack to keep the platform efficient and scalable.
-        </p> -->
-            </div>
 
-            <div class="team-card reveal d1">
-                <div class="tc-avatar">TT</div>
-                <div class="tc-name">Temo Totoshvili</div>
-                <div class="tc-role">Software Developer</div>
-                <!-- <p class="tc-bio">
-          Focused on implementation and problem-solving, Temo helps turn complex ideas into working features while maintaining code quality and stability.
-        </p> -->
-            </div>
-
+        <div class="tc-links">
+          <a [href]="dev.githubLink" *ngIf="dev.githubLink" target="_blank" class="tc-lnk">GitHub</a>
+          <a [href]="dev.linkedinLink" *ngIf="dev.linkedinLink" target="_blank" class="tc-lnk">LinkedIn</a>
+          <a [href]="dev.portfolioLink" *ngIf="dev.portfolioLink" target="_blank" class="tc-lnk">Portfolio</a>
         </div>
+      </div>
+
+    </div>
+  </div>
+</section>
     </div>
 </section>

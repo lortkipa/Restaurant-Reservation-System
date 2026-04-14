@@ -13,6 +13,15 @@ namespace Restaurant_Reservation_System.Data
 {
     public class RestaurantContext : DbContext
     {
+
+        //public RestaurantContext()
+        //{
+        //}
+
+        public RestaurantContext(DbContextOptions<RestaurantContext> context) : base(context)
+        {
+        }
+
         // DBSet Properties
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
@@ -24,14 +33,7 @@ namespace Restaurant_Reservation_System.Data
         public DbSet<RoleUser> RoleUsers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<EmailJS> EmailJS { get; set; }
-
-        public RestaurantContext()
-        {
-        }
-
-        public RestaurantContext(DbContextOptions<RestaurantContext> context) : base(context)
-        {
-        }
+        public DbSet<DeveloperInfo> DeveloperInfos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -52,6 +54,7 @@ namespace Restaurant_Reservation_System.Data
             modelBuilder.ApplyConfiguration(new RoleUserConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new EmailJSConfiguration());
+            modelBuilder.ApplyConfiguration(new DeveloperInfoConfiguration());
 
             // seeding
             modelBuilder.Entity<Role>().HasData(
@@ -108,6 +111,40 @@ namespace Restaurant_Reservation_System.Data
                     LastName = "Dolidze",
                     Phone = "577711705",
                     Address = "Address #5"
+                }
+            );
+            modelBuilder.Entity<DeveloperInfo>().HasData(
+                new DeveloperInfo
+                {
+                    Id = 1,
+                    PersonId = 1,
+                    Role = "Team Leader | Full Stack Developer",
+                    GithubLink = "https://github.com/lortkipa",
+                    LinkedinLink = "https://www.linkedin.com/in/nikoloz-lortkipanidze-2b4263329/",    
+                },
+                new DeveloperInfo
+                {
+                    Id = 2,
+                    PersonId = 2,
+                    Role = "Full Stack Developer"
+                },
+                new DeveloperInfo
+                {
+                    Id = 3,
+                    PersonId = 3,
+                    Role = "Full Stack Developer"
+                },
+                new DeveloperInfo
+                {
+                    Id = 5,
+                    PersonId = 5,
+                    Role = "Front End Developer"
+                },
+                new DeveloperInfo
+                {
+                    Id = 4,
+                    PersonId = 4,
+                    Role = "Full Stack Developer"
                 }
             );
             using (var sha256 = SHA256.Create())
@@ -347,40 +384,40 @@ namespace Restaurant_Reservation_System.Data
 );
             modelBuilder.Entity<MenuItem>().HasData(
 
-    // Shavi Lomi
-    new MenuItem { Id = 1, MenuId = 1, Name = "Chashushuli", Price = 18.5M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 2, MenuId = 1, Name = "Ojakhuri", Price = 16.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 3, MenuId = 2, Name = "Red Wine", Price = 12.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 4, MenuId = 2, Name = "Craft Beer", Price = 8.5M, IsAvaiable = true, ImageUrl = null },
-    // Barbarestan
-    new MenuItem { Id = 5, MenuId = 3, Name = "Kharcho", Price = 20.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 6, MenuId = 3, Name = "Chkmeruli", Price = 19.5M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 7, MenuId = 4, Name = "White Wine", Price = 13.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 8, MenuId = 4, Name = "Mineral Water", Price = 3.0M, IsAvaiable = true, ImageUrl = null },
+// Shavi Lomi
+new MenuItem { Id = 1, MenuId = 1, Name = "Chashushuli", Price = 18.5M, IsAvaiable = true, ImageUrl = "uploads/dishes/Chashushuli.jpg" },
+new MenuItem { Id = 2, MenuId = 1, Name = "Ojakhuri", Price = 16.0M, IsAvaiable = true, ImageUrl = "uploads/dishes/Ojakhuri.jpg" },
+new MenuItem { Id = 3, MenuId = 2, Name = "Red Wine", Price = 12.0M, IsAvaiable = true, ImageUrl = "uploads/dishes/Red-Wine.jpg" },
+new MenuItem { Id = 4, MenuId = 2, Name = "Craft Beer", Price = 8.5M, IsAvaiable = true, ImageUrl = "uploads/dishes/Craft-Beer.jpg" },
+// Barbarestan
+new MenuItem { Id = 5, MenuId = 3, Name = "Kharcho", Price = 20.0M, IsAvaiable = true, ImageUrl = "uploads/dishes/Kharcho.jpg" },
+new MenuItem { Id = 6, MenuId = 3, Name = "Chkmeruli", Price = 19.5M, IsAvaiable = false, ImageUrl = "uploads/dishes/Chkmeruli.jpg" },
+new MenuItem { Id = 7, MenuId = 4, Name = "White Wine", Price = 13.0M, IsAvaiable = false, ImageUrl = "uploads/dishes/White-Wine.jpg" },
+new MenuItem { Id = 8, MenuId = 4, Name = "Mineral Water", Price = 3.0M, IsAvaiable = true, ImageUrl = "uploads/dishes/Mineral-Water.jpg" },
 
-    // Keto and Kote
-    new MenuItem { Id = 9, MenuId = 5, Name = "Mtsvadi", Price = 17.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 10, MenuId = 5, Name = "Badrijani Nigvzit", Price = 11.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 11, MenuId = 6, Name = "Churchkhela", Price = 6.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 12, MenuId = 6, Name = "Honey Cake", Price = 7.5M, IsAvaiable = true, ImageUrl = null },
+// Keto and Kote
+new MenuItem { Id = 9, MenuId = 5, Name = "Mtsvadi", Price = 17.0M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 10, MenuId = 5, Name = "Badrijani Nigvzit", Price = 11.0M, IsAvaiable = false, ImageUrl = null },
+new MenuItem { Id = 11, MenuId = 6, Name = "Churchkhela", Price = 6.0M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 12, MenuId = 6, Name = "Honey Cake", Price = 7.5M, IsAvaiable = true, ImageUrl = null },
 
-    // Salobie Bia
-    new MenuItem { Id = 13, MenuId = 7, Name = "Lobio (Clay Pot)", Price = 9.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 14, MenuId = 7, Name = "Lobio with Mchadi", Price = 11.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 15, MenuId = 8, Name = "Pickled Vegetables", Price = 5.5M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 16, MenuId = 8, Name = "Cornbread (Mchadi)", Price = 3.5M, IsAvaiable = true, ImageUrl = null },
+// Salobie Bia
+new MenuItem { Id = 13, MenuId = 7, Name = "Lobio (Clay Pot)", Price = 9.0M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 14, MenuId = 7, Name = "Lobio with Mchadi", Price = 11.0M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 15, MenuId = 8, Name = "Pickled Vegetables", Price = 5.5M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 16, MenuId = 8, Name = "Cornbread (Mchadi)", Price = 3.5M, IsAvaiable = true, ImageUrl = null },
 
-    // Machakhela
-    new MenuItem { Id = 17, MenuId = 9, Name = "Adjarian Khachapuri", Price = 14.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 18, MenuId = 9, Name = "Imeretian Khachapuri", Price = 12.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 19, MenuId = 10, Name = "Lemonade", Price = 4.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 20, MenuId = 10, Name = "Beer", Price = 6.5M, IsAvaiable = true, ImageUrl = null },
+// Machakhela
+new MenuItem { Id = 17, MenuId = 9, Name = "Adjarian Khachapuri", Price = 14.0M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 18, MenuId = 9, Name = "Imeretian Khachapuri", Price = 12.0M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 19, MenuId = 10, Name = "Lemonade", Price = 4.0M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 20, MenuId = 10, Name = "Beer", Price = 6.5M, IsAvaiable = true, ImageUrl = null },
 
-    // Heart of Batumi
-    new MenuItem { Id = 21, MenuId = 11, Name = "Khinkali (10 pcs)", Price = 13.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 22, MenuId = 11, Name = "Chakapuli", Price = 18.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 23, MenuId = 12, Name = "Red Wine", Price = 11.0M, IsAvaiable = true, ImageUrl = null },
-    new MenuItem { Id = 24, MenuId = 12, Name = "Cola", Price = 3.0M, IsAvaiable = true, ImageUrl = null }
+// Heart of Batumi
+new MenuItem { Id = 21, MenuId = 11, Name = "Khinkali (10 pcs)", Price = 13.0M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 22, MenuId = 11, Name = "Chakapuli", Price = 18.0M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 23, MenuId = 12, Name = "Red Wine", Price = 11.0M, IsAvaiable = true, ImageUrl = null },
+new MenuItem { Id = 24, MenuId = 12, Name = "Cola", Price = 3.0M, IsAvaiable = true, ImageUrl = null }
 );
         }
     }

@@ -26,5 +26,8 @@ namespace Restaurant_Reservation_System.Data.Entities
 
         // Person => User
         public User? User { get; set; }
+
+        // Person => DeveloperInfo
+        public DeveloperInfo? DeveloperInfo { get; set; }
     }
 }

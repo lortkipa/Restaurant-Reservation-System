@@ -34,6 +34,11 @@ namespace Restaurant_Reservation_System.Data.Configurations
                 .WithOne(u => u.Person)
                 .HasForeignKey<User>(u => u.PersonId)
                 .OnDelete(DeleteBehavior.Cascade);
+            // Person => DeveloperInfo
+            builder.HasOne(p => p.DeveloperInfo)
+                .WithOne(d => d.Person)
+                .HasForeignKey<DeveloperInfo>(d => d.PersonId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
