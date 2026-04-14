@@ -209,9 +209,9 @@ namespace Restaurant_Reservation_System.Data
                 {
                     Id = 1,
                     UserId = 1,
-                    ServiceId = "service_kqw395h",
-                    TemplateId = "template_75iei9r",
-                    PublicKey = "90LyXpeSeVnNPQeFJ"
+                    ServiceId = null,
+                    TemplateId = null,
+                    PublicKey = null
                 },
                 new EmailJS
                 {

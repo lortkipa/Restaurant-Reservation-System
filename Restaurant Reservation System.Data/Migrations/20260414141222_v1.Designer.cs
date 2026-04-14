@@ -12,7 +12,7 @@ using Restaurant_Reservation_System.Data;
 namespace Restaurant_Reservation_System.Data.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20260414114229_v1")]
+    [Migration("20260414141222_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -24,6 +24,76 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.DeveloperInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("GithubLink")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("LinkedinLink")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PortfolioLink")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId")
+                        .IsUnique();
+
+                    b.ToTable("DeveloperInfos", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GithubLink = "https://github.com/lortkipa",
+                            LinkedinLink = "https://www.linkedin.com/in/nikoloz-lortkipanidze-2b4263329/",
+                            PersonId = 1,
+                            Role = "Team Leader | Full Stack Developer"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            PersonId = 2,
+                            Role = "Full Stack Developer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            PersonId = 3,
+                            Role = "Full Stack Developer"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            PersonId = 5,
+                            Role = "Front End Developer"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            PersonId = 4,
+                            Role = "Full Stack Developer"
+                        });
+                });
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.EmailJS", b =>
                 {
@@ -71,9 +141,6 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 1,
-                            PublicKey = "90LyXpeSeVnNPQeFJ",
-                            ServiceId = "service_kqw395h",
-                            TemplateId = "template_75iei9r",
                             UserId = 1
                         },
                         new
@@ -230,6 +297,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 1,
+                            ImageUrl = "uploads/dishes/Chashushuli.jpg",
                             IsAvaiable = true,
                             MenuId = 1,
                             Name = "Chashushuli",
@@ -238,6 +306,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 2,
+                            ImageUrl = "uploads/dishes/Ojakhuri.jpg",
                             IsAvaiable = true,
                             MenuId = 1,
                             Name = "Ojakhuri",
@@ -246,6 +315,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 3,
+                            ImageUrl = "uploads/dishes/Red-Wine.jpg",
                             IsAvaiable = true,
                             MenuId = 2,
                             Name = "Red Wine",
@@ -254,6 +324,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 4,
+                            ImageUrl = "uploads/dishes/Craft-Beer.jpg",
                             IsAvaiable = true,
                             MenuId = 2,
                             Name = "Craft Beer",
@@ -262,6 +333,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 5,
+                            ImageUrl = "uploads/dishes/Kharcho.jpg",
                             IsAvaiable = true,
                             MenuId = 3,
                             Name = "Kharcho",
@@ -270,6 +342,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 6,
+                            ImageUrl = "uploads/dishes/Chkmeruli.jpg",
                             IsAvaiable = false,
                             MenuId = 3,
                             Name = "Chkmeruli",
@@ -278,6 +351,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 7,
+                            ImageUrl = "uploads/dishes/White-Wine.jpg",
                             IsAvaiable = false,
                             MenuId = 4,
                             Name = "White Wine",
@@ -286,6 +360,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 8,
+                            ImageUrl = "uploads/dishes/Mineral-Water.jpg",
                             IsAvaiable = true,
                             MenuId = 4,
                             Name = "Mineral Water",
@@ -861,6 +936,17 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.DeveloperInfo", b =>
+                {
+                    b.HasOne("Restaurant_Reservation_System.Data.Entities.Person", "Person")
+                        .WithOne("DeveloperInfo")
+                        .HasForeignKey("Restaurant_Reservation_System.Data.Entities.DeveloperInfo", "PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+                });
+
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.EmailJS", b =>
                 {
                     b.HasOne("Restaurant_Reservation_System.Data.Entities.User", "User")
@@ -958,6 +1044,8 @@ namespace Restaurant_Reservation_System.Data.Migrations
 
             modelBuilder.Entity("Restaurant_Reservation_System.Data.Entities.Person", b =>
                 {
+                    b.Navigation("DeveloperInfo");
+
                     b.Navigation("User");
                 });
 

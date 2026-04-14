@@ -138,9 +138,6 @@ namespace Restaurant_Reservation_System.Data.Migrations
                         new
                         {
                             Id = 1,
-                            PublicKey = "90LyXpeSeVnNPQeFJ",
-                            ServiceId = "service_kqw395h",
-                            TemplateId = "template_75iei9r",
                             UserId = 1
                         },
                         new

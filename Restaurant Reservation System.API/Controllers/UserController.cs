@@ -39,7 +39,161 @@ namespace Restaurant_Reservation_System.API.Controllers
             _context = context;
             _config = config;
         }
-        
+
+        [Authorize(Roles = "Admin,Worker")]
+        [HttpGet("GetAllUsers")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
+        {
+            var users = await _service.GetAllAsync();
+            return Ok(users);
+        }
+        [Authorize(Roles = "Admin,Worker")]
+        [HttpGet("GetAllAdmins")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllAdmins()
+        {
+            var users = await _service.GetAllAdminsAsync();
+            return Ok(users);
+        }
+        [Authorize(Roles = "Admin,Worker")]
+        [HttpGet("GetAllWorkers")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllWorkers()
+        {
+            var users = await _service.GetAllWorkersAsync();
+            return Ok(users);
+        }
+        [Authorize(Roles = "Admin,Worker")]
+        [HttpGet("GetAllCustomers")]
+        public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAllCustomers()
+        {
+            var users = await _service.GetAllCostumersAsync();
+            return Ok(users);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetUserById/{id:int}")]
+        public async Task<ActionResult<UserDTO>> GetUserById(int id)
+        {
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
+
+            var user = await _service.GetByIdAsync(id);
+            if (user == null)
+                return NotFound("User not found");
+
+            return Ok(user);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPut("UpdateUserProfile/{id:int}")]
+        public async Task<ActionResult<bool>> UpdateUserProfile(int id, UpdateUserDTO model)
+        {
+            //if (!await IsAdmin(adminId))
+            //    return Forbid("Logged in user is not Admin");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await _service.GetByIdAsync(id);
+            if (user == null)
+                return NotFound("User not found");
+
+            var result = await _service.UpdateWithoutPasswordAsync(id, model);
+            if (!result)
+                return BadRequest("Update failed");
+
+            return Ok(result);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("DeleteUserProfile/{id:int}")]
+        public async Task<ActionResult> DeleteUserProfile(int id)
+        {
+            //if (!await IsAdmin(id))
+            //    return Forbid("Logged in user is not Admin");
+
+            var user = await _service.GetByIdAsync(id);
+            if (user == null)
+                return NotFound("User not found");
+
+            var result = await _service.DeleteAsync(id);
+            if (!result)
+                return BadRequest("Delete failed");
+
+            return Ok();
+        }
+        //[Authorize(Roles = "Admin")]
+        [HttpDelete("RemoveRole/{id:int}/{roleId:int}")]
+        public async Task<ActionResult<AuthResponseDTO>> RemoveRole(int id, int roleId)
+        {
+            var userRole = await _context.RoleUsers
+                .FirstOrDefaultAsync(ur => ur.UserId == id && ur.RoleId == roleId);
+
+            if (userRole == null)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "User does not have this role"
+                });
+
+            _context.RoleUsers.Remove(userRole);
+            await _context.SaveChangesAsync();
+
+            return Ok(new AuthResponseDTO
+            {
+                Status = true,
+                Message = "Role removed"
+            });
+        }
+        //[Authorize(Roles = "Admin")]
+        [HttpPost("SetRole/{id:int}/{roleId:int}")]
+        public async Task<ActionResult<AuthResponseDTO>> SetUserRole(int id, int roleId)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "User not found"
+                });
+
+            var role = await _context.Roles.FindAsync(roleId);
+            if (role == null)
+                return BadRequest(new AuthResponseDTO
+                {
+                    Status = false,
+                    Message = "Role not found"
+                });
+
+            // check if already assigned
+            bool exists = await _context.RoleUsers
+                .AnyAsync(ur => ur.UserId == id && ur.RoleId == roleId);
+
+            if (!exists)
+            {
+                _context.RoleUsers.Add(new RoleUser
+                {
+                    UserId = id,
+                    RoleId = roleId
+                });
+
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok(new AuthResponseDTO
+            {
+                Status = true,
+                Message = "Role assigned"
+            });
+        }
+        //[Authorize(Roles = "Admin")]
+        [HttpGet("GetRoles/{id:int}")]
+        public async Task<ActionResult<IEnumerable<RoleDTO>>> GetUserRoles(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return NotFound("User not found");
+            var roles = await _service.GetRolesById(id);
+            if (roles == null || !roles.Any())
+                return NotFound("User has no roles");
+            return Ok(roles);
+        }
         [Authorize]
         [HttpGet("GetRolesById")]
         public async Task<ActionResult<IEnumerable<RoleDTO>>> GetUserRolesById()
@@ -76,6 +230,7 @@ namespace Restaurant_Reservation_System.API.Controllers
             var profile = await _service.GetByIdAsync(userId);
             return Ok(profile);
         }
+        [AllowAnonymous]
         [HttpPost("Register")]
         public async Task<ActionResult<AuthResponseDTO>> Register(RegisterUserDTO model)
         {
@@ -110,6 +265,7 @@ namespace Restaurant_Reservation_System.API.Controllers
                 }
             );
         }
+        [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<ActionResult<AuthResponseDTO>> Login(LoginUserDTO model)
         {

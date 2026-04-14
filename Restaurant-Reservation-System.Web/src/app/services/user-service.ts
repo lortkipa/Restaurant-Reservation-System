@@ -14,46 +14,46 @@ export class UserService {
   constructor(private globals: Globals, private http: HttpClient) { }
 
   GetAll(token: string): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllUsers`,
+    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/User/GetAllUsers`,
       { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     )
   }
 
   getAllWorkers(token: string): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllWorkers`,
+    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/User/GetAllWorkers`,
       { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     )
   }
 
   GetAllCustomers(token: string): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/Admin/GetAllCustomers`,
+    return this.http.get<UserModel[]>(`${this.globals.apiUrl}/User/GetAllCustomers`,
       { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     )
   }
 
   UpdateUserProfile(token: string, id: number, data: UpdateUserModel): Observable<boolean> {
-    return this.http.put<boolean>(`${this.globals.apiUrl}/Admin/UpdateUserProfile/${id}`,
+    return this.http.put<boolean>(`${this.globals.apiUrl}/User/UpdateUserProfile/${id}`,
       data,
       { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 
   removeUserProfile(token: string, id: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.globals.apiUrl}/Admin/DeleteUserProfile/${id}`,
+    return this.http.delete<boolean>(`${this.globals.apiUrl}/User/DeleteUserProfile/${id}`,
       { headers: { Authorization: `Bearer ${token.replace(/^"|"$/g, '')}` } }
     );
   }
 
   setUserRole(id: number, roleId: Roles): Observable<AuthResponseModel> {
-    return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}/Admin/SetRole/${id}/${roleId}`, {})
+    return this.http.post<AuthResponseModel>(`${this.globals.apiUrl}/User/SetRole/${id}/${roleId}`, {})
   }
 
   removeUserRole(id: number, roleId: Roles): Observable<AuthResponseModel> {
-    return this.http.delete<AuthResponseModel>(`${this.globals.apiUrl}/Admin/RemoveRole/${id}/${roleId}`)
+    return this.http.delete<AuthResponseModel>(`${this.globals.apiUrl}/User/RemoveRole/${id}/${roleId}`)
   }
 
   getUserRoles(id: number): Observable<RoleModel[]> {
-    return this.http.get<RoleModel[]>(`${this.globals.apiUrl}/Admin/GetRoles/${id}`)
+    return this.http.get<RoleModel[]>(`${this.globals.apiUrl}/User/GetRoles/${id}`)
   }
 
   Register(data: RegisterModel): Observable<AuthResponseModel> {

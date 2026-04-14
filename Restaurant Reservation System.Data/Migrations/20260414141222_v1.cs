@@ -74,6 +74,29 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DeveloperInfos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PersonId = table.Column<int>(type: "int", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    GithubLink = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    LinkedinLink = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    PortfolioLink = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeveloperInfos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeveloperInfos_Persons_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -270,6 +293,18 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "DeveloperInfos",
+                columns: new[] { "Id", "GithubLink", "LinkedinLink", "PersonId", "PortfolioLink", "Role" },
+                values: new object[,]
+                {
+                    { 1, "https://github.com/lortkipa", "https://www.linkedin.com/in/nikoloz-lortkipanidze-2b4263329/", 1, null, "Team Leader | Full Stack Developer" },
+                    { 2, null, null, 2, null, "Full Stack Developer" },
+                    { 3, null, null, 3, null, "Full Stack Developer" },
+                    { 4, null, null, 4, null, "Full Stack Developer" },
+                    { 5, null, null, 5, null, "Front End Developer" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Menus",
                 columns: new[] { "Id", "Name", "RestaurantId" },
                 values: new object[,]
@@ -305,7 +340,7 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 columns: new[] { "Id", "PublicKey", "ServiceId", "TemplateId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "90LyXpeSeVnNPQeFJ", "service_kqw395h", "template_75iei9r", 1 },
+                    { 1, null, null, null, 1 },
                     { 2, null, null, null, 2 },
                     { 3, null, null, null, 3 },
                     { 4, null, null, null, 4 },
@@ -317,14 +352,14 @@ namespace Restaurant_Reservation_System.Data.Migrations
                 columns: new[] { "Id", "ImageUrl", "IsAvaiable", "MenuId", "Name", "Price" },
                 values: new object[,]
                 {
-                    { 1, null, true, 1, "Chashushuli", 18.5m },
-                    { 2, null, true, 1, "Ojakhuri", 16.0m },
-                    { 3, null, true, 2, "Red Wine", 12.0m },
-                    { 4, null, true, 2, "Craft Beer", 8.5m },
-                    { 5, null, true, 3, "Kharcho", 20.0m },
-                    { 6, null, false, 3, "Chkmeruli", 19.5m },
-                    { 7, null, false, 4, "White Wine", 13.0m },
-                    { 8, null, true, 4, "Mineral Water", 3.0m },
+                    { 1, "uploads/dishes/Chashushuli.jpg", true, 1, "Chashushuli", 18.5m },
+                    { 2, "uploads/dishes/Ojakhuri.jpg", true, 1, "Ojakhuri", 16.0m },
+                    { 3, "uploads/dishes/Red-Wine.jpg", true, 2, "Red Wine", 12.0m },
+                    { 4, "uploads/dishes/Craft-Beer.jpg", true, 2, "Craft Beer", 8.5m },
+                    { 5, "uploads/dishes/Kharcho.jpg", true, 3, "Kharcho", 20.0m },
+                    { 6, "uploads/dishes/Chkmeruli.jpg", false, 3, "Chkmeruli", 19.5m },
+                    { 7, "uploads/dishes/White-Wine.jpg", false, 4, "White Wine", 13.0m },
+                    { 8, "uploads/dishes/Mineral-Water.jpg", true, 4, "Mineral Water", 3.0m },
                     { 9, null, true, 5, "Mtsvadi", 17.0m },
                     { 10, null, false, 5, "Badrijani Nigvzit", 11.0m },
                     { 11, null, true, 6, "Churchkhela", 6.0m },
@@ -354,6 +389,12 @@ namespace Restaurant_Reservation_System.Data.Migrations
                     { 4, 1, 4 },
                     { 5, 1, 5 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeveloperInfos_PersonId",
+                table: "DeveloperInfos",
+                column: "PersonId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailJSConfigs_PublicKey",
@@ -445,6 +486,9 @@ namespace Restaurant_Reservation_System.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "DeveloperInfos");
+
             migrationBuilder.DropTable(
                 name: "EmailJSConfigs");
 

@@ -15,6 +15,11 @@ import { resetConsumerBeforeComputation } from '@angular/core/primitives/signals
   styleUrl: './register.scss',
 })
 export class Register {
+  isValidEmail(email: string): boolean {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
   constructor(private user: UserService, private alert: AlertService, private router: Router) { }
 
   confirmPassword: string = '';
@@ -35,6 +40,9 @@ export class Register {
   };
 
   onSubmit(form: any) {
+    if (!this.isValidEmail(this.registerModel.email)) { this.alert.error("Registration Failed", "Email is not Valid"); return; }
+
+
     if (form.invalid) {
       let formTitle = "Registration Failed"
       if (!this.registerModel.person.firstName) { this.alert.error(formTitle, "First Name is empty"); return; }
